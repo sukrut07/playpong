@@ -99,18 +99,21 @@ export interface MatchStats {
   returnSuccessRate: number | null; // 0 to 100 or null if denominator == 0
   missRate: number | null; // 0 to 100 or null
   longestRally: number;
-  totalRallies: number;
+  totalRallies?: number;
   averageRallyLength: number | null;
   medianRallyLength: number | null;
   averageReactionTimeMs: number | null;
   reactionTimeSamples: number[];
-  tableZoneDistribution: TableZoneDistribution;
-  trackingStabilityPercentage: number;
+  tableZoneDistribution?: TableZoneDistribution;
+  trackingStabilityPercentage?: number;
   trackingAvailabilityPercentage?: number;
-  missionsCompleted: number;
+  missionsCompleted?: number;
   difficulty: GameDifficulty;
-  controllerMode: 'gesture' | 'keyboard';
+  controllerMode?: 'gesture' | 'keyboard';
   assisted?: boolean; // Phase 6: Human assistance layer enabled
+  completedRallies?: number;
+  rallyLengths?: number[];
+  tableZoneHits?: TableZoneDistribution;
 }
 
 // ---------------------------------------------------------------------
@@ -166,7 +169,7 @@ export interface CoachingReport {
   rule_references: RuleReferenceLink[];
   limitations: string[];
   providerInfo?: {
-    provider: 'gemini' | 'ollama';
+    provider: 'gemini' | 'ollama' | 'fallback';
     model: string;
     inferenceTimeMs: number;
     routingReason?: string;
@@ -186,7 +189,7 @@ export interface CoachSummaryResponse {
 export interface HealthCheckResponse {
   status: 'ok' | 'degraded';
   ai: {
-    provider: 'gemini' | 'ollama';
+    provider: 'gemini' | 'ollama' | 'fallback';
     available: boolean;
     model: string;
     hasKey?: boolean;

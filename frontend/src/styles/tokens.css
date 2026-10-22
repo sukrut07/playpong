@@ -1,0 +1,42 @@
+/* =====================================================================
+   PONG AI — Neo-Brutalist Design Tokens
+   ===================================================================== */
+
+:root {
+  /* Palette Tokens */
+  --color-ink: #111111;
+  --color-mint: #62F5AD;
+  --color-lime: #D9FF55;
+  --color-lavender: #BDA5FF;
+  --color-cream: #FFFDF6;
+  --color-white: #FFFFFF;
+  --color-muted: #737373;
+  --color-surface-dim: #F5EFE0;
+  --color-danger: #FF5555;
+  --color-warning: #FFB84D;
+
+  /* Border Tokens */
+  --border-width-sm: 2px;
+  --border-width-md: 3px;
+  --border-color: #111111;
+  --border-radius-sm: 8px;
+  --border-radius-md: 14px;
+  --border-radius-lg: 20px;
+  --border-radius-full: 9999px;
+
+  /* Shadow Tokens */
+  --shadow-offset-sm: 2px 2px 0px #111111;
+  --shadow-offset-md: 3px 3px 0px #111111;
+  --shadow-offset-lg: 5px 5px 0px #111111;
+  --shadow-offset-xl: 7px 7px 0px #111111;
+  --shadow-active: 1px 1px 0px #111111;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transitions */
+  --transition-fast: 120ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-normal: 200ms cubic-bezier(0.2, 0, 0, 1);
+}

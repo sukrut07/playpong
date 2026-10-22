@@ -1,74 +1,90 @@
-# PONG AI — Implementation Plan & Phase Acceptance Criteria
+# PONG AI — Frontend Rebuild & Clean Architecture Plan
 
-- [x] **Phase 0: Architecture Audit & Baseline Verification**
-  - [x] Audit existing repository structure, dependencies, and environment.
-  - [x] Create `docs/INITIAL_AUDIT.md` and `docs/IMPLEMENTATION_PLAN.md`.
-  - [x] Verify Git cleanliness and branch status.
+**Version**: 2.0.0  
+**Status**: IN PROGRESS  
+**Target Architecture**: Standalone `frontend/` UI + `game-engine/` physics + `server/` multiplayer + `services/ai-orchestrator/` + Graphify visualization.
 
-- [x] **Phase 1: Neo-Brutalist Frontend & Interactive User Experience**
-  - [x] Responsive neo-brutalist arcade design system with custom palettes, bold borders, and offset shadows.
-  - [x] Main routes: Landing (`/`), Game Setup (`/play`), Play Arena (`/game/:id`), Multiplayer Lobby (`/multiplayer`), Analytics Dashboard (`/dashboard`), AI Coach (`/coach`), and AI Orchestrator (`/orchestrator`).
-  - [x] Interactive AI Orchestrator view with live status cards, smoke testing, LangGraph 11-stage visualization, and empirical benchmarks.
+---
 
-- [x] **Phase 2: Deterministic 3D Game Engine & Physics**
-  - [x] Fixed-timestep simulation with continuous collision detection against paddles and bounds.
-  - [x] Mathematical trajectory prediction for computer opponent with reaction delay.
-  - [x] Authoritative event stream (rallies, returns, bounces, misses, lets, points).
-  - [x] Strict rule separation: `ARCADE_PONG` vs `TABLE_TENNIS_TRAINING`.
+## Roadmap & Milestones
 
-- [x] **Phase 3: MediaPipe Webcam Hand Tracking**
-  - [x] In-browser `@mediapipe/tasks-vision` GPU delegate.
-  - [x] 21-point hand landmarker tracking palm and wrist coordinates.
-  - [x] Point2D EMA smoothing filter and bounding calibration.
-  - [x] Graceful fallback to keyboard (Arrow keys / WASD) and touch controls.
+- [ ] **Phase 1: Architecture Modularization & Game Engine Isolation**
+  - [ ] Create `game-engine/` with pure deterministic simulation (`TableTennisEngine`), ITTF 2026 rules, and telemetry calculation contracts.
+  - [ ] Ensure zero DOM/React coupling in `game-engine/` so it remains independently testable.
+  - [ ] Add `game-engine/package.json` and export index.
 
-- [x] **Phase 4: Node.js Multiplayer Backend Authority**
-  - [x] Socket.IO room lifecycle, room codes, and player readiness states.
-  - [x] Server-authoritative collision and score validation.
-  - [x] AI Provider Adapter bridging Node.js to Python FastAPI orchestrator.
-  - [x] Deterministic offline fallback engine when Python or Ollama is offline.
+- [ ] **Phase 2: Dedicated `frontend/` Setup & Neo-Brutalist Design Tokens**
+  - [ ] Initialize `frontend/` with Vite + React 19 + TypeScript + Tailwind CSS.
+  - [ ] Create `frontend/src/styles/tokens.css` implementing the exact neo-brutalist token palette:
+    - **Ink**: `#111111`
+    - **Mint**: `#62F5AD`
+    - **Lime**: `#D9FF55`
+    - **Lavender**: `#BDA5FF`
+    - **Cream**: `#FFFDF6`
+    - **White**: `#FFFFFF`
+    - Borders: 2–3px solid `#111111`, border-radius 12–16px, offset shadows (`3px 3px 0 #111111`).
+  - [ ] Create reusable UI components: `Button`, `Card`, `Badge`, `Modal`, `PageHeader`, `StatusIndicator`.
 
-- [x] **Phase 5: ITTF Statutes 2026 Rules Knowledge Base**
-  - [x] Ingest official ITTF Statutes 2026 clean version (§2.1 through §2.15).
-  - [x] Create `data/rules/processed/ittf_rules.jsonl` with section, page, and exact statutory citations.
-  - [x] Create `data/rules/processed/rule_conflicts.jsonl` mapping arcade physics to official regulations.
-  - [x] Create `data/rules/processed/rule_qa_train.jsonl` and `rule_qa_eval.jsonl`.
-  - [x] Build `RulesRetriever` in `services/ai-orchestrator/app/retrieval/rules_retriever.py` with uncertainty fallback.
+- [ ] **Phase 3: Gesture Feature Pipeline & Synthetic Dry-Run Engine**
+  - [ ] Implement `frontend/src/features/gesture/`:
+    - `landmark-types.ts`: Normalized coordinates and landmark types.
+    - `coordinate-mapper.ts`: Calibration mapping, mirroring, clamping to `[-1, 1]`.
+    - `smoothing.ts`: OneEuroFilter and EMA filters.
+    - `calibration.ts`: Bounds validation and persistence.
+    - `gesture-controller.ts`: State machine bridging input sources (Webcam vs Synthetic vs Keyboard) to paddle position.
+    - `mediapipe-adapter.ts`: MediaPipe HandLandmarker lifecycle management.
+    - `simulated-landmarks.ts`: Offline generator producing center, left, right, high, low, noisy, and missing-frame streams.
+  - [ ] Implement unit tests in `frontend/tests/unit/`:
+    - `coordinate-mapper.test.ts`
+    - `smoothing.test.ts`
+    - `calibration.test.ts`
+    - `gesture-controller.test.ts`
 
-- [x] **Phase 6: Python ML Training & Gesture Scaffolding (`ml/`)**
-  - [x] Create `ml/` workspace with configs, data schemas, features, models, training, inference, and metrics.
-  - [x] Implement wrist-origin normalization and 126-dim temporal sliding window feature extraction.
-  - [x] Implement session-partitioned data splits to strictly prevent adjacent frame leakage.
-  - [x] Train baseline `GestureClassifierModel` on synthetic sequence fixtures; export verified checkpoint and manifest.
-  - [x] Achieve sub-millisecond CPU inference (<0.1ms p50 latency, >10,000 FPS throughput).
-  - [x] Research scaffolding for Hugging Face VideoMAE and RacketVision action recognition.
+- [ ] **Phase 4: Standalone Application Routing & Neo-Brutalist Pages**
+  - [ ] **Landing Page (`/`)**:
+    - Large mint-green hero panel with playful badges and oversized title.
+    - Primary CTA: "PLAY NOW ↗", Secondary: "TRY GESTURE CONTROL", "VIEW STATS".
+    - Interactive 3D arena table tennis preview.
+    - Athena Museum-inspired bento cards: Gesture Control, Adaptive Opponent, AI Coaching.
+    - Real technology strip and responsive footer.
+  - [ ] **Game Setup & Arena (`/play`, `/game/:matchId`)**:
+    - Mode selection (PvC, PvP), controls (Hand-tracking, Keyboard, Touch), difficulty.
+    - Three.js / R3F 3D arena: table, net, ball, paddles, scoreboard, pause/restart.
+    - Connects directly to `TableTennisEngine` without duplicating physics.
+    - Post-match modal with drill-down to AI Coach.
+  - [ ] **Gesture Lab (`/gesture-lab`)**:
+    - Dual mode: Real Webcam + Full Offline Synthetic Dry-Run.
+    - Camera permissions, landmark visualizer, palm/wrist coordinate monitors.
+    - Synthetic test scenarios: Center hold, left/right sweep, jitter noise, tracking loss.
+    - Live virtual paddle tracking hand or synthetic stream.
+    - Export test report feature.
+  - [ ] **Match Dashboard (`/dashboard`)**:
+    - Real match telemetry: rally length distributions, success/miss rates, zone heatmaps.
+    - Empty state with optional demo telemetry loader clearly labeled.
+  - [ ] **AI Coach (`/coach/:matchId`)**:
+    - Evidence-backed observations, strengths, improvement drills, ITTF rule citations.
+    - Graceful fallback when Python or Ollama is offline.
+  - [ ] **Architecture Explorer (`/architecture`)**:
+    - Live Graphify knowledge graph explorer consuming `graphify-out/graph.json`.
+    - Module filtering (`frontend/`, `server/`, `game-engine/`, `services/`, `ml/`).
+    - God node inspector and community cluster viewer.
+    - Conceptual architecture overview alongside real AST-derived graph.
 
-- [x] **Phase 7: Python FastAPI AI Orchestration with LangChain & LangGraph**
-  - [x] Standalone FastAPI service in `services/ai-orchestrator/`.
-  - [x] LangChain `ChatOllama` adapter with dynamic model routing between `gemma4:e2b` and `gemma4:e4b`.
-  - [x] 11-stage LangGraph StateGraph pipeline with typed state, retry loop, and fallback.
-  - [x] Pydantic schemas supporting snake_case and camelCase serialization.
-  - [x] Local memory checkpointer (`MemorySaver`) for ephemeral state replay without external cloud leakage.
+- [ ] **Phase 5: Backend & AI Service Integration**
+  - [ ] Create `frontend/src/services/`:
+    - `api-client.ts`: Typed client with timeout and error handling.
+    - `socket-client.ts`: Socket.IO connection management.
+    - `graphify-service.ts`: Graph data loader with local fallback.
+  - [ ] Configure `.env.example` with standard environment variables:
+    - `VITE_API_BASE_URL=http://localhost:3001`
+    - `VITE_SOCKET_URL=http://localhost:3001`
+    - `VITE_AI_API_BASE_URL=http://localhost:8000`
 
-- [x] **Phase 8: Model Lifecycle, Governance & Manifests**
-  - [x] Four-tier distinction: Downloaded Weights, Ollama Modelfiles, Datasets, and Fine-Tuned Checkpoints.
-  - [x] Formal manifests in `models/manifests/` for E2B (digest `45d11505b91d...`) and E4B (`eb2177adf764...`).
-  - [x] Training guidelines in `models/training/README.md` forbidding fabricated fine-tune claims.
-
-- [x] **Phase 9: Graphify Codebase Knowledge Graph Integration**
-  - [x] Generated AST-based code graph: 811 nodes, 1546 edges, 53 communities.
-  - [x] Exported `graphify-out/graph.json`, `graph.html`, and `GRAPH_REPORT.md`.
-  - [x] Documentation in `docs/GRAPHIFY_SETUP.md`.
-
-- [x] **Phase 10: Empirical Dual-Model Evaluation Benchmark**
-  - [x] 12 stress-test scenarios in `models/datasets/evaluation_cases.json`.
-  - [x] Executed live benchmark script `evaluate_models.py` against both local Gemma 4 models on Ollama.
-  - [x] Generated empirical results in `models/evaluations/benchmark_results.json`:
-    - E2B: 10/12 success, 100% schema valid, 83.3% grounded, 0 unsupported claims, 44.6s median latency.
-    - E4B: 10/12 success, 100% schema valid, 83.3% grounded, 0 unsupported claims, 79.6s median latency.
-
-- [x] **Phase 11: Testing, Security & Privacy Compliance**
-  - [x] 18 Python tests passing in `services/ai-orchestrator`.
-  - [x] 8 Python tests passing in `ml/tests`.
-  - [x] 20 TypeScript tests passing across `client` and `server`.
-  - [x] Zero webcam frames transmitted over network; external tracing disabled by default.
+- [ ] **Phase 6: Verification, Dry Run Execution & Documentation**
+  - [ ] Execute frontend unit tests (`npm test` in `frontend/`).
+  - [ ] Verify production build (`npm run build` in `frontend/`).
+  - [ ] Run `graphify update .` to index new frontend and game-engine modules.
+  - [ ] Generate `docs/GESTURE_TESTING.md`.
+  - [ ] Generate `docs/DRY_RUN_REPORT.md`.
+  - [ ] Generate `docs/FRONTEND.md`.
+  - [ ] Generate `scripts/graphify/README.md`.

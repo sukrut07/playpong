@@ -1,0 +1,12 @@
+{
+  "name": "playpong-game-engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Deterministic Table Tennis 3D Physics Simulation & ITTF 2026 Rule Engine",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "npx -y tsx --test tests/**/*.test.ts"
+  }
+}

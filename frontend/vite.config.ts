@@ -1,0 +1,24 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@game-engine': path.resolve(__dirname, '../game-engine/src'),
+      '@shared': path.resolve(__dirname, '../shared'),
+    },
+  },
+  server: {
+    port: 5173,
+    host: 'localhost',
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_BASE_URL || 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
+  },
+});

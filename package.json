@@ -9,14 +9,18 @@
   },
   "scripts": {
     "dev": "concurrently -n \"server,client\" -c \"cyan,magenta\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:frontend": "npm run dev --prefix frontend",
     "dev:server": "npm run dev --prefix server",
     "dev:client": "npm run dev --prefix client",
     "build": "npm run build --prefix server && npm run build --prefix client",
+    "build:frontend": "npm run build --prefix frontend",
     "test": "npm run test --prefix server && npm run test --prefix client",
+    "test:frontend": "npm run test --prefix frontend",
     "ai": "cd services/ai-orchestrator && ./run.sh",
     "test:ai": "cd services/ai-orchestrator && .venv/bin/pytest tests",
     "eval:ai": "cd services/ai-orchestrator && .venv/bin/python tests/evaluate_models.py",
     "graphify:extract": "graphify extract . --code-only",
+    "graphify:update": "graphify update .",
     "graphify:query": "graphify query"
   },
   "devDependencies": {
