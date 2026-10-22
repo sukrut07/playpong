@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Trash2, Sparkles, AlertCircle, CornerDownLeft } from 'lucide-react';
+import { Send, Bot, User, Trash2, Sparkles, AlertCircle, Image as ImageIcon, X, Camera } from 'lucide-react';
 import { MatchStats } from '@game-engine/types';
 import { modelService } from '../../services/model-service';
 import { Button } from '../ui/Button';
@@ -10,7 +10,9 @@ export interface ChatMessage {
   id: string;
   sender: 'user' | 'coach';
   text: string;
+  image?: string;
   timestamp: string;
+  isMultimodal?: boolean;
 }
 
 export interface CoachChatPanelProps {
@@ -23,26 +25,30 @@ const SUGGESTED_PROMPTS = [
   'Why did I lose this match?',
   'Analyze my return success.',
   'What should I practice next?',
+  '📸 Inspect paddle grip angle & ITTF §2.4 rules',
+  '🏓 Check my rubber condition & compliance',
   'Explain my tracking latency.',
   'Which rule checks were actually performed?',
-  'Compare my performance with my previous match.',
 ];
 
 export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
   currentMatch,
   matchHistory = [],
-  activeModelTag = 'gemma4:e2b',
+  activeModelTag = 'gemma-4-26b-a4b-it / gemma4:e2b',
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
     {
       id: 'welcome',
       sender: 'coach',
-      text: `Hello! I am your Gemma 4 tactical coach. I have reviewed Match #${currentMatch.matchId} (${currentMatch.playerScore} - ${currentMatch.opponentScore}). Ask me anything about your stroke mechanics, return consistency, or ITTF rule compliance.`,
+      text: `Hello! I am your Gemma 4 Multimodal Tactical Coach. I have analyzed Match #${currentMatch.matchId} (${currentMatch.playerScore} - ${currentMatch.opponentScore}). You can ask text questions or upload an image of your racket, grip, or table setup for multimodal visual analysis.`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [attachedImage, setAttachedImage] = useState<{ data: string; mimeType: string } | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -53,27 +59,56 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
     scrollToBottom();
   }, [messages, loading]);
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setAttachedImage({
+        data: result,
+        mimeType: file.type || 'image/jpeg',
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSend = async (questionText?: string) => {
     const q = (questionText || input).trim();
-    if (!q || loading) return;
+    if ((!q && !attachedImage) || loading) return;
 
+    const userText = q || 'Please inspect this photo of my table tennis equipment/grip with Gemma 4 vision.';
+    const userImg = attachedImage?.data;
     const userMsg: ChatMessage = {
       id: `usr_${Date.now()}`,
       sender: 'user',
-      text: q,
+      text: userText,
+      image: userImg,
+      isMultimodal: !!userImg,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
+    const imagePayload = attachedImage;
+    setAttachedImage(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
     setLoading(true);
 
     try {
-      const answer = await modelService.askQuestion(q, currentMatch, matchHistory);
+      const answer = await modelService.askQuestion(
+        userText,
+        currentMatch,
+        matchHistory,
+        imagePayload || undefined
+      );
+
       const coachMsg: ChatMessage = {
         id: `coach_${Date.now()}`,
         sender: 'coach',
         text: answer,
+        isMultimodal: !!userImg,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, coachMsg]);
@@ -81,7 +116,7 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
       const errorMsg: ChatMessage = {
         id: `err_${Date.now()}`,
         sender: 'coach',
-        text: `Unable to query AI coach: ${err.message || 'Offline'}. Check local Ollama status.`,
+        text: `Gemma 4 Multimodal Assistant error: ${err.message || 'Offline'}.`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -95,7 +130,7 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
       {
         id: `reset_${Date.now()}`,
         sender: 'coach',
-        text: `Conversation cleared. Ready for your questions on Match #${currentMatch.matchId}.`,
+        text: `Conversation cleared. Ready for your multimodal and tactical questions on Match #${currentMatch.matchId}.`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ]);
@@ -111,11 +146,14 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
           </div>
           <div>
             <div className="font-display font-black text-xs uppercase text-[#111111] flex items-center gap-1.5">
-              <span>Gemma 4 Tactical Coach</span>
+              <span>Gemma 4 Multimodal Coach</span>
               <span className="w-2 h-2 rounded-full bg-[#62F5AD] animate-pulse" />
             </div>
-            <div className="text-[10px] font-mono text-[#737373]">
-              {activeModelTag} · Local Inference
+            <div className="text-[10px] font-mono text-[#737373] flex items-center gap-1">
+              <span className="px-1 py-0.2 bg-[#D9FF55] border-[1px] border-[#111111] rounded text-[8.5px] font-bold">
+                TEXT + VISION
+              </span>
+              <span>Gemini API & Ollama</span>
             </div>
           </div>
         </div>
@@ -156,15 +194,26 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
                 <span>{isUser ? 'You' : 'Gemma 4 Coach'}</span>
                 <span>·</span>
                 <span>{m.timestamp}</span>
+                {m.isMultimodal && (
+                  <span className="px-1 py-0.2 bg-[#BDA5FF] border-[0.5px] border-[#111111] rounded text-[8px] font-bold text-[#111111]">
+                    MULTIMODAL
+                  </span>
+                )}
               </div>
               <div
-                className={`max-w-[85%] p-3 border-[2px] border-[#111111] rounded-2xl shadow-neo-sm leading-relaxed ${
+                className={`max-w-[85%] p-3 border-[2px] border-[#111111] rounded-2xl shadow-neo-sm leading-relaxed space-y-2 ${
                   isUser
                     ? 'bg-[#62F5AD] text-[#111111] rounded-tr-none'
                     : 'bg-[#FFFFFF] text-[#111111] rounded-tl-none'
                 }`}
               >
-                {m.text}
+                {/* Uploaded Image Preview in Chat */}
+                {m.image && (
+                  <div className="rounded-lg overflow-hidden border-[1.5px] border-[#111111] max-w-[200px]">
+                    <img src={m.image} alt="User attachment" className="w-full h-auto object-cover max-h-40" />
+                  </div>
+                )}
+                <div>{m.text}</div>
               </div>
             </div>
           );
@@ -174,12 +223,36 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
           <div className="flex items-start gap-2">
             <div className="p-3 bg-[#FFFFFF] border-[2px] border-[#111111] rounded-2xl rounded-tl-none shadow-neo-sm flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-[#BDA5FF] animate-spin" />
-              <span className="text-xs text-[#737373]">Gemma 4 synthesizing evidence...</span>
+              <span className="text-xs text-[#737373]">Gemma 4 analyzing multimodal evidence...</span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
+
+      {/* Image Preview before Sending */}
+      {attachedImage && (
+        <div className="px-3 py-2 bg-[#FFFDF6] border-t-[1.5px] border-[#111111]/30 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-lg border-[1.5px] border-[#111111] overflow-hidden bg-white">
+              <img src={attachedImage.data} alt="Thumbnail preview" className="w-full h-full object-cover" />
+            </div>
+            <div className="text-[10px] font-mono">
+              <span className="font-bold text-[#111111] block">Image Attached</span>
+              <span className="text-[#737373]">Ready for Gemma 4 multimodal vision analysis</span>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setAttachedImage(null);
+              if (fileInputRef.current) fileInputRef.current.value = '';
+            }}
+            className="p-1 hover:bg-[#FF5555]/10 text-[#737373] hover:text-[#FF5555] rounded"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Chat Input Bar */}
       <div className="p-3 bg-[#FFFDF6] border-t-[2px] border-[#111111]">
@@ -190,9 +263,31 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
           }}
           className="flex items-center gap-2"
         >
+          {/* Hidden File Input */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            accept="image/*"
+            className="hidden"
+          />
+
+          {/* Image Upload Trigger Button */}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            title="Attach Image (Racket grip, paddle rubber, or table setup for multimodal vision analysis)"
+            disabled={loading}
+            className={`p-2.5 rounded-xl border-[2px] border-[#111111] shadow-neo-sm transition-all hover:-translate-y-0.5 active:translate-y-0 ${
+              attachedImage ? 'bg-[#D9FF55] text-[#111111]' : 'bg-[#FFFFFF] text-[#525252] hover:text-[#111111]'
+            }`}
+          >
+            <Camera className="w-4 h-4" />
+          </button>
+
           <input
             type="text"
-            placeholder="Ask tactical question about this match..."
+            placeholder={attachedImage ? 'Ask Gemma 4 about this image...' : 'Ask tactical question or attach photo...'}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={loading}
@@ -202,7 +297,7 @@ export const CoachChatPanel: React.FC<CoachChatPanelProps> = ({
             variant="lavender"
             size="md"
             type="submit"
-            disabled={!input.trim() || loading}
+            disabled={(!input.trim() && !attachedImage) || loading}
             className="px-4"
           >
             <Send className="w-4 h-4" />

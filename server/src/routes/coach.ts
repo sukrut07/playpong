@@ -110,13 +110,13 @@ coachRouter.post('/qa', async (req: Request, res: Response) => {
   const start = Date.now();
   telemetry.requestsTotal++;
   try {
-    const { question, currentMatch, history } = req.body;
+    const { question, currentMatch, history, image } = req.body;
     if (!question || !currentMatch) {
       telemetry.requestsFailed++;
       return res.status(400).json({ error: 'Missing question or currentMatch stats' });
     }
 
-    const answer = await aiProviderManager.askQuestion(question, currentMatch, history);
+    const answer = await aiProviderManager.askQuestion(question, currentMatch, history, image);
     const duration = Date.now() - start;
     telemetry.requestsSuccess++;
     telemetry.lastDurationMs = duration;

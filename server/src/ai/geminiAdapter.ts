@@ -165,7 +165,8 @@ export class GeminiGemmaAdapter implements AICoachProvider {
   public async askAnalyticsQuestion(
     question: string,
     currentMatch: MatchStats,
-    matchHistory?: MatchStats[]
+    matchHistory?: MatchStats[],
+    image?: { data: string; mimeType: string }
   ): Promise<string> {
     if (!this.apiKey) {
       throw new Error('GEMINI_API_KEY is not configured on the server.');
@@ -176,6 +177,17 @@ export class GeminiGemmaAdapter implements AICoachProvider {
     const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
 
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.modelId}:generateContent?key=${this.apiKey}`;
+
+    const userParts: any[] = [{ text: userPrompt }];
+    if (image?.data) {
+      const cleanData = image.data.replace(/^data:[^;]+;base64,/, '');
+      userParts.push({
+        inlineData: {
+          mimeType: image.mimeType || 'image/jpeg',
+          data: cleanData,
+        },
+      });
+    }
 
     try {
       const response = await fetch(endpoint, {
@@ -188,12 +200,12 @@ export class GeminiGemmaAdapter implements AICoachProvider {
           contents: [
             {
               role: 'user',
-              parts: [{ text: userPrompt }],
+              parts: userParts,
             },
           ],
           generationConfig: {
             temperature: 0.3,
-            maxOutputTokens: 300,
+            maxOutputTokens: 350,
           },
         }),
         signal: controller.signal,
@@ -213,6 +225,15 @@ export class GeminiGemmaAdapter implements AICoachProvider {
       clearTimeout(timeout);
       throw err;
     }
+  }
+
+  public async askMultimodalQuestion(
+    question: string,
+    image: { data: string; mimeType: string },
+    currentMatch: MatchStats,
+    matchHistory?: MatchStats[]
+  ): Promise<string> {
+    return this.askAnalyticsQuestion(question, currentMatch, matchHistory, image);
   }
 
   public async explainRule(rule: GameRule): Promise<string> {
