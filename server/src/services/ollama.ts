@@ -20,7 +20,7 @@ export class OllamaService {
     this.model = model;
   }
 
-  public async checkHealth(): Promise<HealthCheckResponse['ollama']> {
+  public async checkHealth(): Promise<HealthCheckResponse['ai']> {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3000);
@@ -31,7 +31,7 @@ export class OllamaService {
       clearTimeout(timeoutId);
 
       if (!res.ok) {
-        return { available: false, model: this.model };
+        return { provider: 'ollama', available: false, model: this.model };
       }
 
       const data = (await res.json()) as { models?: Array<{ name: string; model: string }> };
@@ -41,11 +41,12 @@ export class OllamaService {
       );
 
       return {
+        provider: 'ollama',
         available: true,
         model: hasModel ? this.model : (modelList[0]?.name ?? 'none'),
       };
     } catch {
-      return { available: false, model: this.model };
+      return { provider: 'ollama', available: false, model: this.model };
     }
   }
 

@@ -19,7 +19,7 @@ test('Server health and coach endpoints respond correctly', async () => {
   const coachHealthRes = await fetch(`${baseUrl}/api/coach/health`);
   assert.strictEqual(coachHealthRes.status, 200);
   const coachHealthData = (await coachHealthRes.json()) as any;
-  assert.ok('ollama' in coachHealthData);
+  assert.ok('ai' in coachHealthData || 'ollama' in coachHealthData);
 
   // 3. Mission generation test (with actual Ollama gemma4:e2b or fallback)
   const missionRes = await fetch(`${baseUrl}/api/coach/mission`, {
@@ -68,8 +68,12 @@ test('Server health and coach endpoints respond correctly', async () => {
   });
   assert.strictEqual(summaryRes.status, 200);
   const summaryData = (await summaryRes.json()) as any;
+  console.log('Received summaryData:', JSON.stringify(summaryData, null, 2));
   assert.ok('summary' in summaryData);
   const parsedSummary = CoachSummarySchema.safeParse(summaryData.summary);
+  if (!parsedSummary.success) {
+    console.error('CoachSummary validation error:', JSON.stringify(parsedSummary.error, null, 2));
+  }
   assert.strictEqual(parsedSummary.success, true, 'Summary must conform to schema');
 
   // Cleanly close server
