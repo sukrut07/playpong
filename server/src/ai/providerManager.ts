@@ -89,6 +89,8 @@ export class AIProviderManager {
     const isWinner = stats.playerScore > stats.opponentScore;
     const applicableRule = RULE_REGISTRY.find((r) => r.ruleSet === stats.ruleProfile) || RULE_REGISTRY[0];
 
+    const zones = stats.tableZoneDistribution || stats.tableZoneHits || { left: 0, center: 0, right: 0, deep: 0, short: 0 };
+
     const observations = [
       {
         title: isWinner ? 'Winning Court Control' : 'Return Consistency Pressure',
@@ -104,9 +106,9 @@ export class AIProviderManager {
       },
       {
         title: 'Table Placement Distribution',
-        description: `Balls landed primarily in the ${stats.tableZoneDistribution.center > stats.tableZoneDistribution.left ? 'center' : 'lateral'} zones (Left: ${stats.tableZoneDistribution.left}, Center: ${stats.tableZoneDistribution.center}, Right: ${stats.tableZoneDistribution.right}).`,
+        description: `Balls landed primarily in the ${zones.center > zones.left ? 'center' : 'lateral'} zones (Left: ${zones.left}, Center: ${zones.center}, Right: ${zones.right}).`,
         metricName: 'Zone Distribution',
-        metricValue: `L:${stats.tableZoneDistribution.left} C:${stats.tableZoneDistribution.center} R:${stats.tableZoneDistribution.right}`,
+        metricValue: `L:${zones.left} C:${zones.center} R:${zones.right}`,
       },
     ];
 
