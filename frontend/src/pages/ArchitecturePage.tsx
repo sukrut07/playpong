@@ -38,7 +38,7 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onNavigate }
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-16">
+    <div className="max-w-7xl mx-auto space-y-8 pb-16">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b-[3px] border-[#111111]">
         <div className="space-y-2">

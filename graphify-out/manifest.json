@@ -12,9 +12,9 @@
     "semantic_hash": "ef3ba2a81ba19f8ea5ddf625521e96f0"
   },
   "client/src/App.tsx": {
-    "mtime": 1792662380.3663065,
-    "seen": 1792662638.710869,
-    "ast_hash": "625702e72f01044fa6efc93b06b802b6",
+    "mtime": 1792670706.2738469,
+    "seen": 1792671664.244236,
+    "ast_hash": "f4985f2ef85afdf8235fe08daabb8207",
     "semantic_hash": ""
   },
   "client/src/components/camera/WebcamOverlay.tsx": {
@@ -48,9 +48,9 @@
     "semantic_hash": "75dbe8e0ce9101c50bbdddc1719fd7c5"
   },
   "client/src/components/menus/LandingMenu.tsx": {
-    "mtime": 1792662291.9834425,
-    "seen": 1792662638.710879,
-    "ast_hash": "42f5a8e3157018fa0ba6e3c69c3c86ef",
+    "mtime": 1792670767.355285,
+    "seen": 1792671664.2443361,
+    "ast_hash": "5cefb3ed2e14263dea9b322da727ec72",
     "semantic_hash": ""
   },
   "client/src/components/menus/MatchSummaryModal.tsx": {
@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "client/src/components/menus/SettingsModal.tsx": {
-    "mtime": 1792658977.728924,
-    "seen": 1792662638.710884,
-    "ast_hash": "f8d43527b28ec21307799cd1e813401b",
+    "mtime": 1792670718.8883114,
+    "seen": 1792671664.244354,
+    "ast_hash": "2b4a668dd052bacb116e2f0fc5e4e23b",
     "semantic_hash": ""
   },
   "client/src/game/Scene.tsx": {
@@ -126,9 +126,9 @@
     "semantic_hash": ""
   },
   "client/src/types/index.ts": {
-    "mtime": 1792658977.7319567,
-    "seen": 1792662638.7109098,
-    "ast_hash": "7483cb2cc4831e40e51050a5f6643af0",
+    "mtime": 1792670693.292268,
+    "seen": 1792671664.244621,
+    "ast_hash": "b6a8e950d386225c09eaf24b489e92da",
     "semantic_hash": ""
   },
   "client/src/vision/calibration.ts": {
@@ -216,9 +216,9 @@
     "semantic_hash": "8269459b69defec499808c1339a0ff19"
   },
   "server/src/index.ts": {
-    "mtime": 1792670090.8009777,
-    "seen": 1792670122.040818,
-    "ast_hash": "90fa5614d6773efaa29eee0157a5754c",
+    "mtime": 1792670487.4958289,
+    "seen": 1792671664.246476,
+    "ast_hash": "961cc9e28ef683a971110acbadea2e39",
     "semantic_hash": ""
   },
   "server/src/routes/coach.ts": {
@@ -246,15 +246,15 @@
     "semantic_hash": ""
   },
   "client/src/components/menus/MultiplayerModal.tsx": {
-    "mtime": 1792658977.7287335,
-    "seen": 1792662638.710882,
-    "ast_hash": "4f0b182298c2168e904c13dc29de535f",
+    "mtime": 1792670473.9288461,
+    "seen": 1792671664.244354,
+    "ast_hash": "89f58262f035f4cf4fa6cd2c364da839",
     "semantic_hash": ""
   },
   "client/src/components/views/AnalyticsStudioView.tsx": {
-    "mtime": 1792658977.729175,
-    "seen": 1792662638.710888,
-    "ast_hash": "7de20cf2014f1677d83e95a8c55c959c",
+    "mtime": 1792670733.421269,
+    "seen": 1792671664.244374,
+    "ast_hash": "e62da4c0d996cc3ef4ffc43ef2e49ae6",
     "semantic_hash": ""
   },
   "client/src/components/views/ArchitectureExplorerView.tsx": {
@@ -312,9 +312,9 @@
     "semantic_hash": ""
   },
   "server/src/ai/promptTemplates.ts": {
-    "mtime": 1792658977.7378502,
-    "seen": 1792662638.71094,
-    "ast_hash": "bf8cf6770e7cb5b01588f186e95d33b9",
+    "mtime": 1792670601.5724983,
+    "seen": 1792671664.2463481,
+    "ast_hash": "efc79d4a11c7ccceadaa24aa0c86d3cd",
     "semantic_hash": ""
   },
   "server/src/ai/provider.test.ts": {
@@ -330,9 +330,9 @@
     "semantic_hash": ""
   },
   "server/src/ai/providerManager.ts": {
-    "mtime": 1792661796.7274399,
-    "seen": 1792662638.7109451,
-    "ast_hash": "31113cfeaedfcddc2a45f955de075531",
+    "mtime": 1792670613.9507015,
+    "seen": 1792671664.24638,
+    "ast_hash": "fd5661491acd4d88ba9d1aae41adb15d",
     "semantic_hash": ""
   },
   "server/src/ai/schemas.ts": {
@@ -480,9 +480,9 @@
     "semantic_hash": ""
   },
   "server/src/ai/orchestratorAdapter.ts": {
-    "mtime": 1792662455.6844947,
-    "seen": 1792662638.710939,
-    "ast_hash": "8481e0cd61b58034790bda28ed14c32c",
+    "mtime": 1792670456.2063692,
+    "seen": 1792671664.2463481,
+    "ast_hash": "56f93d88a5507a9e72ebb087f8f73682",
     "semantic_hash": ""
   },
   "services/ai-orchestrator/app/__init__.py": {
@@ -1062,9 +1062,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/ArchitecturePage.tsx": {
-    "mtime": 1792669630.3844683,
-    "seen": 1792670122.039937,
-    "ast_hash": "c28f33adbe5c931c8a60688c1ad2a35d",
+    "mtime": 1792671632.5568547,
+    "seen": 1792671664.245493,
+    "ast_hash": "15ce77524e9c299246ba21d9c2410934",
     "semantic_hash": ""
   },
   "frontend/src/pages/CoachPage.tsx": {
@@ -1122,9 +1122,9 @@
     "semantic_hash": ""
   },
   "frontend/src/services/socket-client.ts": {
-    "mtime": 1792666849.7894125,
-    "seen": 1792667902.363662,
-    "ast_hash": "f4fab2c9540bee6f1714b3c3991c7a43",
+    "mtime": 1792670465.8248973,
+    "seen": 1792671664.245642,
+    "ast_hash": "f3dd4717b658247a4c532cb48344dcc8",
     "semantic_hash": ""
   },
   "frontend/src/services/storage.ts": {
@@ -1236,9 +1236,9 @@
     "semantic_hash": ""
   },
   "frontend/public/graphify/GRAPH_REPORT.md": {
-    "mtime": 1792667910.5755575,
-    "seen": 1792670122.0417202,
-    "ast_hash": "1670acbfaee0c74c86a539b210b8072f",
+    "mtime": 1792670126.3414729,
+    "seen": 1792671664.247316,
+    "ast_hash": "c3cf7ab1dc85df3df9e343017aa230dd",
     "semantic_hash": ""
   },
   "game-engine/README.md": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/architecture/ModularSystemGraph.tsx": {
-    "mtime": 1792669428.4672093,
-    "seen": 1792670122.039517,
-    "ast_hash": "777232049bfb68c8cc89ceb6e09fe189",
+    "mtime": 1792671609.735398,
+    "seen": 1792671664.244896,
+    "ast_hash": "479e53ac7dae4bf316546094c0201fa9",
     "semantic_hash": ""
   },
   "frontend/src/components/charts/RallyBucketChart.tsx": {
@@ -1317,6 +1317,18 @@
     "mtime": 1792667980.5625978,
     "seen": 1792670122.041842,
     "ast_hash": "76e73fec0d76d8036be600c6e6e3847b",
+    "semantic_hash": ""
+  },
+  "services/ai-orchestrator/main.py": {
+    "mtime": 1792670497.3605056,
+    "seen": 1792671664.246787,
+    "ast_hash": "0c0e01eb8ac8d46ba0f9302eed9d1811",
+    "semantic_hash": ""
+  },
+  "vercel.json": {
+    "mtime": 1792670788.53736,
+    "seen": 1792671664.2469602,
+    "ast_hash": "32d99b70bb153be2407623529dec7ff1",
     "semantic_hash": ""
   }
 }
