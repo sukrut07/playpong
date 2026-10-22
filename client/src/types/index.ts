@@ -9,7 +9,7 @@ export interface GameSettings {
   smoothingFactor: number; // 0.1 to 0.9 (EMA alpha or 1€ filter cutoff)
   difficulty: 'easy' | 'medium' | 'hard';
   ruleProfile: RuleProfile;
-  aiProvider: 'gemini' | 'ollama';
+  aiProvider: 'gemini' | 'ollama' | 'fallback';
   soundEnabled: boolean;
   soundVolume: number;
   aiCoachingEnabled: boolean;

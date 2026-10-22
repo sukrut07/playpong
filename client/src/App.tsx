@@ -119,7 +119,7 @@ export const App: React.FC = () => {
   // Gemma 4 Provider & Health state
   const [aiStatus, setAiStatus] = useState<{
     available: boolean;
-    provider: 'gemini' | 'ollama';
+    provider: 'gemini' | 'ollama' | 'fallback';
     model: string;
     hasKey?: boolean;
     error?: string;
