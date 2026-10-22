@@ -13,6 +13,8 @@ import { saveMatchRecord } from '../services/storage';
 import { GestureController } from '../features/gesture/gesture-controller';
 import { MediaPipeVisionAdapter } from '../features/gesture/mediapipe-adapter';
 import { loadCalibration } from '../features/gesture/calibration';
+import { HandLandmarks } from '../features/gesture/landmark-types';
+import { CameraMiniPreview } from '../components/game/CameraMiniPreview';
 
 export interface GamePageProps {
   onNavigate: (path: string) => void;
@@ -53,6 +55,9 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
   const gestureControllerRef = useRef<GestureController | null>(null);
   const [trackingActive, setTrackingActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
+  const [currentLandmarks, setCurrentLandmarks] = useState<HandLandmarks | undefined>(undefined);
+  const [currentCoords, setCurrentCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [cameraLatency, setCameraLatency] = useState<number>(16);
 
   // Initialize engine event listeners
   useEffect(() => {
@@ -199,6 +204,10 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
             await visionAdapterRef.current.startCamera(videoRef.current, ({ landmarks, timestampMs, latencyMs }) => {
               const state = gestureControllerRef.current!.processFrame(landmarks, timestampMs, latencyMs);
               setTrackingActive(state.tracking);
+              if (landmarks) setCurrentLandmarks(landmarks);
+              setCurrentCoords(state.smoothedCoordinates);
+              if (latencyMs) setCameraLatency(latencyMs);
+
               if (state.tracking) {
                 playerInputRef.current = {
                   x: state.smoothedCoordinates.x,
@@ -430,16 +439,28 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
   // -------------------------------------------------------------------
   return (
     <div className="relative w-full h-[calc(100vh-4.5rem)] overflow-hidden bg-[#161616]">
-      {/* Hidden video element for MediaPipe stream */}
-      <video
-        ref={videoRef}
-        className="hidden"
-        playsInline
-        muted
-      />
-
       {/* 3D WebGL Arena Canvas */}
       <Scene engine={engine} playerInputRef={playerInputRef} />
+
+      {/* Floating Bottom-Right Camera Mini-Preview */}
+      <CameraMiniPreview
+        videoRef={videoRef}
+        landmarks={currentLandmarks}
+        coordinates={currentCoords}
+        tracking={trackingActive}
+        latencyMs={cameraLatency}
+        controllerMode={controllerMode}
+        onStopCamera={() => {
+          if (visionAdapterRef.current) {
+            visionAdapterRef.current.stopCamera();
+          }
+          setTrackingActive(false);
+          setControllerMode('keyboard');
+        }}
+        onStartCamera={() => {
+          setControllerMode('gesture');
+        }}
+      />
 
       {/* Neo-Brutalist Scoreboard HUD */}
       <Scoreboard

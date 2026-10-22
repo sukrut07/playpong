@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Network, FileText, Layers, GitBranch, Terminal, RefreshCw, Cpu, Box, CheckCircle2 } from 'lucide-react';
 import { GraphifyViewer } from '../components/architecture/GraphifyViewer';
+import { ModularSystemGraph } from '../components/architecture/ModularSystemGraph';
 import { graphifyService, GraphifyData } from '../services/graphify-service';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
@@ -14,7 +15,7 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onNavigate }
   const [graphData, setGraphData] = useState<GraphifyData | null>(null);
   const [report, setReport] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'graph' | 'conceptual' | 'report'>('graph');
+  const [activeTab, setActiveTab] = useState<'modular' | 'ast' | 'report'>('modular');
 
   const loadData = async () => {
     setLoading(true);
@@ -69,24 +70,24 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onNavigate }
       {/* Tabs */}
       <div className="flex items-center gap-2 border-b-[2px] border-[#111111]">
         <button
-          onClick={() => setActiveTab('graph')}
+          onClick={() => setActiveTab('modular')}
           className={`px-4 py-2.5 font-display font-black text-xs uppercase tracking-wider border-b-[3px] -mb-[2.5px] transition-all ${
-            activeTab === 'graph'
+            activeTab === 'modular'
               ? 'border-[#111111] text-[#111111] bg-[#FFFFFF] rounded-t-xl'
               : 'border-transparent text-[#737373] hover:text-[#111111]'
           }`}
         >
-          AST Knowledge Graph
+          System Architecture (Connected Graph)
         </button>
         <button
-          onClick={() => setActiveTab('conceptual')}
+          onClick={() => setActiveTab('ast')}
           className={`px-4 py-2.5 font-display font-black text-xs uppercase tracking-wider border-b-[3px] -mb-[2.5px] transition-all ${
-            activeTab === 'conceptual'
+            activeTab === 'ast'
               ? 'border-[#111111] text-[#111111] bg-[#FFFFFF] rounded-t-xl'
               : 'border-transparent text-[#737373] hover:text-[#111111]'
           }`}
         >
-          Conceptual System Architecture
+          Graphify AST Graph ({graphData?.nodes?.length || 1441} Nodes)
         </button>
         <button
           onClick={() => setActiveTab('report')}
@@ -103,11 +104,12 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onNavigate }
       {loading ? (
         <Card variant="cream" className="py-16 text-center space-y-3 font-mono text-xs">
           <div className="w-8 h-8 border-4 border-[#111111] border-t-transparent rounded-full animate-spin mx-auto" />
-          <div className="font-bold text-[#111111]">Loading Graphify knowledge graph...</div>
+          <div className="font-bold text-[#111111]">Loading codebase architecture & Graphify knowledge graph...</div>
         </Card>
-      ) : activeTab === 'graph' && graphData ? (
+      ) : activeTab === 'modular' ? (
+        <ModularSystemGraph />
+      ) : activeTab === 'ast' && graphData ? (
         <GraphifyViewer graphData={graphData} />
-      ) : activeTab === 'conceptual' ? (
         /* Conceptual System Overview */
         <div className="space-y-6">
           <Card variant="cream" className="p-6 space-y-4">
