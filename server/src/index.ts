@@ -13,7 +13,11 @@ dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '../../..');
+const rootDir = fs.existsSync(path.resolve(process.cwd(), 'graphify-out'))
+  ? process.cwd()
+  : (fs.existsSync(path.resolve(__dirname, '../../graphify-out'))
+      ? path.resolve(__dirname, '../..')
+      : path.resolve(__dirname, '../../..'));
 
 const app = express();
 const httpServer = createServer(app);
