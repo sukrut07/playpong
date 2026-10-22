@@ -7,6 +7,20 @@ import { MissionSchema } from '../coach/schemas.js';
 
 export const coachRouter = Router();
 
+// Runtime telemetry metrics store
+const telemetry = {
+  requestsTotal: 0,
+  requestsSuccess: 0,
+  requestsFailed: 0,
+  fallbackCount: 0,
+  durations: [] as number[],
+  lastDurationMs: 0,
+  inputTokens: 0,
+  outputTokens: 0,
+  cacheHitRate: 0,
+  retries: 0,
+};
+
 // Health check endpoint
 coachRouter.get('/health', async (_req: Request, res: Response) => {
   const health = await aiProviderManager.getHealth();
@@ -14,6 +28,31 @@ coachRouter.get('/health', async (_req: Request, res: Response) => {
     status: health.available ? 'ok' : 'degraded',
     ai: health,
     timestamp: Date.now(),
+  });
+});
+
+// Model Runtime & API Usage telemetry endpoint
+coachRouter.get('/usage', async (_req: Request, res: Response) => {
+  const health = await aiProviderManager.getHealth();
+  const durations = telemetry.durations;
+  const avg = durations.length ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length) : 0;
+  const sorted = [...durations].sort((a, b) => a - b);
+  const p95 = sorted.length ? sorted[Math.floor(sorted.length * 0.95)] : 0;
+
+  res.json({
+    modelTag: health.model || 'gemma-4-26b-a4b-it',
+    runtimeStatus: health.available ? 'online' : 'degraded',
+    requestsTotal: telemetry.requestsTotal,
+    requestsSuccess: telemetry.requestsSuccess,
+    requestsFailed: telemetry.requestsFailed,
+    fallbackCount: telemetry.fallbackCount,
+    averageLatencyMs: avg,
+    p95LatencyMs: p95,
+    lastDurationMs: telemetry.lastDurationMs,
+    inputTokens: telemetry.inputTokens,
+    outputTokens: telemetry.outputTokens,
+    cacheHitRate: telemetry.cacheHitRate,
+    retries: telemetry.retries,
   });
 });
 
@@ -29,18 +68,38 @@ coachRouter.post('/provider', (req: Request, res: Response) => {
 
 // Primary Gemma 4 Evidence-Grounded Coaching Report
 coachRouter.post('/report', async (req: Request, res: Response) => {
+  const start = Date.now();
+  telemetry.requestsTotal++;
   try {
     const stats: MatchStats = req.body?.stats;
     if (!stats || typeof stats.playerScore !== 'number') {
+      telemetry.requestsFailed++;
       return res.status(400).json({ error: 'Missing or invalid match stats payload' });
     }
 
     const report = await aiProviderManager.generateReport(stats);
+    const duration = Date.now() - start;
+    telemetry.requestsSuccess++;
+    telemetry.lastDurationMs = duration;
+    telemetry.durations.push(duration);
+    telemetry.inputTokens += Math.round(JSON.stringify(stats).length / 4);
+    telemetry.outputTokens += Math.round(JSON.stringify(report).length / 4);
+    if (report.evidence_status === 'SYNTHETIC_STATISTICAL_FALLBACK' || report.limitations?.some(l => l.includes('offline'))) {
+      telemetry.fallbackCount++;
+    }
+
     return res.json({
       status: 'ok',
       report,
+      telemetry: {
+        durationMs: duration,
+        model: report.model_id || 'gemma-4',
+        provider: report.providerInfo?.provider || 'fallback',
+      },
     });
   } catch (err: any) {
+    telemetry.requestsFailed++;
+    telemetry.fallbackCount++;
     console.error('[CoachRouter] Error generating coaching report:', err);
     return res.status(500).json({ error: err.message || 'Failed to generate coaching report' });
   }
@@ -48,15 +107,32 @@ coachRouter.post('/report', async (req: Request, res: Response) => {
 
 // Natural-Language Analytics Assistant (Q&A)
 coachRouter.post('/qa', async (req: Request, res: Response) => {
+  const start = Date.now();
+  telemetry.requestsTotal++;
   try {
     const { question, currentMatch, history } = req.body;
     if (!question || !currentMatch) {
+      telemetry.requestsFailed++;
       return res.status(400).json({ error: 'Missing question or currentMatch stats' });
     }
 
     const answer = await aiProviderManager.askQuestion(question, currentMatch, history);
-    return res.json({ status: 'ok', answer });
+    const duration = Date.now() - start;
+    telemetry.requestsSuccess++;
+    telemetry.lastDurationMs = duration;
+    telemetry.durations.push(duration);
+    telemetry.inputTokens += Math.round((question.length + JSON.stringify(currentMatch).length) / 4);
+    telemetry.outputTokens += Math.round(answer.length / 4);
+
+    return res.json({
+      status: 'ok',
+      answer,
+      telemetry: {
+        durationMs: duration,
+      },
+    });
   } catch (err: any) {
+    telemetry.requestsFailed++;
     console.error('[CoachRouter] Error in QA assistant:', err);
     return res.status(500).json({ error: err.message || 'Failed to process question' });
   }
