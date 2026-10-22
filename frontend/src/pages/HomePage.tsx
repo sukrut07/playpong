@@ -53,7 +53,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <Button
               variant="white"
               size="lg"
-              onClick={() => onNavigate('/gesture-lab')}
+              onClick={() => onNavigate('/game')}
               className="text-base"
             >
               <Hand className="w-5 h-5" />

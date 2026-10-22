@@ -59,6 +59,20 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
   const [currentCoords, setCurrentCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [cameraLatency, setCameraLatency] = useState<number>(16);
 
+  // Sync gameState and start match immediately if entering direct play mode (e.g. from Try Gesture Control)
+  useEffect(() => {
+    setGameState(initialMode);
+    if (initialMode === 'playing') {
+      engine.resetMatch();
+      setPlayerScore(0);
+      setOpponentScore(0);
+      setRallyCount(0);
+      setLongestRally(0);
+      setMatchWinner(null);
+      setIsPaused(false);
+    }
+  }, [initialMode, engine]);
+
   // Initialize engine event listeners
   useEffect(() => {
     engine.setDifficulty(difficulty);
