@@ -2,15 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-cream: #FAF6EB;
+  --text-dark: #121212;
+  --border-dark: #121212;
+  --neo-lime: #CCFF00;
+  --neo-lavender: #E4DCFF;
+  --neo-purple: #6D28D9;
+  --neo-peach: #FF6B4A;
+  --neo-yellow: #FFD027;
+  --neo-cyan: #00F0FF;
+}
+
 @layer base {
   body {
-    background-color: #070b19;
-    color: #e2e8f0;
+    background-color: var(--bg-cream);
+    color: var(--text-dark);
     font-family: 'Inter', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, .font-display {
     font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
 
   .font-mono {
@@ -18,51 +32,152 @@
   }
 }
 
-/* Glassmorphism utilities */
-.glass-panel {
-  background: rgba(13, 21, 44, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 242, 254, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+/* -------------------------------------------------------------------
+   NEO-BRUTALIST ARCADE DESIGN SYSTEM
+   ------------------------------------------------------------------- */
+
+.neo-box {
+  background-color: #ffffff;
+  border: 2.5px solid #121212;
+  box-shadow: 4px 4px 0px #121212;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-.glass-panel-accent {
-  background: rgba(19, 30, 61, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 242, 254, 0.35);
-  box-shadow: 0 0 24px rgba(0, 242, 254, 0.15), 0 8px 32px rgba(0, 0, 0, 0.5);
+.neo-box-sm {
+  background-color: #ffffff;
+  border: 2px solid #121212;
+  box-shadow: 2.5px 2.5px 0px #121212;
 }
 
-.glow-cyan {
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+.neo-box-lg {
+  background-color: #ffffff;
+  border: 3px solid #121212;
+  box-shadow: 6px 6px 0px #121212;
 }
 
-.glow-orange {
-  box-shadow: 0 0 20px rgba(255, 94, 54, 0.4);
+.neo-box-dark {
+  background-color: #1a1a24;
+  color: #f8fafc;
+  border: 2.5px solid #121212;
+  box-shadow: 4px 4px 0px #121212;
 }
 
-.glow-text-cyan {
-  text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
+/* Neo-Brutalist Buttons */
+.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  border: 2.5px solid #121212;
+  box-shadow: 3.5px 3.5px 0px #121212;
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
 }
 
-.glow-text-orange {
-  text-shadow: 0 0 12px rgba(255, 94, 54, 0.6);
+.neo-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px #121212;
 }
 
-/* Custom scrollbar */
+.neo-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1.5px 1.5px 0px #121212;
+}
+
+.neo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 2px 2px 0px #121212;
+}
+
+/* Preset button color schemes */
+.neo-btn-lime {
+  background-color: var(--neo-lime);
+  color: #121212;
+}
+.neo-btn-lime:hover {
+  background-color: #d8ff33;
+}
+
+.neo-btn-peach {
+  background-color: var(--neo-peach);
+  color: #ffffff;
+}
+.neo-btn-peach:hover {
+  background-color: #ff8066;
+}
+
+.neo-btn-lavender {
+  background-color: var(--neo-lavender);
+  color: #121212;
+}
+.neo-btn-lavender:hover {
+  background-color: #eee8ff;
+}
+
+.neo-btn-yellow {
+  background-color: var(--neo-yellow);
+  color: #121212;
+}
+
+.neo-btn-white {
+  background-color: #ffffff;
+  color: #121212;
+}
+.neo-btn-white:hover {
+  background-color: #f8f8f8;
+}
+
+/* Badges & Tags */
+.neo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 2px solid #121212;
+  box-shadow: 2px 2px 0px #121212;
+}
+
+.neo-pill {
+  border-radius: 9999px;
+  border: 2px solid #121212;
+  box-shadow: 2.5px 2.5px 0px #121212;
+}
+
+/* Halftone/Grid Backgrounds */
+.bg-arcade-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(18, 18, 18, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.06) 1px, transparent 1px);
+}
+
+.bg-arcade-dots {
+  background-image: radial-gradient(#121212 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0;
+}
+
+/* Custom Scrollbar for Neo-Brutalist Theme */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #070b19;
+  background: var(--bg-cream);
+  border-left: 2px solid #121212;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f2e5a;
-  border-radius: 3px;
+  background: #121212;
+  border: 1px solid var(--neo-lime);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00f2fe;
+  background: var(--neo-peach);
 }
