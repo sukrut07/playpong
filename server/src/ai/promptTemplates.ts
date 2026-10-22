@@ -46,7 +46,7 @@ CRITICAL CONSTRAINTS:
 - Average Rally Length: ${avgRallyStr}
 - Median Rally Length: ${medianRallyStr}
 - Average Reaction Time: ${avgReactionStr}
-- Table Landing Distribution: Left=${stats.tableZoneDistribution.left}, Center=${stats.tableZoneDistribution.center}, Right=${stats.tableZoneDistribution.right}, Deep=${stats.tableZoneDistribution.deep}, Short=${stats.tableZoneDistribution.short}
+- Table Landing Distribution: Left=${zones.left}, Center=${zones.center}, Right=${zones.right}, Deep=${zones.deep}, Short=${zones.short}
 - Webcam Tracking Availability: ${trackingAvailStr}
 - Controller Input Mode: ${stats.controllerMode}
 - Difficulty Level: ${stats.difficulty}
@@ -122,6 +122,9 @@ Base your response entirely on the provided telemetry records.
 Distinguish correlation from causation. If sample size is insufficient, explicitly state that limitation.
 Keep responses concise, insightful, and professional (under 150 words).`;
 
+  const queryZones = currentMatch.tableZoneDistribution || currentMatch.tableZoneHits || { left: 0, center: 0, right: 0, deep: 0, short: 0 };
+  const queryTracking = currentMatch.trackingAvailabilityPercentage ?? currentMatch.trackingStabilityPercentage;
+
   const userPrompt = `USER QUESTION: "${question}"
 
 CURRENT MATCH TELEMETRY:
@@ -129,8 +132,8 @@ CURRENT MATCH TELEMETRY:
 - Return Success Rate: ${formatMetricPercentage(currentMatch.returnSuccessRate)} (${currentMatch.successfulReturns}/${currentMatch.eligibleReturnAttempts})
 - Average Rally Length: ${formatMetricNumber(currentMatch.averageRallyLength, ' returns')} (Longest: ${currentMatch.longestRally})
 - Reaction Time: ${currentMatch.averageReactionTimeMs ? Math.round(currentMatch.averageReactionTimeMs) + 'ms' : 'N/A'}
-- Table Placement: Left=${currentMatch.tableZoneDistribution.left}, Center=${currentMatch.tableZoneDistribution.center}, Right=${currentMatch.tableZoneDistribution.right}
-- Hand Tracking Availability: ${currentMatch.trackingAvailabilityPercentage ?? currentMatch.trackingStabilityPercentage}%
+- Table Placement: Left=${queryZones.left}, Center=${queryZones.center}, Right=${queryZones.right}
+- Hand Tracking Availability: ${queryTracking !== undefined ? `${queryTracking}%` : 'Not recorded'}
 - Controller: ${currentMatch.controllerMode}
 - Difficulty: ${currentMatch.difficulty}
 - Rule Profile: ${currentMatch.ruleProfile}
