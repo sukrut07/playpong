@@ -6,13 +6,15 @@ import { Table } from './entities/Table';
 import { Ball } from './entities/Ball';
 import { Paddle } from './entities/Paddle';
 import { Arena } from './entities/Arena';
+import { PlayerAssistCue } from './entities/PlayerAssistCue';
 
 interface SceneProps {
   engine: TableTennisEngine;
   playerInputRef: React.MutableRefObject<{ x: number; y: number; swing: boolean }>;
+  playerAssistanceEnabled?: boolean;
 }
 
-const GameLoop: React.FC<SceneProps> = ({ engine, playerInputRef }) => {
+const GameLoop: React.FC<SceneProps> = ({ engine, playerInputRef, playerAssistanceEnabled = false }) => {
   const ballRef = useRef<BallState>(engine.ball);
   const playerPaddleRef = useRef<PaddleState>(engine.playerPaddle);
   const opponentPaddleRef = useRef<PaddleState>(engine.opponentPaddle);
@@ -35,11 +37,12 @@ const GameLoop: React.FC<SceneProps> = ({ engine, playerInputRef }) => {
       <Ball ballRef={ballRef} />
       <Paddle paddleRef={playerPaddleRef} isOpponent={false} />
       <Paddle paddleRef={opponentPaddleRef} isOpponent={true} />
+      <PlayerAssistCue engine={engine} enabled={playerAssistanceEnabled} />
     </>
   );
 };
 
-export const Scene: React.FC<SceneProps> = ({ engine, playerInputRef }) => {
+export const Scene: React.FC<SceneProps> = ({ engine, playerInputRef, playerAssistanceEnabled = false }) => {
   return (
     <div className="w-full h-full absolute inset-0">
       <Canvas
@@ -57,7 +60,11 @@ export const Scene: React.FC<SceneProps> = ({ engine, playerInputRef }) => {
           toneMappingExposure: 1.1,
         }}
       >
-        <GameLoop engine={engine} playerInputRef={playerInputRef} />
+        <GameLoop
+          engine={engine}
+          playerInputRef={playerInputRef}
+          playerAssistanceEnabled={playerAssistanceEnabled}
+        />
       </Canvas>
     </div>
   );

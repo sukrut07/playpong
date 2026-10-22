@@ -17,6 +17,7 @@ export interface GameSettings {
   activeCameraId?: string;
   keyboardFallback: boolean;
   reducedMotion: boolean;
+  playerAssistance: boolean;
 }
 
 export interface BallPhysicsState {

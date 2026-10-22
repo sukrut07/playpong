@@ -341,7 +341,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
 
             {/* Checkboxes row */}
-            <div className="grid grid-cols-2 gap-3 pt-2 text-xs font-mono">
+            <div className="grid grid-cols-3 gap-3 pt-2 text-xs font-mono">
+              <label className="flex items-center space-x-2 cursor-pointer p-2 border-[1.5px] border-[#121212] bg-[#FAF6EB]">
+                <input
+                  type="checkbox"
+                  checked={settings.playerAssistance}
+                  onChange={(e) => update({ playerAssistance: e.target.checked })}
+                  className="accent-[#121212] w-4 h-4 rounded cursor-pointer"
+                />
+                <span>Player Assist (3D Cue)</span>
+              </label>
+
               <label className="flex items-center space-x-2 cursor-pointer p-2 border-[1.5px] border-[#121212] bg-[#FAF6EB]">
                 <input
                   type="checkbox"
@@ -349,7 +359,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   onChange={(e) => update({ reducedMotion: e.target.checked })}
                   className="accent-[#121212] w-4 h-4 rounded cursor-pointer"
                 />
-                <span>Reduced Motion Mode</span>
+                <span>Reduced Motion</span>
               </label>
 
               <label className="flex items-center space-x-2 cursor-pointer p-2 border-[1.5px] border-[#121212] bg-[#FAF6EB]">
@@ -359,7 +369,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   onChange={(e) => update({ keyboardFallback: e.target.checked })}
                   className="accent-[#121212] w-4 h-4 rounded cursor-pointer"
                 />
-                <span>Keyboard [WASD] Fallback</span>
+                <span>[WASD] Fallback</span>
               </label>
             </div>
           </div>

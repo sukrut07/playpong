@@ -12,9 +12,9 @@
     "semantic_hash": "ef3ba2a81ba19f8ea5ddf625521e96f0"
   },
   "client/src/App.tsx": {
-    "mtime": 1792657117.8184843,
-    "seen": 1792657443.192626,
-    "ast_hash": "59463835936ee8f5fba64f473e586cf9",
+    "mtime": 1792658632.996968,
+    "seen": 1792658657.813935,
+    "ast_hash": "5662f3fed3fe614fc7797079b9a3b9fb",
     "semantic_hash": ""
   },
   "client/src/components/camera/WebcamOverlay.tsx": {
@@ -60,16 +60,16 @@
     "semantic_hash": ""
   },
   "client/src/components/menus/SettingsModal.tsx": {
-    "mtime": 1792656988.6673765,
-    "seen": 1792657443.192632,
-    "ast_hash": "9e4aa132ec2704357c071a95a456d777",
+    "mtime": 1792658523.5587733,
+    "seen": 1792658657.813942,
+    "ast_hash": "f8d43527b28ec21307799cd1e813401b",
     "semantic_hash": ""
   },
   "client/src/game/Scene.tsx": {
-    "mtime": 1792607017.4295247,
-    "seen": 1792607484.238451,
-    "ast_hash": "77e07b99a05a1eab5d3e348c91a8c3a8",
-    "semantic_hash": "77e07b99a05a1eab5d3e348c91a8c3a8"
+    "mtime": 1792658451.7463536,
+    "seen": 1792658657.813945,
+    "ast_hash": "6fb55e5f5e1c28e2be9cdd5beba5c15d",
+    "semantic_hash": ""
   },
   "client/src/game/entities/Arena.tsx": {
     "mtime": 1792607006.6767638,
@@ -96,9 +96,9 @@
     "semantic_hash": "a57af517417ca7d18219db30eb787899"
   },
   "client/src/game/physics/tableTennisEngine.ts": {
-    "mtime": 1792657297.627845,
-    "seen": 1792657443.1926389,
-    "ast_hash": "b68ed11c8327bf7e2349964fcf22d4d5",
+    "mtime": 1792658435.7541263,
+    "seen": 1792658657.8139489,
+    "ast_hash": "c1a06fdc11de6a1ec9178906fa5628f9",
     "semantic_hash": ""
   },
   "client/src/main.tsx": {
@@ -126,9 +126,9 @@
     "semantic_hash": ""
   },
   "client/src/types/index.ts": {
-    "mtime": 1792656005.0460596,
-    "seen": 1792657443.192641,
-    "ast_hash": "9224d5a00f9c05eb836cef46ddc5e161",
+    "mtime": 1792658481.2951598,
+    "seen": 1792658657.813952,
+    "ast_hash": "7483cb2cc4831e40e51050a5f6643af0",
     "semantic_hash": ""
   },
   "client/src/vision/calibration.ts": {
@@ -240,9 +240,9 @@
     "semantic_hash": "f92d0024fa02955221a4547ca16c1198"
   },
   "shared/types.ts": {
-    "mtime": 1792657247.6909022,
-    "seen": 1792657443.192659,
-    "ast_hash": "27b995d8b553494f46243dc1875cdf36",
+    "mtime": 1792658464.0178444,
+    "seen": 1792658657.8139699,
+    "ast_hash": "af1a6a01e981b2dbad63150cb8c05971",
     "semantic_hash": ""
   },
   "client/src/components/menus/MultiplayerModal.tsx": {
@@ -360,9 +360,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1792608266.444778,
-    "seen": 1792657443.1926599,
-    "ast_hash": "f870fb8fc60d057ce0043c76d8d9f946",
+    "mtime": 1792657475.8707733,
+    "seen": 1792658657.813971,
+    "ast_hash": "9745271630a46b7b5995c6e89aa57b82",
     "semantic_hash": ""
   },
   "client/index.html": {
@@ -441,6 +441,12 @@
     "mtime": 1792655856.365049,
     "seen": 1792657443.192666,
     "ast_hash": "97de4d8426a8a8f1b8cc30ccccc793bb",
+    "semantic_hash": ""
+  },
+  "client/src/game/entities/PlayerAssistCue.tsx": {
+    "mtime": 1792658420.8241277,
+    "seen": 1792658657.813948,
+    "ast_hash": "dbba0511207bb024d8fba9e9d531903b",
     "semantic_hash": ""
   }
 }

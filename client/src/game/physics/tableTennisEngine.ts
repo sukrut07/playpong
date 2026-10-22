@@ -632,5 +632,44 @@ export class TableTennisEngine {
       this.emit('game_resumed');
     }
   }
+
+  public getPlayerAssistancePrediction(): {
+    active: boolean;
+    targetX: number;
+    targetY: number;
+    targetZ: number;
+    timeToArrival: number;
+    timingCue: 'EARLY' | 'READY' | 'LATE' | 'NONE';
+  } {
+    if (this.rallyState !== 'RALLY' || this.ball.vz <= 0) {
+      return { active: false, targetX: 0, targetY: 0.25, targetZ: this.playerPaddle.z, timeToArrival: 0, timingCue: 'NONE' };
+    }
+    const timeToIntercept = (this.playerPaddle.z - this.ball.z) / this.ball.vz;
+    if (timeToIntercept <= 0 || timeToIntercept > 2.5) {
+      return { active: false, targetX: 0, targetY: 0.25, targetZ: this.playerPaddle.z, timeToArrival: 0, timingCue: 'NONE' };
+    }
+    const predX = Math.max(
+      -this.TABLE_HALF_WIDTH * 1.15,
+      Math.min(this.TABLE_HALF_WIDTH * 1.15, this.ball.x + this.ball.vx * timeToIntercept)
+    );
+    const predY = Math.max(
+      0.08,
+      Math.min(0.65, this.ball.y + this.ball.vy * timeToIntercept + 0.5 * this.GRAVITY * timeToIntercept * timeToIntercept)
+    );
+
+    let timingCue: 'EARLY' | 'READY' | 'LATE' | 'NONE' = 'READY';
+    if (timeToIntercept > 0.45) timingCue = 'EARLY';
+    else if (timeToIntercept < 0.12) timingCue = 'LATE';
+
+    return {
+      active: true,
+      targetX: predX,
+      targetY: predY,
+      targetZ: this.playerPaddle.z,
+      timeToArrival: timeToIntercept,
+      timingCue,
+    };
+  }
 }
+
 

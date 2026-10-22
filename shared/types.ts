@@ -110,6 +110,7 @@ export interface MatchStats {
   missionsCompleted: number;
   difficulty: GameDifficulty;
   controllerMode: 'gesture' | 'keyboard';
+  assisted?: boolean; // Phase 6: Human assistance layer enabled
 }
 
 // ---------------------------------------------------------------------

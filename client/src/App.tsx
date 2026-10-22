@@ -50,6 +50,7 @@ import {
   Play,
   Pause,
   RotateCcw,
+  Sparkles,
 } from 'lucide-react';
 
 export type ScreenType =
@@ -88,6 +89,7 @@ export const App: React.FC = () => {
     showLandmarks: true,
     keyboardFallback: true,
     reducedMotion: false,
+    playerAssistance: false,
   });
 
   const [calibration, setCalibration] = useState<CalibrationData>(loadCalibration);
@@ -298,6 +300,7 @@ export const App: React.FC = () => {
           missionsCompleted: activeMission?.completed ? 1 : 0,
           difficulty: settings.difficulty,
           controllerMode,
+          assisted: settings.playerAssistance,
         };
 
         setMatchStats(stats);
@@ -388,7 +391,11 @@ export const App: React.FC = () => {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#070b19] select-none font-sans">
       {/* 3D WebGL Canvas Scene */}
-      <Scene engine={engine} playerInputRef={playerInputRef} />
+      <Scene
+        engine={engine}
+        playerInputRef={playerInputRef}
+        playerAssistanceEnabled={settings.playerAssistance}
+      />
 
       {/* Hidden Video element for MediaPipe input */}
       <video
@@ -437,6 +444,26 @@ export const App: React.FC = () => {
               title="Restart Match"
             >
               <RotateCcw className="w-4 h-4 text-blue-600" />
+            </button>
+
+            {/* Phase 6: Player Assistance Toggle */}
+            <button
+              onClick={() =>
+                setSettings((prev) => ({
+                  ...prev,
+                  playerAssistance: !prev.playerAssistance,
+                }))
+              }
+              className={`neo-btn p-2.5 text-xs font-mono uppercase ${
+                settings.playerAssistance ? 'neo-btn-lime' : 'neo-btn-white'
+              }`}
+              title={
+                settings.playerAssistance
+                  ? 'Player Assistance: ON (3D Target & Cue)'
+                  : 'Player Assistance: OFF'
+              }
+            >
+              <Sparkles className="w-4 h-4 text-purple-700" />
             </button>
 
             <button
@@ -495,6 +522,11 @@ export const App: React.FC = () => {
             <span className="neo-badge bg-[#E4DCFF] text-[9px] py-0 px-1.5">
               {settings.ruleProfile === 'TABLE_TENNIS_TRAINING' ? 'ITTF 2026' : 'Arcade Pong'}
             </span>
+            {settings.playerAssistance && (
+              <span className="neo-badge bg-[#CCFF00] text-[#121212] text-[9px] py-0 px-1.5">
+                Assist ON
+              </span>
+            )}
           </div>
         </>
       )}
