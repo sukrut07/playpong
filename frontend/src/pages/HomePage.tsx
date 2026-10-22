@@ -53,7 +53,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <Button
               variant="white"
               size="lg"
-              onClick={() => onNavigate('/game')}
+              onClick={() => onNavigate('/play')}
               className="text-base"
             >
               <Hand className="w-5 h-5" />
@@ -98,7 +98,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <Card
             variant="white"
             interactive
-            onClick={() => onNavigate('/gesture-lab')}
+            onClick={() => onNavigate('/play')}
             className="flex flex-col justify-between"
           >
             <div className="space-y-4">
@@ -114,7 +114,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </p>
             </div>
             <div className="pt-6 mt-6 border-t-[2px] border-[#111111]/10 flex items-center justify-between font-display font-black text-xs uppercase text-[#111111]">
-              <span>Test Calibration</span>
+              <span>Play With Hand Gestures</span>
               <ArrowRight className="w-4 h-4" />
             </div>
           </Card>

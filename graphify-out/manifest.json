@@ -882,9 +882,9 @@
     "semantic_hash": ""
   },
   "frontend/src/app/App.tsx": {
-    "mtime": 1792667524.0823326,
-    "seen": 1792667902.3636422,
-    "ast_hash": "e3b05aa3c8bd569039e8acdeb2fae5a5",
+    "mtime": 1792673751.2664657,
+    "seen": 1792673806.439067,
+    "ast_hash": "7cf382b6b7609ead3badd507e0a25237",
     "semantic_hash": ""
   },
   "frontend/src/app/providers.tsx": {
@@ -1080,9 +1080,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/GamePage.tsx": {
-    "mtime": 1792672999.0633957,
-    "seen": 1792673120.01776,
-    "ast_hash": "46b015b5a81c75ad68d8955b16ce4fc1",
+    "mtime": 1792673474.6158152,
+    "seen": 1792673806.439698,
+    "ast_hash": "9031aac215b6e0860242bbfb3aa0ec69",
     "semantic_hash": ""
   },
   "frontend/src/pages/GestureLabPage.tsx": {
@@ -1092,9 +1092,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/HomePage.tsx": {
-    "mtime": 1792667304.9292572,
-    "seen": 1792667902.36366,
-    "ast_hash": "4c7ba770ee2ce02bfbd59f4139a211b0",
+    "mtime": 1792673775.3774078,
+    "seen": 1792673806.439713,
+    "ast_hash": "27b1f6ae54a28764cee2a7aa7240f4c6",
     "semantic_hash": ""
   },
   "frontend/src/services/api-client.ts": {

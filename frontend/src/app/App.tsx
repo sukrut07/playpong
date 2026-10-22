@@ -26,10 +26,7 @@ export const App: React.FC = () => {
     if (currentPath === '/' || currentPath === '') {
       return <HomePage onNavigate={navigate} />;
     }
-    if (currentPath === '/play') {
-      return <GamePage onNavigate={navigate} initialMode="setup" />;
-    }
-    if (currentPath.startsWith('/game')) {
+    if (currentPath === '/play' || currentPath.startsWith('/game')) {
       return <GamePage onNavigate={navigate} initialMode="playing" />;
     }
     if (currentPath === '/gesture-lab') {

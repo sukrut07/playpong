@@ -1,7 +1,7 @@
 # Graph Report - playpong  (2026-10-22)
 
 ## Corpus Check
-- 216 files · ~103,061 words
+- 216 files · ~103,093 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 11 file(s) not represented in the graph (top: .jsonl 4, .example 3, .css 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7641d866`
+- Built from commit: `f9e3f19c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
