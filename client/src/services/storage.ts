@@ -83,3 +83,12 @@ export function calculateSessionAggregates(history: MatchStats[]): SessionAggreg
     totalMissionsCompleted: missions,
   };
 }
+
+export function clearMatchHistory(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (e) {
+    console.warn('[Storage] Failed to clear match history', e);
+  }
+}
+

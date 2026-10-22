@@ -51,7 +51,7 @@ class SoundEngine {
     osc.stop(now + 0.09);
   }
 
-  public playBounce() {
+  public playBounce(power: number = 1.0) {
     if (!this.enabled) return;
     this.initCtx();
     if (!this.ctx) return;
@@ -65,7 +65,8 @@ class SoundEngine {
     osc.frequency.setValueAtTime(680 + Math.random() * 40, now);
     osc.frequency.exponentialRampToValueAtTime(320, now + 0.05);
 
-    gain.gain.setValueAtTime(0.3 * this.volume, now);
+    const bounceVol = Math.min(1, 0.3 * this.volume * Math.max(0.4, power));
+    gain.gain.setValueAtTime(bounceVol, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
 
     osc.connect(gain);
