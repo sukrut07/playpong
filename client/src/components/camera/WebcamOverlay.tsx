@@ -11,14 +11,13 @@ interface WebcamOverlayProps {
   onRecalibrate?: () => void;
 }
 
-// MediaPipe 21 hand skeleton joint connections
 const CONNECTIONS = [
-  [0, 1], [1, 2], [2, 3], [3, 4], // Thumb
-  [0, 5], [5, 6], [6, 7], [7, 8], // Index
-  [0, 9], [9, 10], [10, 11], [11, 12], // Middle
-  [0, 13], [13, 14], [14, 15], [15, 16], // Ring
-  [0, 17], [17, 18], [18, 19], [19, 20], // Pinky
-  [5, 9], [9, 13], [13, 17], // Knuckles
+  [0, 1], [1, 2], [2, 3], [3, 4],
+  [0, 5], [5, 6], [6, 7], [7, 8],
+  [0, 9], [9, 10], [10, 11], [11, 12],
+  [0, 13], [13, 14], [14, 15], [15, 16],
+  [0, 17], [17, 18], [18, 19], [19, 20],
+  [5, 9], [9, 13], [13, 17],
 ];
 
 export const WebcamOverlay: React.FC<WebcamOverlayProps> = ({
@@ -50,20 +49,19 @@ export const WebcamOverlay: React.FC<WebcamOverlayProps> = ({
       const boxY = calibration.minY * canvas.height;
       const boxH = (calibration.maxY - calibration.minY) * canvas.height;
 
-      ctx.strokeStyle = isCalibrating ? 'rgba(255, 94, 54, 0.8)' : 'rgba(0, 242, 254, 0.35)';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#CCFF00';
+      ctx.lineWidth = 2;
       ctx.setLineDash([4, 4]);
       ctx.strokeRect(boxX, boxY, boxW, boxH);
       ctx.setLineDash([]);
 
       if (landmarks && landmarks.length >= 21) {
-        // Draw skeletal bones
-        ctx.strokeStyle = '#00f2fe';
+        // Draw bones
+        ctx.strokeStyle = '#CCFF00';
         ctx.lineWidth = 2;
         for (const [start, end] of CONNECTIONS) {
           const p1 = landmarks[start];
           const p2 = landmarks[end];
-          // Mirror X
           const x1 = (1 - p1.x) * canvas.width;
           const y1 = p1.y * canvas.height;
           const x2 = (1 - p2.x) * canvas.width;
@@ -75,26 +73,28 @@ export const WebcamOverlay: React.FC<WebcamOverlayProps> = ({
           ctx.stroke();
         }
 
-        // Draw joint landmarks
+        // Draw joints
         for (let i = 0; i < landmarks.length; i++) {
           const pt = landmarks[i];
           const x = (1 - pt.x) * canvas.width;
           const y = pt.y * canvas.height;
 
-          ctx.fillStyle = i === 0 ? '#ff5e36' : i === 8 || i === 12 ? '#fadb14' : '#00f2fe';
+          ctx.fillStyle = i === 0 ? '#FF6B4A' : '#ffffff';
           ctx.beginPath();
-          ctx.arc(x, y, i === 0 ? 5 : 3, 0, Math.PI * 2);
+          ctx.arc(x, y, i === 0 ? 4 : 2.5, 0, Math.PI * 2);
           ctx.fill();
         }
 
-        // Draw paddle center anchor indicator
+        // Draw paddle anchor
         const anchorX = (1 - (landmarks[0].x + landmarks[9].x) * 0.5) * canvas.width;
         const anchorY = (landmarks[0].y + landmarks[9].y) * 0.5 * canvas.height;
 
-        ctx.strokeStyle = '#ff5e36';
+        ctx.strokeStyle = '#FF6B4A';
+        ctx.fillStyle = '#CCFF00';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(anchorX, anchorY, 8, 0, Math.PI * 2);
+        ctx.arc(anchorX, anchorY, 6, 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
       }
 
@@ -107,26 +107,25 @@ export const WebcamOverlay: React.FC<WebcamOverlayProps> = ({
 
   return (
     <div
-      className={`fixed bottom-4 left-4 z-40 transition-all duration-300 ${
-        minimized ? 'w-36 h-12' : 'w-56 h-44'
-      } rounded-xl overflow-hidden glass-panel flex flex-col`}
+      className={`fixed bottom-4 left-4 z-40 transition-all duration-200 select-none ${
+        minimized ? 'w-40 h-11' : 'w-60 h-48'
+      } neo-box bg-[#121212] overflow-hidden flex flex-col`}
     >
-      {/* Header bar */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-slate-900/60 border-b border-slate-700/50 text-xs">
-        <div className="flex items-center space-x-1.5">
-          <Camera className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="font-semibold text-slate-200">Vision Tracker</span>
+      {/* Header Bar */}
+      <div className="flex items-center justify-between px-3 py-1 bg-white border-b-[2px] border-[#121212] text-xs font-mono">
+        <div className="flex items-center space-x-1.5 font-bold">
+          <Camera className="w-3.5 h-3.5 text-[#121212]" />
+          <span className="uppercase text-[11px]">MediaPipe PIP</span>
         </div>
         <div className="flex items-center space-x-2">
           {controlState.tracking ? (
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00] border border-black animate-pulse" />
           ) : (
-            <span className="inline-block w-2 h-2 rounded-full bg-amber-400" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B4A] border border-black" />
           )}
           <button
             onClick={() => setMinimized(!minimized)}
-            className="text-slate-400 hover:text-slate-200"
-            title={minimized ? 'Expand Camera' : 'Minimize Camera'}
+            className="text-gray-600 hover:text-black"
           >
             {minimized ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
           </button>
@@ -135,7 +134,7 @@ export const WebcamOverlay: React.FC<WebcamOverlayProps> = ({
 
       {/* Video & Landmark Canvas */}
       {!minimized && (
-        <div className="relative flex-1 bg-black/80 overflow-hidden">
+        <div className="relative flex-1 bg-black overflow-hidden">
           <video
             ref={videoRef as any}
             className="w-full h-full object-cover transform -scale-x-100 opacity-60"
@@ -144,22 +143,21 @@ export const WebcamOverlay: React.FC<WebcamOverlayProps> = ({
           />
           <canvas
             ref={canvasRef}
-            width={224}
-            height={140}
+            width={240}
+            height={160}
             className="absolute inset-0 w-full h-full pointer-events-none"
           />
 
-          {/* Tracking Status Pill */}
-          <div className="absolute bottom-1 left-2 right-2 flex items-center justify-between text-[10px] text-slate-300">
-            <span className={controlState.tracking ? 'text-cyan-300 font-mono' : 'text-amber-400 font-mono'}>
-              {controlState.tracking ? `Hand (${controlState.gesture.toUpperCase()})` : 'Show hand to camera'}
+          <div className="absolute bottom-1.5 left-2 right-2 flex items-center justify-between text-[10px] font-mono font-bold text-white">
+            <span className={controlState.tracking ? 'text-[#CCFF00]' : 'text-[#FF6B4A]'}>
+              {controlState.tracking ? `HAND (${controlState.gesture.toUpperCase()})` : 'SHOW HAND'}
             </span>
             {onRecalibrate && (
               <button
                 onClick={onRecalibrate}
-                className="text-[10px] text-cyan-400 hover:text-cyan-200 underline"
+                className="text-[#CCFF00] hover:underline"
               >
-                Calibrate
+                RECALIBRATE
               </button>
             )}
           </div>

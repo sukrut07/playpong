@@ -186,7 +186,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ history,
                           </td>
                           <td className="py-2.5 px-3 text-slate-300">{m.totalReturns}</td>
                           <td className="py-2.5 px-3 text-cyan-300">
-                            {m.returnSuccessRate.toFixed(0)}%
+                            {m.returnSuccessRate !== null ? `${m.returnSuccessRate.toFixed(0)}%` : 'N/A'}
                           </td>
                           <td className="py-2.5 px-3 text-orange-300">{m.longestRally}</td>
                           <td className="py-2.5 px-3 text-slate-400 uppercase">{m.difficulty}</td>
