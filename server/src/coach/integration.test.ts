@@ -3,10 +3,23 @@ import assert from 'node:assert';
 import { app, server } from '../index.js';
 import { MissionSchema, CoachSummarySchema } from './schemas.js';
 
-test('Server health and coach endpoints respond correctly', async () => {
-  // Wait for server to bind or use existing listening address
-  const addr = server.address();
-  const port = typeof addr === 'object' && addr ? addr.port : 3001;
+test('Server health and coach endpoints respond correctly', async (t) => {
+  let port = 3001;
+  if (!server.listening) {
+    await new Promise<void>((resolve) => {
+      server.listen(0, () => {
+        const addr = server.address();
+        if (typeof addr === 'object' && addr) port = addr.port;
+        resolve();
+      });
+    });
+    t.after(() => {
+      server.close();
+    });
+  } else {
+    const addr = server.address();
+    if (typeof addr === 'object' && addr) port = addr.port;
+  }
   const baseUrl = `http://localhost:${port}`;
 
   // 1. Health check
@@ -75,7 +88,4 @@ test('Server health and coach endpoints respond correctly', async () => {
     console.error('CoachSummary validation error:', JSON.stringify(parsedSummary.error, null, 2));
   }
   assert.strictEqual(parsedSummary.success, true, 'Summary must conform to schema');
-
-  // Cleanly close server
-  server.close();
 });

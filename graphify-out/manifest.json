@@ -192,9 +192,9 @@
     "semantic_hash": "e30074044444d45ff4d8475e461d63e0"
   },
   "server/src/coach/integration.test.ts": {
-    "mtime": 1792658977.7391076,
-    "seen": 1792662638.7109492,
-    "ast_hash": "afd070612feaf09d5440d6a7d302f5d3",
+    "mtime": 1792670054.020325,
+    "seen": 1792670122.040771,
+    "ast_hash": "c54ee08e7ad9c4f9594d3e2293f00367",
     "semantic_hash": ""
   },
   "server/src/coach/missions.ts": {
@@ -216,15 +216,15 @@
     "semantic_hash": "8269459b69defec499808c1339a0ff19"
   },
   "server/src/index.ts": {
-    "mtime": 1792658977.7396436,
-    "seen": 1792662638.710954,
-    "ast_hash": "d9dce6d07d54cabd4ceb62c5b0a4c093",
+    "mtime": 1792670090.8009777,
+    "seen": 1792670122.040818,
+    "ast_hash": "90fa5614d6773efaa29eee0157a5754c",
     "semantic_hash": ""
   },
   "server/src/routes/coach.ts": {
-    "mtime": 1792662413.3739488,
-    "seen": 1792662638.710957,
-    "ast_hash": "556492fb9639e573cf1be8ed274c9159",
+    "mtime": 1792669795.69936,
+    "seen": 1792670122.040834,
+    "ast_hash": "8abe17de1e3452aa24248051f17dc583",
     "semantic_hash": ""
   },
   "server/src/services/ollama.ts": {
@@ -878,7 +878,7 @@
   "frontend/public/graphify/graph.json": {
     "mtime": 1792667841.7485254,
     "seen": 1792667902.3636422,
-    "ast_hash": "7b009eb7b2e0de893e2447c1fb98e9cc",
+    "ast_hash": "",
     "semantic_hash": ""
   },
   "frontend/src/app/App.tsx": {
@@ -1062,27 +1062,27 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/ArchitecturePage.tsx": {
-    "mtime": 1792667470.146268,
-    "seen": 1792667902.363657,
-    "ast_hash": "855bc293397e5c86e0300126da029e6c",
+    "mtime": 1792669630.3844683,
+    "seen": 1792670122.039937,
+    "ast_hash": "c28f33adbe5c931c8a60688c1ad2a35d",
     "semantic_hash": ""
   },
   "frontend/src/pages/CoachPage.tsx": {
-    "mtime": 1792667439.686033,
-    "seen": 1792667902.363658,
-    "ast_hash": "85043f444865b78d820acd0ea8194b1d",
+    "mtime": 1792669970.0217586,
+    "seen": 1792670122.039938,
+    "ast_hash": "ff6bc5a4ef308e0b864af0f57b1ed989",
     "semantic_hash": ""
   },
   "frontend/src/pages/DashboardPage.tsx": {
-    "mtime": 1792667414.762248,
-    "seen": 1792667902.363658,
-    "ast_hash": "10e925fc38e255cc9d166bb701b0ef50",
+    "mtime": 1792669751.4297757,
+    "seen": 1792670122.039938,
+    "ast_hash": "0bcebc56ce4818ce5d3f8f7bf65e54eb",
     "semantic_hash": ""
   },
   "frontend/src/pages/GamePage.tsx": {
-    "mtime": 1792667766.0442438,
-    "seen": 1792667902.363659,
-    "ast_hash": "96560726cc5536dd40d7ca6776b181a6",
+    "mtime": 1792669359.219859,
+    "seen": 1792670122.0399392,
+    "ast_hash": "663e5e6a2d6823aaf9147383b95392c6",
     "semantic_hash": ""
   },
   "frontend/src/pages/GestureLabPage.tsx": {
@@ -1116,9 +1116,9 @@
     "semantic_hash": ""
   },
   "frontend/src/services/model-service.ts": {
-    "mtime": 1792667733.3650143,
-    "seen": 1792667902.363661,
-    "ast_hash": "725d4f6ad6e2d23e484b44e41e79ea4a",
+    "mtime": 1792669843.198329,
+    "seen": 1792670122.040014,
+    "ast_hash": "0d319ecbbb5136df1aa9c29668b773e3",
     "semantic_hash": ""
   },
   "frontend/src/services/socket-client.ts": {
@@ -1236,15 +1236,87 @@
     "semantic_hash": ""
   },
   "frontend/public/graphify/GRAPH_REPORT.md": {
-    "mtime": 1792667841.751352,
-    "seen": 1792667902.363724,
-    "ast_hash": "a0036378d207524942bc5891c31a4c63",
+    "mtime": 1792667910.5755575,
+    "seen": 1792670122.0417202,
+    "ast_hash": "1670acbfaee0c74c86a539b210b8072f",
     "semantic_hash": ""
   },
   "game-engine/README.md": {
     "mtime": 1792666155.2838435,
     "seen": 1792667902.363724,
     "ast_hash": "7701fc51c12118f41b715d1377cc4b68",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/architecture/ModularSystemGraph.tsx": {
+    "mtime": 1792669428.4672093,
+    "seen": 1792670122.039517,
+    "ast_hash": "777232049bfb68c8cc89ceb6e09fe189",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/charts/RallyBucketChart.tsx": {
+    "mtime": 1792669685.0976746,
+    "seen": 1792670122.0395179,
+    "ast_hash": "04c3c76dcc657b7f4049fc447f09bf7c",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/charts/ReturnSuccessRollingChart.tsx": {
+    "mtime": 1792669671.936751,
+    "seen": 1792670122.0395362,
+    "ast_hash": "5b5692fc1b312d9fa828180eae771dfb",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/charts/RuleComplianceTable.tsx": {
+    "mtime": 1792669704.183644,
+    "seen": 1792670122.039537,
+    "ast_hash": "b6f36e65f5d2d781b041106c821c1663",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/charts/ScoreTimelineChart.tsx": {
+    "mtime": 1792669659.4140575,
+    "seen": 1792670122.039537,
+    "ast_hash": "75ce70b3cf0afaeefeda915712faafc4",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/coach/CoachChatPanel.tsx": {
+    "mtime": 1792669866.0862954,
+    "seen": 1792670122.039554,
+    "ast_hash": "78eae621ace9ce3639517958523f215c",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/coach/ModelUsagePanel.tsx": {
+    "mtime": 1792669895.8145068,
+    "seen": 1792670122.039555,
+    "ast_hash": "5b82341f9a20d4988b50d5ce849c6939",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/game/CameraMiniPreview.tsx": {
+    "mtime": 1792669292.217472,
+    "seen": 1792670122.0395882,
+    "ast_hash": "3794a6b452ea5d36e8ff6e7b4ad831ac",
+    "semantic_hash": ""
+  },
+  "docs/DRY_RUN_REPORT.md": {
+    "mtime": 1792667947.1027594,
+    "seen": 1792670122.041556,
+    "ast_hash": "2cf7d111a144e475f27caf026e0e450c",
+    "semantic_hash": ""
+  },
+  "docs/FRONTEND.md": {
+    "mtime": 1792667967.735028,
+    "seen": 1792670122.04157,
+    "ast_hash": "77f49419ff36b6a039182ee9d4160368",
+    "semantic_hash": ""
+  },
+  "docs/GESTURE_TESTING.md": {
+    "mtime": 1792667930.230577,
+    "seen": 1792670122.041583,
+    "ast_hash": "3ed232505ec5e67fcb1448517ae92a78",
+    "semantic_hash": ""
+  },
+  "scripts/graphify/README.md": {
+    "mtime": 1792667980.5625978,
+    "seen": 1792670122.041842,
+    "ast_hash": "76e73fec0d76d8036be600c6e6e3847b",
     "semantic_hash": ""
   }
 }

@@ -83,9 +83,13 @@ app.get('/api/graph/report', (_req, res) => {
 // Mount Coach routes at /api/coach
 app.use('/api/coach', coachRouter);
 
-const server = httpServer.listen(PORT, () => {
-  console.log(`🏓 PONG AI Server listening on http://localhost:${PORT}`);
-  console.log(`🤖 AI Provider: ${process.env.AI_PROVIDER || 'gemini'} | Model: ${process.env.GEMMA_MODEL || 'gemma-4-26b-a4b-it'}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  httpServer.listen(PORT, () => {
+    console.log(`🏓 PONG AI Server listening on http://localhost:${PORT}`);
+    console.log(`🤖 AI Provider: ${process.env.AI_PROVIDER || 'gemini'} | Model: ${process.env.GEMMA_MODEL || 'gemma-4-26b-a4b-it'}`);
+  });
+}
+
+const server = httpServer;
 
 export { app, server, io };
