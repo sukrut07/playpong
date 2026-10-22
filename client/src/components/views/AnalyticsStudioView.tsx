@@ -128,13 +128,16 @@ export const AnalyticsStudioView: React.FC<AnalyticsStudioViewProps> = ({ histor
 
   // Table Zone Landing Distribution Data
   const zoneDistributionData = useMemo(() => {
-    const zones = selectedMatch ? selectedMatch.tableZoneDistribution : {
-      left: history.reduce((sum, m) => sum + m.tableZoneDistribution.left, 0),
-      center: history.reduce((sum, m) => sum + m.tableZoneDistribution.center, 0),
-      right: history.reduce((sum, m) => sum + m.tableZoneDistribution.right, 0),
-      deep: history.reduce((sum, m) => sum + m.tableZoneDistribution.deep, 0),
-      short: history.reduce((sum, m) => sum + m.tableZoneDistribution.short, 0),
-    };
+    const defaultZones = { left: 0, center: 0, right: 0, deep: 0, short: 0 };
+    const zones = selectedMatch
+      ? (selectedMatch.tableZoneDistribution || selectedMatch.tableZoneHits || defaultZones)
+      : {
+          left: history.reduce((sum, m) => sum + (m.tableZoneDistribution?.left ?? m.tableZoneHits?.left ?? 0), 0),
+          center: history.reduce((sum, m) => sum + (m.tableZoneDistribution?.center ?? m.tableZoneHits?.center ?? 0), 0),
+          right: history.reduce((sum, m) => sum + (m.tableZoneDistribution?.right ?? m.tableZoneHits?.right ?? 0), 0),
+          deep: history.reduce((sum, m) => sum + (m.tableZoneDistribution?.deep ?? m.tableZoneHits?.deep ?? 0), 0),
+          short: history.reduce((sum, m) => sum + (m.tableZoneDistribution?.short ?? m.tableZoneHits?.short ?? 0), 0),
+        };
 
     return [
       { zone: 'Left Court', hits: zones.left },

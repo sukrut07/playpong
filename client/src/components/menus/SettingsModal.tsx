@@ -36,13 +36,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
   const [providerStatus, setProviderStatus] = useState<{
     available: boolean;
-    provider: 'gemini' | 'ollama';
+    provider: 'gemini' | 'ollama' | 'fallback';
     model: string;
     hasKey?: boolean;
     error?: string;
   }>({
     available: false,
-    provider: settings.aiProvider || 'gemini',
+    provider: (settings.aiProvider as any) || 'gemini',
     model: 'checking...',
   });
 

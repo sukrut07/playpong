@@ -28,7 +28,7 @@ interface LandingMenuProps {
   onOpenOrchestrator?: () => void;
   aiStatus: {
     available: boolean;
-    provider: 'gemini' | 'ollama';
+    provider: 'gemini' | 'ollama' | 'fallback';
     model: string;
     hasKey?: boolean;
     error?: string;
