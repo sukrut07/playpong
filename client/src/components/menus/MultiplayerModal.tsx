@@ -21,7 +21,9 @@ export const MultiplayerModal: React.FC<MultiplayerModalProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001';
+    const socketUrl =
+      import.meta.env.VITE_SOCKET_URL ||
+      (typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'http://localhost:3001');
     const s = io(socketUrl, {
       transports: ['websocket', 'polling'],
     });

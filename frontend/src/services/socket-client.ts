@@ -25,7 +25,10 @@ export class SocketClient {
   private currentRole: PlayerRole | null = null;
 
   constructor(private url?: string) {
-    this.url = url || (import.meta.env.VITE_SOCKET_URL as string) || 'http://localhost:3001';
+    this.url =
+      url ||
+      (import.meta.env.VITE_SOCKET_URL as string) ||
+      (typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'http://localhost:3001');
   }
 
   public setCallbacks(callbacks: MultiplayerCallbacks) {

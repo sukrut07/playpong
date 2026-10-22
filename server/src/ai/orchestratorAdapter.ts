@@ -21,12 +21,20 @@ export class OrchestratorAdapter implements AICoachProvider {
     this.timeoutMs = timeoutMs;
   }
 
+  private getTargetUrl(path: string): URL {
+    const raw = process.env.AI_ORCHESTRATOR_URL || this.baseUrl || 'http://localhost:8000';
+    const base = raw.endsWith('/') ? raw : `${raw}/`;
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    return new URL(cleanPath, base);
+  }
+
   public async checkHealth(): Promise<ProviderHealth> {
+    const targetUrl = this.getTargetUrl('health');
     try {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 4000);
 
-      const res = await fetch(`${this.baseUrl}/health`, { signal: controller.signal });
+      const res = await fetch(targetUrl, { signal: controller.signal });
       clearTimeout(timer);
 
       if (!res.ok) {
@@ -50,13 +58,13 @@ export class OrchestratorAdapter implements AICoachProvider {
         available: false,
         provider: 'ollama',
         model: this.modelId,
-        error: `AI Orchestrator offline on ${this.baseUrl}: ${err.message}`,
+        error: `AI Orchestrator offline on ${targetUrl.origin}: ${err.message}`,
       };
     }
   }
 
   public async getModels(): Promise<any> {
-    const res = await fetch(`${this.baseUrl}/v1/models`);
+    const res = await fetch(this.getTargetUrl('v1/models'));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
   }
@@ -66,7 +74,7 @@ export class OrchestratorAdapter implements AICoachProvider {
     const timer = setTimeout(() => controller.abort(), this.timeoutMs);
 
     try {
-      const res = await fetch(`${this.baseUrl}/v1/coach/match`, {
+      const res = await fetch(this.getTargetUrl('v1/coach/match'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stats }),
@@ -96,7 +104,7 @@ export class OrchestratorAdapter implements AICoachProvider {
     const timer = setTimeout(() => controller.abort(), this.timeoutMs);
 
     try {
-      const res = await fetch(`${this.baseUrl}/v1/analytics/query`, {
+      const res = await fetch(this.getTargetUrl('v1/analytics/query'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -121,7 +129,7 @@ export class OrchestratorAdapter implements AICoachProvider {
   }
 
   public async explainRule(rule: GameRule): Promise<string> {
-    const res = await fetch(`${this.baseUrl}/v1/rules/explain`, {
+    const res = await fetch(this.getTargetUrl('v1/rules/explain'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
