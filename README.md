@@ -1,130 +1,184 @@
-# Gesture Pong AI 🏓🤖
-### 3D Webcam-Controlled Table Tennis Game with Gemma 4, Ollama, MediaPipe, and Graphify
+# PONG AI 🏓🤖
+### 3D Gesture-Controlled Racket Arcade · Gemma 4 Intelligence · ITTF 2026 Rules · Graphify Architecture
 
-A playable 3D arcade table-tennis game where you control an in-game racket using real-time webcam hand gestures, coached dynamically by a locally hosted **Google Gemma 4** model through **Ollama**, featuring full performance analytics and repository intelligence powered by **Graphify**.
+A playable, browser-based 3D racket game combining webcam-based hand tracking, deterministic AI opponent simulation, Gemma 4-powered coaching, auditable analytics, a traceable rule engine, and an in-app Graphify codebase knowledge graph.
 
 ---
 
 ## 🌟 Key Capabilities
 
-1. **Real-time Computer Vision Control**:
-   - MediaPipe Hand Landmarker tracking 21 3D joints at 60 FPS in the browser.
-   - Frequency-adaptive **One Euro Filter** for zero micro-jitter at rest and zero lag during fast swings.
-   - 5-step guided calibration with boundary mapping and coordinate mirroring.
-   - Zero keyboard dependency for normal racket movement (with full keyboard/mouse fallbacks: `[WASD / Arrow Keys]` + `[Space]` to serve).
+1. **Perception — Webcam Hand Tracking & Gesture Lab**:
+   - Browser-side 21 3D joint hand landmarking via MediaPipe Tasks Vision at 60 FPS.
+   - Frequency-adaptive **One Euro Filter** eliminating micro-tremors at rest with zero lag during rapid swings.
+   - Guided 5-step reaching calibration with coordinate clamping and horizontal mirroring.
+   - Dedicated **Gesture Lab** with real-time skeleton visualizer, filter parameter tuning, diagnostics (FPS, latency, dropped frames), and experimental stroke sequence classifier (`IDLE`, `READY`, `FOREHAND`, `BACKHAND`, `SMASH`).
+   - Seamless keyboard fallback (`[WASD / Arrow Keys]` + `[Space]` to serve) with camera-disabled mode.
 
-2. **Playable 3D Physics & Esports Arena**:
-   - Continuous collision detection (CCD) with 4-substep physics simulation preventing ball tunneling.
-   - Authentic table tennis bounce restitution, paddle deflection angles, and net collision dynamics.
-   - Deterministic AI opponent with adaptive difficulty tiers (*Easy*, *Medium*, *Hard*).
-   - Stylized dark esports arena with dynamic Three.js lighting, shadows, and motion trajectory trails.
+2. **Control & Simulation — Deterministic Physics Arena**:
+   - Built with Three.js and custom continuous collision detection (CCD, 4 substeps/frame) preventing high-velocity tunneling.
+   - Two selectable rule profiles:
+     - `TABLE_TENNIS_TRAINING`: 11-point games, 2-point deuce lead, alternating serves every 2 points (or 1 at deuce), based on **ITTF Statutes 2026 Chapter 2: The Laws of Table Tennis**.
+     - `ARCADE_PONG`: Fast-paced arcade collisions with lateral wall rebounds, first to 7 points.
+   - Deterministic AI opponent with three calibrated tiers (*Easy*, *Medium*, *Hard*) adjusting reaction latency, paddle speed, and prediction noise.
+   - Seeded PRNG for reproducible physics benchmarks.
 
-3. **Local Gemma 4 AI Coach via Ollama**:
-   - Powered locally by `gemma4:e2b` running via Apple MLX metal acceleration on `localhost:11434`.
-   - Dynamic real-time mission generation grounded strictly in measured player statistics.
-   - Zod schema-validated responses with graceful fallback handling if offline or timed out.
-   - Post-match tactical debrief with measured strengths, weaknesses, and training advice.
+3. **Reasoning — Gemma 4 as the Intelligence Layer**:
+   - Replaceable inference provider architecture:
+     - **Hosted Gemini API (Cloud)**: Google AI integration with official `gemma-4-26b-a4b-it` or `gemma-4-31b-it` model identifiers.
+     - **Local Ollama Runtime (On-Device)**: Private local inference running `gemma4:e2b` via Apple Silicon / GPU acceleration.
+   - Evidence-grounded coaching reports:
+     - Structured JSON validated via strict Zod schemas (`summary`, `observations[]`, `evidence[]`, `weaknesses[]`, `recommendations[]`, `training_plan[]`, `rule_references[]`, `limitations[]`).
+     - Distinguishes observed facts from hypotheses.
+     - Maps performance deficiencies to official ITTF 2026 rule citations.
+     - Graceful deterministic fallback ensures zero crash and honest telemetry when offline.
+   - Interactive Natural Language Analytics Q&A: Players can query match evidence directly ("*Why did I lose my rallies?*", "*How was my reaction time?*").
 
-4. **Performance Analytics Dashboard**:
-   - Event-driven tracking of rallies, return accuracy, measured reaction times (ms), and zone placement heatmaps (Left, Center, Right).
-   - Session history stored locally with career win rates and personal records.
+4. **Analytics — Auditable Mathematical Metric Contracts**:
+   - Strictly defined denominators with explicit zero-handling:
+     - $\text{Return Success Rate} = \frac{\text{successful\_returns}}{\text{eligible\_return\_attempts}}$ (returns `null` / `Insufficient Data` if 0 attempts; never a misleading `0%`).
+     - $\text{Miss Rate} = \frac{\text{missed\_returns}}{\text{eligible\_return\_attempts}}$ ($\text{Return Success Rate} + \text{Miss Rate} = 100\%$).
+     - $\text{Average Rally Length} = \frac{\text{total\_counted\_contacts}}{\text{completed\_rallies}}$.
+   - **Analytics Studio**: Recharts visual histograms, table zone distribution charts (Left, Center, Right, Deep, Short), and a 50-trial benchmark runner measuring baseline controller interception error and reaction delay.
 
-5. **Graphify Repository Intelligence**:
-   - AST-extracted knowledge graph with 300 nodes, 555 edges, and 18 communities.
-   - Verified dependency queries and path tracing between vision, physics, and AI modules.
+5. **Explainability — Traceable Rule Registry & Graphify Architecture**:
+   - **Rules Explorer**: Versioned rule registry with search, status filters (`IMPLEMENTED_AND_TESTED`, `PARTIALLY_SIMULATED`, `DOCUMENTED_ONLY`), limitations disclosure, and clickable ITTF 2026 citations.
+   - **Architecture Explorer**: In-app knowledge graph explorer powered by real **Graphify** output (`graphify-out/graph.json` with 563 nodes, 1109 edges, 29 communities). Search nodes, inspect god nodes, trace dependencies, and view community clusters.
+
+6. **Multiplayer — Server-Authoritative Socket.IO**:
+   - Real-time online Player vs Player matches using 4-letter room codes.
+   - 60Hz server tick with authoritative scoring and physics validation preventing client-side score spoofing.
+
+7. **Aesthetic — Neo-Brutalist Arcade UI**:
+   - Warm cream background (`#FAF6EB`), near-black outlines (`#121212`), offset hard shadows (`4px 4px 0px #121212`), electric lime accents (`#CCFF00`), lavender panels (`#E4DCFF`), and peach highlights (`#FF7A59`).
 
 ---
 
 ## 🚀 Quick Start
 
 ### 1. Prerequisites
-- **Node.js**: v18+ (tested on v24.13.0)
-- **Ollama**: Running with `gemma4:e2b` installed (`ollama run gemma4:e2b`)
-- **Webcam**: Standard built-in or USB webcam
+- **Node.js**: v18+ (tested on Node v24.13.0)
+- **Webcam**: Any built-in or USB camera (optional, keyboard fallback included)
+- **Gemini API Key** (optional for cloud Gemma 4) OR **Ollama** (optional for local Gemma 4):
+  - Cloud: Set `GEMINI_API_KEY` in `server/.env`
+  - Local: Run `ollama run gemma4:e2b`
 
-### 2. Install & Start
+### 2. Installation
 ```bash
-# Install dependencies
+# Clone the repository
+git clone https://github.com/sukrut07/pong.git
+cd pong
+
+# Install dependencies across root, server, and client
 npm install
 npm install --prefix server
 npm install --prefix client
-
-# Start both backend and frontend concurrently
-npm run dev
 ```
 
-Visit **`http://localhost:5173`** in Google Chrome.
+### 3. Environment Configuration
+Copy the example environment configuration:
+```bash
+cp .env.example server/.env
+```
+Edit `server/.env`:
+```env
+PORT=3001
+AI_PROVIDER=gemini
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMMA_MODEL_ID=gemma-4-26b-a4b-it
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=gemma4:e2b
+```
+*(Note: If no API key is provided, the application engages its deterministic rules-grounded fallback engine—it never crashes or invents fabricated metrics).*
+
+### 4. Running Locally
+Run both client and backend server concurrently:
+```bash
+npm run dev
+```
+- **Web Application**: [http://localhost:5173](http://localhost:5173)
+- **Backend API & Multiplayer**: [http://localhost:3001](http://localhost:3001)
 
 ---
 
-## 🧪 Testing & Verification
+## 🧪 Automated Testing & Verification
 
-Run the entire automated unit and integration test suite:
+Run the full automated test suite (20 unit and integration tests):
 ```bash
-npm run test
+npm test
 ```
-- **Backend tests**: Schema validation, fallback missions, prompt generation, Ollama HTTP integration.
-- **Frontend tests**: Continuous collision sub-stepping, One Euro smoothing filter, boundary calibration mapping, gesture detection.
+
+Or run tests individually:
+```bash
+# Server tests (Gemma 4 adapter, schema validation, fallback logic, HTTP endpoints)
+npm run test --prefix server
+
+# Client tests (Physics CCD, OneEuroFilter, calibration, metric contracts, ITTF rules)
+npm run test --prefix client
+```
 
 Build production bundles:
 ```bash
-npm run build
+npm run build --prefix client
+npm run build --prefix server
 ```
 
 ---
 
-## 📊 Graphify Developer Intelligence
+## 📊 Graphify Codebase Knowledge Graph
 
-Generate and query the repository graph:
+This repository utilizes **Graphify** for AST code analysis, dependency mapping, and god node detection.
+
 ```bash
-# Extract graph
-graphify extract . --code-only
+# Update the knowledge graph after code changes
+graphify update .
 
-# Query architecture
-graphify query "hand tracking racket movement"
-graphify path "VisionPipeline" "TableTennisEngine" --undirected
+# Query the codebase architecture
+graphify query "MediaPipe hand tracking to table tennis racket"
+graphify path "VisionPipeline" "TableTennisEngine"
 
-# View interactive D3 graph in browser
+# View the full interactive D3 knowledge graph
 open graphify-out/graph.html
 ```
 
----
-
-## 📁 Repository Structure
-
-```text
-gesture-pong-ai/
-├── client/                     # Vite + React + Three.js + R3F Frontend
-│   ├── src/
-│   │   ├── components/         # HUD, Camera Overlay, Modals (Menu, Summary, Analytics)
-│   │   ├── game/               # 3D Entities (Table, Ball, Paddle, Arena), Scene, Physics
-│   │   ├── vision/             # MediaPipe Landmarker, Calibration, One Euro Smoothing
-│   │   ├── services/           # Web Audio Synthesizer, Coach API Client, Storage
-│   │   └── types/              # Game settings and client interfaces
-│   └── tests/                  # Physics, Smoothing, Calibration unit tests
-├── server/                     # Express + TypeScript + Ollama Backend
-│   ├── src/
-│   │   ├── coach/              # Zod schemas, prompts, fallback missions, tests
-│   │   ├── routes/             # Coach and health endpoints
-│   │   └── services/           # Ollama HTTP API client
-│   └── dist/                   # Compiled backend output
-├── shared/                     # Shared TypeScript types between client and server
-├── docs/                       # ARCHITECTURE, SETUP, GRAPHIFY, ASSETS, DEMO_SCRIPT
-├── graphify-out/               # Knowledge graph artifacts (graph.json, graph.html, report)
-├── package.json                # Monorepo scripts (dev, test, build)
-└── README.md
-```
+Within the web application, click **Architecture** on the main menu to open the interactive in-app Graphify explorer.
 
 ---
 
-## 📜 Documentation Links
-- [Architecture & Design Details](file:///Users/sukrutdusane/Documents/Projects%20/Sy/pong/docs/ARCHITECTURE.md)
-- [Setup & Troubleshooting](file:///Users/sukrutdusane/Documents/Projects%20/Sy/pong/docs/SETUP.md)
-- [Graphify Verification Report](file:///Users/sukrutdusane/Documents/Projects%20/Sy/pong/docs/GRAPHIFY.md)
-- [Asset Discovery & Audio Synthesis](file:///Users/sukrutdusane/Documents/Projects%20/Sy/pong/docs/ASSETS.md)
-- [Demonstration Script](file:///Users/sukrutdusane/Documents/Projects%20/Sy/pong/docs/DEMO_SCRIPT.md)
+## 🎬 Hackathon Demo Script (3-Minute Tour)
+
+1. **Launch Screen**:
+   - Observe the neo-brutalist arcade marquee.
+   - Check the top-right AI status pill (displays active provider and model identifier).
+   - Select **ITTF Statutes 2026** rule profile and **Medium** difficulty.
+2. **Gesture Lab**:
+   - Click **Gesture Lab**. Permit camera access.
+   - Observe the 21-point hand landmark skeleton, OneEuroFilter jitter reduction, live latency (ms), and FPS counter.
+   - Test stroke classification (`FOREHAND`, `BACKHAND`, `SMASH`).
+3. **Gameplay**:
+   - Start match with webcam or keyboard `[WASD]`. Press `[Space]` to serve.
+   - Play a rally; observe the dynamic mission card, ball trajectory trails, and sound effects.
+   - Complete the match (first to 11 in ITTF mode, or first to 7 in Arcade mode).
+4. **Gemma 4 Coaching Debrief**:
+   - Inspect the post-match debrief. Review observed facts, evidence benchmarks, identified weaknesses, and ITTF citations.
+   - Type a question in the Natural Language Analytics Assistant (e.g. "*Why did I miss my returns?*") and receive an answer grounded in the actual match numbers.
+5. **Rules & Architecture Explorers**:
+   - Open **Rules Explorer** to inspect ITTF §2.1–§2.12 provisions and verification test badges.
+   - Open **Architecture** to explore the 563-node Graphify knowledge graph.
+
+---
+
+## 📜 Documentation Index
+
+- [Architecture Design](docs/ARCHITECTURE.md)
+- [Implementation Plan](docs/IMPLEMENTATION_PLAN.md)
+- [Architectural Decisions (ADR)](docs/DECISIONS.md)
+- [Analytics & Metric Contracts](docs/ANALYTICS_SPEC.md)
+- [ITTF 2026 Rules Traceability](docs/RULES_TRACEABILITY.md)
+- [Privacy & Data Minimization](docs/PRIVACY.md)
+- [Testing & Quality Assurance](docs/TESTING.md)
+- [Third-Party Software & Licenses](docs/THIRD_PARTY_NOTICES.md)
 
 ---
 
 ## ⚖️ License
-MIT License. Procedural geometry and procedural Web Audio synthesizers built specifically for Gesture Pong AI.
+This project is licensed under the Apache 2.0 License. See [docs/THIRD_PARTY_NOTICES.md](docs/THIRD_PARTY_NOTICES.md) for third-party libraries and model licenses.

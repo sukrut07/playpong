@@ -12,7 +12,10 @@ pnpm-debug.log*
 lerna-debug.log*
 .agent/
 .system_generated/
-graphify_out/
 *.log
 shared/*.js
 shared/*.d.ts
+*.tsbuildinfo
+graphify-out/cache/
+graphify-out/2026-*/
+graphify-out/.graphify_*
