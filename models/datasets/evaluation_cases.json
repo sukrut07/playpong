@@ -1,0 +1,190 @@
+[
+  {
+    "id": "eval_01_short_summary",
+    "name": "Short Match Summary",
+    "task_type": "FAST_SUMMARY",
+    "payload": {
+      "match_id": "match_bench_01",
+      "player_score": 11,
+      "opponent_score": 7,
+      "return_success_rate": 81.8,
+      "eligible_return_attempts": 22,
+      "longest_rally": 9,
+      "rule_profile": "TABLE_TENNIS_TRAINING"
+    },
+    "expected_checks": {
+      "requires_model": "gemma4:e2b",
+      "must_contain_metrics": ["return_success_rate", "player_score"],
+      "max_latency_seconds": 15
+    }
+  },
+  {
+    "id": "eval_02_complex_coaching",
+    "name": "Complex Performance Coaching",
+    "task_type": "MATCH_COACHING",
+    "payload": {
+      "match_id": "match_bench_02",
+      "player_score": 8,
+      "opponent_score": 11,
+      "return_success_rate": 55.0,
+      "eligible_return_attempts": 20,
+      "missed_returns": 9,
+      "longest_rally": 5,
+      "average_rally_length": 2.4,
+      "table_zone_distribution": { "left": 12, "center": 3, "right": 5 },
+      "rule_profile": "TABLE_TENNIS_TRAINING"
+    },
+    "expected_checks": {
+      "requires_model": "gemma4:e4b",
+      "must_contain_sections": ["observations", "recommendations", "training_plan"],
+      "max_latency_seconds": 30
+    }
+  },
+  {
+    "id": "eval_03_zero_denominator",
+    "name": "Zero Eligible Return Attempts",
+    "task_type": "MATCH_COACHING",
+    "payload": {
+      "match_id": "match_bench_03",
+      "player_score": 0,
+      "opponent_score": 3,
+      "return_success_rate": null,
+      "eligible_return_attempts": 0,
+      "missed_returns": 0,
+      "longest_rally": 0,
+      "average_rally_length": null,
+      "rule_profile": "TABLE_TENNIS_TRAINING"
+    },
+    "expected_checks": {
+      "must_not_divide_by_zero": true,
+      "expected_limitation_note": "No return attempts recorded; cannot compute return accuracy"
+    }
+  },
+  {
+    "id": "eval_04_missing_gesture_data",
+    "name": "Missing Gesture Data",
+    "task_type": "MATCH_COACHING",
+    "payload": {
+      "match_id": "match_bench_04",
+      "player_score": 5,
+      "opponent_score": 11,
+      "controller_mode": "keyboard",
+      "tracking_stability_percentage": 0,
+      "eligible_return_attempts": 10,
+      "return_success_rate": 50.0,
+      "rule_profile": "ARCADE_PONG"
+    },
+    "expected_checks": {
+      "must_flag_controller_mode": "keyboard",
+      "must_not_hallucinate_hand_tracking": true
+    }
+  },
+  {
+    "id": "eval_05_conflicting_metrics",
+    "name": "Conflicting Metrics Detection",
+    "task_type": "MATCH_COACHING",
+    "payload": {
+      "match_id": "match_bench_05",
+      "player_score": 11,
+      "opponent_score": 4,
+      "successful_returns": 15,
+      "eligible_return_attempts": 10,
+      "rule_profile": "TABLE_TENNIS_TRAINING"
+    },
+    "expected_checks": {
+      "must_trigger_validation_error": true,
+      "error_type": "successful_returns > eligible_return_attempts"
+    }
+  },
+  {
+    "id": "eval_06_invalid_match_id",
+    "name": "Invalid Match ID",
+    "task_type": "MATCH_COACHING",
+    "payload": {
+      "match_id": "",
+      "player_score": 0,
+      "opponent_score": 0
+    },
+    "expected_checks": {
+      "http_status": 400,
+      "must_reject": true
+    }
+  },
+  {
+    "id": "eval_07_unknown_rule",
+    "name": "Question About Unknown Rule",
+    "task_type": "RULE_EXPLANATION",
+    "payload": {
+      "rule_id": "ITTF-99.99",
+      "question": "What does rule ITTF-99.99 say about flying paddles?"
+    },
+    "expected_checks": {
+      "must_report_unregistered_rule": true,
+      "must_not_invent_rule_text": true
+    }
+  },
+  {
+    "id": "eval_08_unsupported_rule_claim",
+    "name": "Unsupported Rule Claim",
+    "task_type": "RULE_EXPLANATION",
+    "payload": {
+      "rule_id": "ITTF-2.6",
+      "question": "Can I hide the ball with my jersey during serve?"
+    },
+    "expected_checks": {
+      "must_cite_source": "ITTF Statutes 2026 §2.6",
+      "must_explain_visibility_requirement": true
+    }
+  },
+  {
+    "id": "eval_09_unequal_sample_sizes",
+    "name": "Controller Comparison Unequal Sample Sizes",
+    "task_type": "BENCHMARK_INTERPRETATION",
+    "payload": {
+      "controller_a": { "name": "Gesture Controller", "samples": 3, "success_rate": 90.0 },
+      "controller_b": { "name": "Predictive AI Opponent", "samples": 400, "success_rate": 84.5 }
+    },
+    "expected_checks": {
+      "must_flag_sample_size_imbalance": true,
+      "must_not_claim_statistical_significance": true
+    }
+  },
+  {
+    "id": "eval_10_provider_timeout",
+    "name": "Provider Timeout Handling",
+    "task_type": "FAST_SUMMARY",
+    "payload": {
+      "match_id": "match_bench_10",
+      "simulate_timeout": true
+    },
+    "expected_checks": {
+      "must_engage_fallback": true,
+      "error_code": "PROVIDER_TIMEOUT"
+    }
+  },
+  {
+    "id": "eval_11_invalid_structured_output",
+    "name": "Invalid Structured Output Recovery",
+    "task_type": "MATCH_COACHING",
+    "payload": {
+      "match_id": "match_bench_11",
+      "simulate_corrupt_json": true
+    },
+    "expected_checks": {
+      "must_retry_or_fallback": true,
+      "must_never_crash": true
+    }
+  },
+  {
+    "id": "eval_12_empty_match_history",
+    "name": "Empty Match History Query",
+    "task_type": "ANALYTICS_EXPLANATION",
+    "payload": {
+      "match_id": "match_bench_12",
+      "history": []
+    },
+    "expected_checks": {
+      "must_handle_empty_gracefully": true
+    }
+  }
+]

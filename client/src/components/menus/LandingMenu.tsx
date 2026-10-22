@@ -25,6 +25,7 @@ interface LandingMenuProps {
   onOpenRules: () => void;
   onOpenArchitecture: () => void;
   onOpenSettings: () => void;
+  onOpenOrchestrator?: () => void;
   aiStatus: {
     available: boolean;
     provider: 'gemini' | 'ollama';
@@ -44,6 +45,7 @@ export const LandingMenu: React.FC<LandingMenuProps> = ({
   onOpenRules,
   onOpenArchitecture,
   onOpenSettings,
+  onOpenOrchestrator,
   aiStatus,
   isWebcamActive,
 }) => {
@@ -245,9 +247,30 @@ export const LandingMenu: React.FC<LandingMenuProps> = ({
                 </div>
                 <h4 className="font-display font-bold text-base text-[#121212]">Architecture</h4>
                 <p className="text-xs text-gray-600 mt-1">
-                  Interactive codebase map with 300 nodes, god nodes, and AST dependencies.
+                  Interactive codebase map with 500+ nodes, god nodes, and AST dependencies.
                 </p>
               </button>
+
+              {/* Local AI Orchestrator & Coach */}
+              {onOpenOrchestrator && (
+                <button
+                  onClick={onOpenOrchestrator}
+                  className="neo-box p-4 bg-[#CCFF00]/15 text-left hover:bg-[#CCFF00]/30 transition-all hover:-translate-y-0.5 border-[#121212] col-span-2"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <Cpu className="w-5 h-5 text-purple-700" />
+                      <span className="font-display font-bold text-base text-[#121212]">
+                        Local AI Orchestrator & Gemma 4 Coach
+                      </span>
+                    </div>
+                    <span className="neo-badge bg-[#CCFF00] text-[9px] py-0 px-1">LangGraph</span>
+                  </div>
+                  <p className="text-xs text-gray-700">
+                    Dual Gemma 4 (E2B / E4B) orchestration pipeline, multi-step reflective coaching, evidence grounding, and empirical benchmark results.
+                  </p>
+                </button>
+              )}
             </div>
           </div>
         </div>

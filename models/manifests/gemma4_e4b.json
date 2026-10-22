@@ -1,0 +1,30 @@
+{
+  "model_family": "gemma4",
+  "model_tag": "gemma4:e4b",
+  "source": "https://ollama.com/library/gemma4",
+  "license": "Gemma Terms of Use / Open Weights",
+  "parameter_tier": "E4B (Effective 4B parameters)",
+  "quantization": "nvfp4",
+  "format": "safetensors",
+  "runner": "mlx",
+  "size_bytes": 9461576343,
+  "size_human": "9.5 GB",
+  "context_window": 131072,
+  "digest": "eb2177adf7646d15faead94fdad6d3e170dc8015653418a3b7d5d52a6380be5b",
+  "download_date": "2026-10-22T15:01:47Z",
+  "runtime_requirements": {
+    "recommended_ram_gb": 16,
+    "minimum_ram_gb": 10,
+    "hardware_acceleration": "Apple Silicon MLX / Metal / CUDA supported"
+  },
+  "intended_use": [
+    "In-depth post-match tactical coaching",
+    "Multi-metric trend analysis",
+    "Personalized exercise and training plan generation",
+    "Benchmark and opponent prediction interpretation"
+  ],
+  "routing_tier": "MATCH_COACHING, BENCHMARK_INTERPRETATION, ANALYTICS_EXPLANATION",
+  "evaluation_status": "VERIFIED_LOCAL_INFERENCE",
+  "is_custom_checkpoint": false,
+  "training_lineage": "Official Google Gemma 4 Pretrained Foundation Model"
+}

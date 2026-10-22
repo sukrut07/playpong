@@ -1,56 +1,47 @@
-# PONG AI — Architecture & Design Decisions (ADR)
+# PONG AI — Architecture Decision Records (ADRs)
 
-## ADR 001: Gemma 4 as the Intelligence Layer (Not a Chatbot)
+## ADR 001: Separation of Real-Time Physics from LLM Inference Loop
+
 - **Status**: Accepted
-- **Context**: LLMs in games are often relegated to decorative conversational widgets that have no access to actual game mechanics or player telemetry.
-- **Decision**: Gemma 4 is integrated as an evidence-grounded reasoning engine. It receives validated structured match telemetry (event counts, rally length distributions, hit/miss ratios, reaction times, gesture availability) and produces structured JSON coaching reports with explicit observations, empirical evidence, weakness diagnoses, actionable training exercises, and ITTF rule references.
-- **Consequences**: Game outcomes and scoring remain 100% deterministic and authoritative. The AI interprets evidence rather than calculating physics.
+- **Context**: Real-time table tennis gameplay requires continuous collision detection (CCD) and physics integration at a deterministic 60–120 Hz update rate.
+- **Decision**: The LLM (LangChain/LangGraph) is strictly isolated from the frame-by-frame physics loop. MediaPipe and the paddle controller execute purely in TypeScript/WebGL on client. The AI orchestrator operates out-of-band on match completion.
+- **Consequences**: Zero gameplay lag; game remains playable even if Ollama is unresponsive.
 
 ---
 
-## ADR 002: Dual Inference Deployment Strategy (Gemini API & Local Ollama)
+## ADR 002: Dual Gemma 4 (E2B vs E4B) Task Routing with Fallback
+
 - **Status**: Accepted
-- **Context**: The hackathon specification mandates open-weight Gemma 4 through the official Gemini API (`gemma-4-26b-a4b-it` or `gemma-4-31b-it`), while also maintaining developer flexibility for offline/local execution through Ollama.
-- **Decision**: Implement a replaceable `AICoachProvider` abstraction in the backend:
-  1. `GeminiGemmaProvider`: Calls the official Gemini API with supported Gemma 4 model identifiers. The API key is securely held server-side (`GEMINI_API_KEY`).
-  2. `OllamaGemmaProvider`: Calls local Ollama daemon (`http://localhost:11434`) running `gemma4:e2b`.
-- **Consequences**: Clear separation between hosted API and local inference. The UI transparently communicates which provider is active and never claims hosted inference is offline.
+- **Context**: Ollama exposes both `gemma4:e2b` (7.5 GB) and `gemma4:e4b` (9.5 GB). E2B is fast and low-latency; E4B provides superior multi-metric reasoning but higher memory overhead.
+- **Decision**: Implement `AUTO_BY_TASK` routing:
+  - Lightweight intent classification, rules explanation, and short summaries route to **E2B**.
+  - Deep post-match coaching, personalized training plans, and controller evaluations route to **E4B**.
+  - If E4B is unavailable or loading, the system automatically falls back to E2B, and if both are offline, engages deterministic fallback.
+- **Consequences**: Optimal balance of response latency (<2s for quick tasks) and reasoning depth without exceeding memory limits.
 
 ---
 
-## ADR 003: Dual Rule Profiles (ARCADE_PONG vs TABLE_TENNIS_TRAINING)
+## ADR 003: Dedicated Python AI Orchestrator with Node.js Gateway
+
 - **Status**: Accepted
-- **Context**: Table tennis rules (ITTF Statutes 2026) are intricate and involve real-world physical constraints (e.g. ball tossed 16cm vertically from palm, unbroken visibility to receivers) that cannot be fully verified from a single 2D webcam and simplified 3D Pong geometry.
-- **Decision**: Maintain two distinct rule profiles:
-  1. `ARCADE_PONG`: Fast-paced arcade table tennis with simplified scoring, wall bounces, and instant serves.
-  2. `TABLE_TENNIS_TRAINING`: Aligned with official ITTF Statutes 2026 (Chapter 2 Laws of Table Tennis). Rules that can be simulated (table dimensions, net height, alternating serve, edge balls, deuce scoring) are marked `IMPLEMENTED_AND_TESTED` or `PARTIALLY_SIMULATED`. Rules requiring human umpires or high-speed multi-camera setups (e.g. 16cm toss legality) are categorized as `DOCUMENTED_ONLY` with honest disclosures.
-- **Consequences**: No misleading claims of official umpiring or certification. High academic and sporting credibility.
+- **Context**: The game client is React/Three.js, while the multiplayer server is Node.js/TypeScript. LangGraph and the official `langchain-ollama` ecosystem are native to Python.
+- **Decision**: Create a modular Python service (`services/ai-orchestrator/`) using FastAPI. The Node.js server proxies coaching requests to `http://localhost:8000`, falling back seamlessly if the service is stopped.
+- **Consequences**: Clean architectural boundaries; leverages Python's native AI/ML libraries while keeping game logic in TypeScript.
 
 ---
 
-## ADR 004: Neo-Brutalist Arcade Visual Design System
+## ADR 004: In-Memory Checkpointer for Local Privacy
+
 - **Status**: Accepted
-- **Context**: Standard AI demos often rely on generic dark-mode dashboards with excessive gradients, rounded cards, and visual clutter.
-- **Decision**: Adopt a distinct Neo-Brutalist Arcade aesthetic:
-  - Warm cream canvas background (`#FAF6EB`)
-  - Thick, near-black solid outlines (`#121212`, 2.5px - 3px)
-  - Offset hard shadows (`3px 3px 0px #121212`, `4px 4px 0px #121212`)
-  - High-energy accent colors: Electric Lime (`#CCFF00`), Lavender (`#E4DCFF`), Peach (`#FF6B4A`), Violet (`#6D28D9`)
-  - Monospace technical labels and bold display typography (`Outfit`, `JetBrains Mono`)
-- **Consequences**: High visual contrast, memorable gaming feel, and clear accessibility.
+- **Context**: LangGraph workflows support checkpointing and state replay. Cloud tracing services (e.g. LangSmith) can accidentally leak telemetry.
+- **Decision**: Use `langgraph.checkpoint.memory.MemorySaver` for ephemeral run persistence in process RAM. Tracing is disabled by default in `.env`.
+- **Consequences**: High-speed local state inspection without transmitting user match data over the internet.
 
 ---
 
-## ADR 005: Deterministic Continuous Collision Physics Engine
-- **Status**: Accepted
-- **Context**: A 60 FPS update rate has ~16.6ms intervals. At ball speeds of 6-10 m/s, the ball moves 10-17 cm per frame, which can cause tunneling through thin paddles or the table surface.
-- **Decision**: Custom deterministic simulation layer with 4 sub-steps per frame (up to 240 physics evaluations/sec). Ball trajectory is interpolated along micro-steps to guarantee precise continuous collision detection without requiring heavy external physics libraries like Cannon or Rapier.
-- **Consequences**: Lightweight bundle, zero physics tunneling, deterministic replayability for benchmark testing.
+## ADR 005: Deterministic Evidence Grounding & Zero-Denominator Invariants
 
----
-
-## ADR 006: Graphify Knowledge Graph Integration
 - **Status**: Accepted
-- **Context**: Codebase architecture is often documented in stale static diagrams that diverge from reality.
-- **Decision**: Use Graphify to extract the real AST knowledge graph (`graphify-out/graph.json`). Provide an interactive in-app Architecture Explorer that reads this live JSON file to visualize component hubs, god nodes, and cross-module relationships directly to the user and hackathon judges.
-- **Consequences**: Automatic architectural transparency with verified freshness from git HEAD.
+- **Context**: Language models are prone to hallucinating numbers, dividing by zero, or inventing statistics when sample sizes are small.
+- **Decision**: An explicit Python validation node audits all telemetry before LLM prompt generation and cross-checks the LLM's response against the evidence. Zero return attempts result in `None` / `N/A`, and any claim of 100% or 0% return rate on zero attempts is caught and rejected.
+- **Consequences**: Factually grounded, auditable coaching reports.

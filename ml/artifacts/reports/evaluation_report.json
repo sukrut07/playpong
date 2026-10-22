@@ -1,0 +1,111 @@
+{
+  "metrics": {
+    "accuracy": 0.1667,
+    "macro_precision": 0.1652,
+    "macro_recall": 0.1667,
+    "macro_f1": 0.1581,
+    "per_class": {
+      "BACKHAND": {
+        "precision": 0.2,
+        "recall": 0.333,
+        "f1": 0.25,
+        "support": 12
+      },
+      "FOREHAND": {
+        "precision": 0.25,
+        "recall": 0.25,
+        "f1": 0.25,
+        "support": 12
+      },
+      "IDLE": {
+        "precision": 0.143,
+        "recall": 0.083,
+        "f1": 0.105,
+        "support": 12
+      },
+      "READY": {
+        "precision": 0.167,
+        "recall": 0.083,
+        "f1": 0.111,
+        "support": 12
+      },
+      "SMASH": {
+        "precision": 0.067,
+        "recall": 0.083,
+        "f1": 0.074,
+        "support": 12
+      }
+    },
+    "confusion_matrix": [
+      [
+        4,
+        3,
+        1,
+        1,
+        3
+      ],
+      [
+        3,
+        3,
+        2,
+        0,
+        4
+      ],
+      [
+        4,
+        4,
+        1,
+        0,
+        3
+      ],
+      [
+        5,
+        1,
+        1,
+        1,
+        4
+      ],
+      [
+        4,
+        1,
+        2,
+        4,
+        1
+      ]
+    ],
+    "total_samples": 60
+  },
+  "latency": {
+    "p50_ms": 0.118,
+    "p90_ms": 0.122,
+    "p95_ms": 0.123,
+    "p99_ms": 0.126,
+    "mean_ms": 0.119,
+    "std_ms": 0.003,
+    "fps_throughput": 8434.3
+  },
+  "manifest": {
+    "artifact_id": "gesture_mlp_v1",
+    "model_architecture": "MLPClassifier (128, 64, 32)",
+    "input_features": 126,
+    "sequence_window_frames": 15,
+    "classes": [
+      "BACKHAND",
+      "FOREHAND",
+      "IDLE",
+      "READY",
+      "SMASH"
+    ],
+    "dataset_split_method": "session_separated_zero_leakage",
+    "created_at": "2026-10-22T10:25:02Z",
+    "train_samples": 240,
+    "test_samples": 60,
+    "test_accuracy": 0.1667,
+    "macro_f1": 0.1581,
+    "latency_p50_ms": 0.118,
+    "latency_p95_ms": 0.123,
+    "fps_throughput": 8434.3,
+    "checkpoint_path": "/Users/sukrutdusane/Documents/Projects /Sy/playpong/ml/artifacts/checkpoints/gesture_mlp_v1.joblib",
+    "status": "TRAINED_AND_VERIFIED"
+  }
+}

@@ -13,6 +13,9 @@
     "dev:client": "npm run dev --prefix client",
     "build": "npm run build --prefix server && npm run build --prefix client",
     "test": "npm run test --prefix server && npm run test --prefix client",
+    "ai": "cd services/ai-orchestrator && ./run.sh",
+    "test:ai": "cd services/ai-orchestrator && .venv/bin/pytest tests",
+    "eval:ai": "cd services/ai-orchestrator && .venv/bin/python tests/evaluate_models.py",
     "graphify:extract": "graphify extract . --code-only",
     "graphify:query": "graphify query"
   },

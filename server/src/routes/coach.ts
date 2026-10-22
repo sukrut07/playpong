@@ -125,3 +125,25 @@ coachRouter.post('/summary', async (req: Request, res: Response) => {
     return res.status(500).json({ error: err.message });
   }
 });
+
+// Orchestrator metadata and model status proxy
+coachRouter.get('/orchestrator/status', async (_req: Request, res: Response) => {
+  try {
+    const orchAdapter = aiProviderManager.getOrchestratorAdapter();
+    const health = await orchAdapter.checkHealth();
+    let models = null;
+    if (health.available) {
+      try {
+        models = await orchAdapter.getModels();
+      } catch (e) {
+        // ignore
+      }
+    }
+    return res.json({
+      orchestratorHealth: health,
+      models,
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});

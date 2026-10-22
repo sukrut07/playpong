@@ -20,3 +20,7 @@ shared/*.d.ts
 graphify-out/cache/
 graphify-out/2026-*/
 graphify-out/.graphify_*
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

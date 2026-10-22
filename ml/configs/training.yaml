@@ -1,0 +1,22 @@
+# PONG AI — ML Training Engine Global Config
+training:
+  random_seed: 42
+  batch_size: 32
+  max_epochs: 50
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  early_stopping_patience: 10
+  class_weighting: "balanced"
+  metric_for_best_checkpoint: "val_macro_f1"
+
+evaluation:
+  target_metrics:
+    - "accuracy"
+    - "macro_precision"
+    - "macro_recall"
+    - "macro_f1"
+    - "per_class_recall"
+    - "confusion_matrix"
+    - "latency_p50_ms"
+    - "latency_p95_ms"
+  max_acceptable_latency_ms: 15.0 # Must execute within 1 frame (16.6ms) for 60fps tracking

@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pong-ml"
+version = "0.1.0"
+description = "PONG AI — MediaPipe Hand Gesture & Temporal Action ML Pipeline"
+readme = "README.md"
+authors = [{ name = "PONG AI Engineering Team" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "scikit-learn>=1.3.0",
+    "pydantic>=2.5.0",
+    "pyyaml>=6.0",
+    "joblib>=1.3.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0"
+]
+video = [
+    "torch>=2.0.0",
+    "transformers>=4.35.0",
+    "av>=11.0.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

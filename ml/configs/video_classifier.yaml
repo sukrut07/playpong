@@ -1,0 +1,31 @@
+# PONG AI — Video Action Classifier Research & Fine-Tuning Scaffolding
+# Based on Hugging Face VideoMAE & RacketVision research
+research:
+  dataset_reference: "https://huggingface.co/datasets/Corgiluu/RacketVision"
+  dataset_name: "RacketVision"
+  dataset_description: "Table-tennis, badminton, and tennis video clips annotated for ball, racket, and player action."
+  backbone_model: "MCG-NJU/videomae-base"
+  hf_model_url: "https://huggingface.co/MCG-NJU/videomae-base"
+  project_reference: "https://huggingface.co/Bot-Derpy/racquet-sports-analyzer"
+
+model:
+  architecture: "VideoMAEForVideoClassification"
+  num_frames: 16
+  sampling_rate: 4
+  image_size: 224
+  num_classes: 4
+  target_classes:
+    - "SERVE"
+    - "FOREHAND_LOOP"
+    - "BACKHAND_PUSH"
+    - "SMASH"
+
+hardware_requirements:
+  recommended_gpu: "NVIDIA RTX 4090 / A100 or Apple Silicon M-series (MPS with 32GB unified RAM)"
+  min_vram_gb: 16
+  batch_size: 8
+  gradient_accumulation_steps: 4
+
+status:
+  readiness: "SCAFFOLDED_RESEARCH_PHASE"
+  policy: "Do not download heavy video transformer weights until labelled table-tennis action dataset licensing and latency constraints are verified."

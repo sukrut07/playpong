@@ -141,6 +141,7 @@ export interface TrainingPlanDrill {
   targetMetric: string;
   targetGoal: string;
   instructions: string;
+  durationGuidance?: string;
 }
 
 export interface RuleReferenceLink {
@@ -152,6 +153,9 @@ export interface RuleReferenceLink {
 }
 
 export interface CoachingReport {
+  match_id?: string;
+  model_id?: string;
+  evidence_status?: string;
   summary: string;
   observations: CoachingObservation[];
   evidence: CoachingEvidence[];
@@ -165,6 +169,7 @@ export interface CoachingReport {
     provider: 'gemini' | 'ollama';
     model: string;
     inferenceTimeMs: number;
+    routingReason?: string;
   };
 }
 

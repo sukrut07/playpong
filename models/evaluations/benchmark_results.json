@@ -1,0 +1,298 @@
+{
+  "suite_name": "PONG AI Dual Gemma 4 Grounding & Reasoning Benchmark",
+  "timestamp": "2026-10-22T09:36:49Z",
+  "dataset_version": "1.0.0",
+  "models_evaluated": {
+    "gemma4:e2b": {
+      "model_tag": "gemma4:e2b",
+      "evaluated_at": "2026-10-22T09:45:16Z",
+      "total_test_cases": 12,
+      "successful_responses": 10,
+      "schema_validity_rate": 100.0,
+      "evidence_grounding_rate": 83.3,
+      "unsupported_claims_count": 0,
+      "median_latency_seconds": 44.632,
+      "p90_latency_seconds": 71.844,
+      "cases": [
+        {
+          "case_id": "eval_01_short_summary",
+          "case_name": "Short Match Summary",
+          "latency_sec": 54.623,
+          "status": "FALLBACK",
+          "evidence_status": "FALLBACK",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": [
+            "JSON parsing error: Expecting ',' delimiter: line 35 column 7 (char 1868)"
+          ]
+        },
+        {
+          "case_id": "eval_02_complex_coaching",
+          "case_name": "Complex Performance Coaching",
+          "latency_sec": 33.245,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_03_zero_denominator",
+          "case_name": "Zero Eligible Return Attempts",
+          "latency_sec": 71.844,
+          "status": "FALLBACK",
+          "evidence_status": "FALLBACK",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": [
+            "JSON parsing error: Expecting value: line 72 column 21 (char 3456)"
+          ]
+        },
+        {
+          "case_id": "eval_04_missing_gesture_data",
+          "case_name": "Missing Gesture Data",
+          "latency_sec": 33.345,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_05_conflicting_metrics",
+          "case_name": "Conflicting Metrics Detection",
+          "latency_sec": 79.062,
+          "status": "FALLBACK",
+          "evidence_status": "FALLBACK",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": [
+            "Constraint violation: successfulReturns (15) exceeds eligibleReturnAttempts (10)",
+            "JSON parsing error: Expecting ',' delimiter: line 47 column 7 (char 2656)"
+          ]
+        },
+        {
+          "case_id": "eval_06_invalid_match_id",
+          "case_name": "Invalid Match ID",
+          "latency_sec": 0.004,
+          "status": "FAILED",
+          "evidence_status": "UNKNOWN",
+          "schema_valid": true,
+          "grounded": false,
+          "validation_errors": [
+            "Empty match_id"
+          ]
+        },
+        {
+          "case_id": "eval_07_unknown_rule",
+          "case_name": "Question About Unknown Rule",
+          "latency_sec": 52.264,
+          "status": "FALLBACK",
+          "evidence_status": "FALLBACK",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": [
+            "Missing required schema field 'recommendations'",
+            "Model cited non-existent rule ID: ITTF-99.99"
+          ]
+        },
+        {
+          "case_id": "eval_08_unsupported_rule_claim",
+          "case_name": "Unsupported Rule Claim",
+          "latency_sec": 30.066,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_09_unequal_sample_sizes",
+          "case_name": "Controller Comparison Unequal Sample Sizes",
+          "latency_sec": 64.741,
+          "status": "FALLBACK",
+          "evidence_status": "FALLBACK",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": [
+            "JSON parsing error: Expecting ',' delimiter: line 35 column 7 (char 1664)"
+          ]
+        },
+        {
+          "case_id": "eval_10_provider_timeout",
+          "case_name": "Provider Timeout Handling",
+          "latency_sec": 44.632,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_11_invalid_structured_output",
+          "case_name": "Invalid Structured Output Recovery",
+          "latency_sec": 42.962,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_12_empty_match_history",
+          "case_name": "Empty Match History Query",
+          "latency_sec": 0.008,
+          "status": "FAILED",
+          "evidence_status": "UNKNOWN",
+          "schema_valid": true,
+          "grounded": false,
+          "validation_errors": [
+            "Invalid request_type: ANALYTICS_EXPLANATION"
+          ]
+        }
+      ]
+    },
+    "gemma4:e4b": {
+      "model_tag": "gemma4:e4b",
+      "evaluated_at": "2026-10-22T09:58:40Z",
+      "total_test_cases": 12,
+      "successful_responses": 10,
+      "schema_validity_rate": 100.0,
+      "evidence_grounding_rate": 83.3,
+      "unsupported_claims_count": 0,
+      "median_latency_seconds": 79.609,
+      "p90_latency_seconds": 96.237,
+      "cases": [
+        {
+          "case_id": "eval_01_short_summary",
+          "case_name": "Short Match Summary",
+          "latency_sec": 81.693,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_02_complex_coaching",
+          "case_name": "Complex Performance Coaching",
+          "latency_sec": 87.976,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_03_zero_denominator",
+          "case_name": "Zero Eligible Return Attempts",
+          "latency_sec": 91.364,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_04_missing_gesture_data",
+          "case_name": "Missing Gesture Data",
+          "latency_sec": 79.609,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_05_conflicting_metrics",
+          "case_name": "Conflicting Metrics Detection",
+          "latency_sec": 152.289,
+          "status": "FALLBACK",
+          "evidence_status": "FALLBACK",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": [
+            "Constraint violation: successfulReturns (15) exceeds eligibleReturnAttempts (10)"
+          ]
+        },
+        {
+          "case_id": "eval_06_invalid_match_id",
+          "case_name": "Invalid Match ID",
+          "latency_sec": 0.007,
+          "status": "FAILED",
+          "evidence_status": "UNKNOWN",
+          "schema_valid": true,
+          "grounded": false,
+          "validation_errors": [
+            "Empty match_id"
+          ]
+        },
+        {
+          "case_id": "eval_07_unknown_rule",
+          "case_name": "Question About Unknown Rule",
+          "latency_sec": 96.237,
+          "status": "FALLBACK",
+          "evidence_status": "FALLBACK",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": [
+            "Model cited non-existent rule ID: ITTF-99.99",
+            "Model cited non-existent rule ID: ITTF-99.99"
+          ]
+        },
+        {
+          "case_id": "eval_08_unsupported_rule_claim",
+          "case_name": "Unsupported Rule Claim",
+          "latency_sec": 40.513,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_09_unequal_sample_sizes",
+          "case_name": "Controller Comparison Unequal Sample Sizes",
+          "latency_sec": 64.157,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_10_provider_timeout",
+          "case_name": "Provider Timeout Handling",
+          "latency_sec": 57.053,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_11_invalid_structured_output",
+          "case_name": "Invalid Structured Output Recovery",
+          "latency_sec": 53.154,
+          "status": "SUCCESS",
+          "evidence_status": "VERIFIED",
+          "schema_valid": true,
+          "grounded": true,
+          "validation_errors": []
+        },
+        {
+          "case_id": "eval_12_empty_match_history",
+          "case_name": "Empty Match History Query",
+          "latency_sec": 0.007,
+          "status": "FAILED",
+          "evidence_status": "UNKNOWN",
+          "schema_valid": true,
+          "grounded": false,
+          "validation_errors": [
+            "Invalid request_type: ANALYTICS_EXPLANATION"
+          ]
+        }
+      ]
+    }
+  }
+}

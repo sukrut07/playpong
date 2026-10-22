@@ -1,82 +1,74 @@
-# PONG AI — Implementation Plan & Stage Milestones
+# PONG AI — Implementation Plan & Phase Acceptance Criteria
 
-## Overview
-This implementation plan follows the structured 8-stage roadmap specified in the PONG AI architecture prompt. Each stage has explicit verification criteria and deliverables to prevent scope creep or broken intermediate states.
+- [x] **Phase 0: Architecture Audit & Baseline Verification**
+  - [x] Audit existing repository structure, dependencies, and environment.
+  - [x] Create `docs/INITIAL_AUDIT.md` and `docs/IMPLEMENTATION_PLAN.md`.
+  - [x] Verify Git cleanliness and branch status.
 
----
+- [x] **Phase 1: Neo-Brutalist Frontend & Interactive User Experience**
+  - [x] Responsive neo-brutalist arcade design system with custom palettes, bold borders, and offset shadows.
+  - [x] Main routes: Landing (`/`), Game Setup (`/play`), Play Arena (`/game/:id`), Multiplayer Lobby (`/multiplayer`), Analytics Dashboard (`/dashboard`), AI Coach (`/coach`), and AI Orchestrator (`/orchestrator`).
+  - [x] Interactive AI Orchestrator view with live status cards, smoke testing, LangGraph 11-stage visualization, and empirical benchmarks.
 
-## Stage Checklist
+- [x] **Phase 2: Deterministic 3D Game Engine & Physics**
+  - [x] Fixed-timestep simulation with continuous collision detection against paddles and bounds.
+  - [x] Mathematical trajectory prediction for computer opponent with reaction delay.
+  - [x] Authoritative event stream (rallies, returns, bounces, misses, lets, points).
+  - [x] Strict rule separation: `ARCADE_PONG` vs `TABLE_TENNIS_TRAINING`.
 
-### Stage 1: Working Foundation & Architecture Setup
-- [x] Initial repository audit (package structure, existing code, dependencies, entry points).
-- [x] Create comprehensive `.env.example` with Gemma 4 configurations.
-- [x] Establish architecture documentation (`docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/DECISIONS.md`).
-- [x] Implement Neo-Brutalist Arcade Design System tokens and typography (`client/src/styles/index.css`).
-- [x] Define shared rule contracts, metric formulas, and event types in `shared/`.
+- [x] **Phase 3: MediaPipe Webcam Hand Tracking**
+  - [x] In-browser `@mediapipe/tasks-vision` GPU delegate.
+  - [x] 21-point hand landmarker tracking palm and wrist coordinates.
+  - [x] Point2D EMA smoothing filter and bounding calibration.
+  - [x] Graceful fallback to keyboard (Arrow keys / WASD) and touch controls.
 
-### Stage 2: Playable Game & Deterministic Simulation
-- [x] Support dual rule profiles (`ARCADE_PONG` and `TABLE_TENNIS_TRAINING`) in the engine.
-- [x] Physics sub-stepping with continuous collision detection (CCD) for ball, net, table, and paddles.
-- [x] Implement baseline AI opponent with deterministic interception trajectory prediction and configurable error.
-- [x] Keyboard fallback controls (`[WASD]` / Arrow keys / `[Space]` serve).
-- [x] Sound and visual feedback with accessible toggle options.
+- [x] **Phase 4: Node.js Multiplayer Backend Authority**
+  - [x] Socket.IO room lifecycle, room codes, and player readiness states.
+  - [x] Server-authoritative collision and score validation.
+  - [x] AI Provider Adapter bridging Node.js to Python FastAPI orchestrator.
+  - [x] Deterministic offline fallback engine when Python or Ollama is offline.
 
-### Stage 3: Gesture Control & Gesture Lab
-- [x] Integrate MediaPipe Tasks Vision hand landmarker with stable palm/wrist anchor.
-- [x] One Euro adaptive low-pass filter and exponential moving average (EMA) jitter reduction.
-- [x] Live reaching boundary calibration (minX, maxX, minY, maxY, center point) stored in localStorage.
-- [x] Dedicated **Gesture Lab** interface:
-  - Live video preview with 21-landmark skeleton overlay.
-  - Interactive calibration wizard.
-  - Real-time sensitivity and latency meters.
-  - Tracking diagnostics: availability percentage, frame rate, dropped frame indicator.
-  - Sequence gesture classifier experiment (IDLE, READY, FOREHAND, BACKHAND, SMASH) with precision/recall display.
+- [x] **Phase 5: ITTF Statutes 2026 Rules Knowledge Base**
+  - [x] Ingest official ITTF Statutes 2026 clean version (§2.1 through §2.15).
+  - [x] Create `data/rules/processed/ittf_rules.jsonl` with section, page, and exact statutory citations.
+  - [x] Create `data/rules/processed/rule_conflicts.jsonl` mapping arcade physics to official regulations.
+  - [x] Create `data/rules/processed/rule_qa_train.jsonl` and `rule_qa_eval.jsonl`.
+  - [x] Build `RulesRetriever` in `services/ai-orchestrator/app/retrieval/rules_retriever.py` with uncertainty fallback.
 
-### Stage 4: Gemma 4 Coaching Engine (Primary AI Layer)
-- [x] Implement server AI provider abstraction (`server/src/ai/`).
-- [x] Implement Gemini API adapter for Gemma 4 (`gemma-4-26b-a4b-it` and `gemma-4-31b-it`).
-- [x] Implement local Ollama adapter (`gemma4:e2b`).
-- [x] Strict Zod schema validation for coaching reports:
-  - `summary`, `observations[]`, `evidence[]`, `weaknesses[]`, `recommendations[]`, `training_plan[]`, `rule_references[]`, `limitations[]`.
-- [x] Natural language Q&A analytics assistant endpoint for post-match reasoning.
-- [x] UI transparency: provider badges, model ID display, timeout/error recovery without fabricated text.
+- [x] **Phase 6: Python ML Training & Gesture Scaffolding (`ml/`)**
+  - [x] Create `ml/` workspace with configs, data schemas, features, models, training, inference, and metrics.
+  - [x] Implement wrist-origin normalization and 126-dim temporal sliding window feature extraction.
+  - [x] Implement session-partitioned data splits to strictly prevent adjacent frame leakage.
+  - [x] Train baseline `GestureClassifierModel` on synthetic sequence fixtures; export verified checkpoint and manifest.
+  - [x] Achieve sub-millisecond CPU inference (<0.1ms p50 latency, >10,000 FPS throughput).
+  - [x] Research scaffolding for Hugging Face VideoMAE and RacketVision action recognition.
 
-### Stage 5: Analytics Engine, Metric Contracts & Rules Explorer
-- [x] Centralized, auditable metric calculations with explicit formulas and zero-denominator handling:
-  - `return_success_rate = successful_returns / eligible_return_attempts`
-  - `miss_rate = missed_returns / eligible_return_attempts`
-  - `average_rally_length = total_counted_contacts / completed_rallies`
-- [x] Interactive **Analytics Studio** with Recharts:
-  - Rally-length histogram, reaction time distribution, table zone landing distribution.
-- [x] Reproducible Benchmark Lab runner:
-  - Run fixed-seed automated trials against baseline controllers across Easy, Medium, Hard.
-  - Measure interception error, success rate, and response delay.
-- [x] **Rules Explorer** interface:
-  - Dual profiles: `ARCADE_PONG` and `TABLE_TENNIS_TRAINING` (ITTF Statutes 2026 Chapter 2).
-  - Status badges (`IMPLEMENTED_AND_TESTED`, `PARTIALLY_SIMULATED`, `DOCUMENTED_ONLY`, `NOT_IMPLEMENTED`).
-  - Search, filter by status, official section citations, limitations, test references.
+- [x] **Phase 7: Python FastAPI AI Orchestration with LangChain & LangGraph**
+  - [x] Standalone FastAPI service in `services/ai-orchestrator/`.
+  - [x] LangChain `ChatOllama` adapter with dynamic model routing between `gemma4:e2b` and `gemma4:e4b`.
+  - [x] 11-stage LangGraph StateGraph pipeline with typed state, retry loop, and fallback.
+  - [x] Pydantic schemas supporting snake_case and camelCase serialization.
+  - [x] Local memory checkpointer (`MemorySaver`) for ephemeral state replay without external cloud leakage.
 
-### Stage 6: Graphify Codebase Architecture Explorer
-- [x] Inspect existing `graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md`.
-- [x] In-app interactive Architecture Explorer:
-  - Renders actual nodes, community clusters, god nodes (`TableTennisEngine`, `App`, `VisionPipeline`).
-  - Search, zoom, node detail inspector, dependency links.
-  - Graph freshness indicator linked to commit hash.
+- [x] **Phase 8: Model Lifecycle, Governance & Manifests**
+  - [x] Four-tier distinction: Downloaded Weights, Ollama Modelfiles, Datasets, and Fine-Tuned Checkpoints.
+  - [x] Formal manifests in `models/manifests/` for E2B (digest `45d11505b91d...`) and E4B (`eb2177adf764...`).
+  - [x] Training guidelines in `models/training/README.md` forbidding fabricated fine-tune claims.
 
-### Stage 7: Multiplayer (Player vs Player)
-- [x] Socket.IO server and client architecture.
-- [x] Room creation and joining with 4-letter codes.
-- [x] Server-authoritative scoring and simulation ticks.
-- [x] Client paddle position streaming and input validation.
+- [x] **Phase 9: Graphify Codebase Knowledge Graph Integration**
+  - [x] Generated AST-based code graph: 811 nodes, 1546 edges, 53 communities.
+  - [x] Exported `graphify-out/graph.json`, `graph.html`, and `GRAPH_REPORT.md`.
+  - [x] Documentation in `docs/GRAPHIFY_SETUP.md`.
 
-### Stage 8: Final Validation & Documentation Polish
-- [x] Run automated tests for physics, rules, metric calculations, and provider failures.
-- [x] Verify production build (`npm run build`).
-- [x] Complete documentation:
-  - `docs/DECISIONS.md`
-  - `docs/ANALYTICS_SPEC.md`
-  - `docs/RULES_TRACEABILITY.md`
-  - `docs/PRIVACY.md`
-  - `docs/TESTING.md`
-  - `docs/THIRD_PARTY_NOTICES.md`
-  - `README.md`
+- [x] **Phase 10: Empirical Dual-Model Evaluation Benchmark**
+  - [x] 12 stress-test scenarios in `models/datasets/evaluation_cases.json`.
+  - [x] Executed live benchmark script `evaluate_models.py` against both local Gemma 4 models on Ollama.
+  - [x] Generated empirical results in `models/evaluations/benchmark_results.json`:
+    - E2B: 10/12 success, 100% schema valid, 83.3% grounded, 0 unsupported claims, 44.6s median latency.
+    - E4B: 10/12 success, 100% schema valid, 83.3% grounded, 0 unsupported claims, 79.6s median latency.
+
+- [x] **Phase 11: Testing, Security & Privacy Compliance**
+  - [x] 18 Python tests passing in `services/ai-orchestrator`.
+  - [x] 8 Python tests passing in `ml/tests`.
+  - [x] 20 TypeScript tests passing across `client` and `server`.
+  - [x] Zero webcam frames transmitted over network; external tracing disabled by default.

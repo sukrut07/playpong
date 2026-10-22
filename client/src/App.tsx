@@ -37,6 +37,7 @@ import { RulesExplorerView } from './components/views/RulesExplorerView';
 import { ArchitectureExplorerView } from './components/views/ArchitectureExplorerView';
 import { GestureLabView } from './components/views/GestureLabView';
 import { AnalyticsStudioView } from './components/views/AnalyticsStudioView';
+import { AIOrchestratorView } from './components/views/AIOrchestratorView';
 
 import {
   Sliders,
@@ -51,6 +52,7 @@ import {
   Pause,
   RotateCcw,
   Sparkles,
+  Cpu,
 } from 'lucide-react';
 
 export type ScreenType =
@@ -61,7 +63,8 @@ export type ScreenType =
   | 'architecture'
   | 'gesture_lab'
   | 'analytics'
-  | 'multiplayer';
+  | 'multiplayer'
+  | 'orchestrator';
 
 export const App: React.FC = () => {
   // Engine & Vision singletons
@@ -491,6 +494,14 @@ export const App: React.FC = () => {
             </button>
 
             <button
+              onClick={() => navigateTo('orchestrator')}
+              className="neo-btn neo-btn-lavender p-2.5 text-xs font-mono uppercase"
+              title="AI Orchestrator & Coach"
+            >
+              <Cpu className="w-4 h-4 text-purple-700" />
+            </button>
+
+            <button
               onClick={() => setShowSettingsModal(true)}
               className="neo-btn neo-btn-white p-2.5 text-xs font-mono uppercase"
               title="Settings"
@@ -551,6 +562,7 @@ export const App: React.FC = () => {
           onOpenAnalytics={() => navigateTo('analytics')}
           onOpenRules={() => navigateTo('rules')}
           onOpenArchitecture={() => navigateTo('architecture')}
+          onOpenOrchestrator={() => navigateTo('orchestrator')}
           onOpenSettings={() => setShowSettingsModal(true)}
           aiStatus={aiStatus}
           isWebcamActive={isWebcamActive}
@@ -600,6 +612,11 @@ export const App: React.FC = () => {
           history={matchHistory}
           onBack={() => navigateTo(previousScreenRef.current || 'menu')}
         />
+      )}
+
+      {/* AI Orchestrator & Local Gemma 4 Coach */}
+      {currentScreen === 'orchestrator' && (
+        <AIOrchestratorView onBack={() => navigateTo(previousScreenRef.current || 'menu')} />
       )}
 
       {/* Multiplayer Room Lobby */}

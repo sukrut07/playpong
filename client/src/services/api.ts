@@ -229,6 +229,80 @@ export class CoachApiClient {
       };
     }
   }
+
+  public async getOrchestratorHealth(): Promise<{
+    status: string;
+    process_running: boolean;
+    ollama_reachable: boolean;
+    models_installed: Record<string, boolean>;
+    active_model: string;
+    policy: string;
+  }> {
+    try {
+      const res = await fetch('http://localhost:8000/health');
+      if (res.ok) return await res.json();
+    } catch {}
+
+    // Fallback to proxy
+    try {
+      const pRes = await fetch(`${this.baseUrl}/orchestrator/status`);
+      if (pRes.ok) {
+        const data = await pRes.json();
+        return {
+          status: data.orchestratorHealth?.available ? 'ok' : 'degraded',
+          process_running: data.orchestratorHealth?.available,
+          ollama_reachable: data.orchestratorHealth?.available,
+          models_installed: { 'gemma4:e2b': true, 'gemma4:e4b': true },
+          active_model: data.orchestratorHealth?.model || 'gemma4:e2b',
+          policy: 'AUTO_BY_TASK',
+        };
+      }
+    } catch {}
+
+    return {
+      status: 'offline',
+      process_running: false,
+      ollama_reachable: false,
+      models_installed: {},
+      active_model: 'none',
+      policy: 'AUTO_BY_TASK',
+    };
+  }
+
+  public async getOrchestratorModels(): Promise<any> {
+    try {
+      const res = await fetch('http://localhost:8000/v1/models');
+      if (res.ok) return await res.json();
+    } catch {}
+    return null;
+  }
+
+  public async runSmokeTest(model: string): Promise<any> {
+    try {
+      const res = await fetch(`http://localhost:8000/v1/models/smoke-test?model=${encodeURIComponent(model)}`, {
+        method: 'POST',
+      });
+      return await res.json();
+    } catch (e: any) {
+      return { model, status: 'FAIL', error: e.message };
+    }
+  }
+
+  public async evaluateControllers(controllerA: any, controllerB: any): Promise<any> {
+    try {
+      const res = await fetch('http://localhost:8000/v1/evaluate/controller', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          controller_a: controllerA,
+          controller_b: controllerB,
+        }),
+      });
+      return await res.json();
+    } catch (e: any) {
+      return { status: 'error', error: e.message };
+    }
+  }
 }
 
 export const coachApi = new CoachApiClient();

@@ -5,6 +5,7 @@
 import { AICoachProvider, ProviderHealth } from './provider.js';
 import { GeminiGemmaAdapter } from './geminiAdapter.js';
 import { OllamaGemmaAdapter } from './ollamaAdapter.js';
+import { OrchestratorAdapter } from './orchestratorAdapter.js';
 import { CoachingReport, MatchStats, GameRule } from '../../../shared/types.js';
 import { formatMetricPercentage, formatMetricNumber } from '../../../shared/metrics.js';
 import { RULE_REGISTRY } from '../../../shared/rules.js';
@@ -13,29 +14,49 @@ export class AIProviderManager {
   private activeProvider: AICoachProvider;
   private geminiAdapter: GeminiGemmaAdapter;
   private ollamaAdapter: OllamaGemmaAdapter;
+  private orchestratorAdapter: OrchestratorAdapter;
 
   constructor() {
     this.geminiAdapter = new GeminiGemmaAdapter();
     this.ollamaAdapter = new OllamaGemmaAdapter();
+    this.orchestratorAdapter = new OrchestratorAdapter();
 
-    const preferred = process.env.AI_PROVIDER || 'gemini';
-    this.activeProvider = preferred === 'ollama' ? this.ollamaAdapter : this.geminiAdapter;
+    const preferred = process.env.AI_PROVIDER || 'ollama';
+    this.activeProvider = preferred === 'ollama' ? this.orchestratorAdapter : this.geminiAdapter;
   }
 
   public setProvider(type: 'gemini' | 'ollama'): void {
-    this.activeProvider = type === 'ollama' ? this.ollamaAdapter : this.geminiAdapter;
+    this.activeProvider = type === 'ollama' ? this.orchestratorAdapter : this.geminiAdapter;
   }
 
   public getActiveProvider(): AICoachProvider {
     return this.activeProvider;
   }
 
+  public getOrchestratorAdapter(): OrchestratorAdapter {
+    return this.orchestratorAdapter;
+  }
+
   public async getHealth(): Promise<ProviderHealth> {
+    if (this.activeProvider === this.orchestratorAdapter) {
+      const orchHealth = await this.orchestratorAdapter.checkHealth();
+      if (orchHealth.available) return orchHealth;
+      // Fallback check to direct Ollama
+      return this.ollamaAdapter.checkHealth();
+    }
     return this.activeProvider.checkHealth();
   }
 
   public async generateReport(stats: MatchStats): Promise<CoachingReport> {
     try {
+      if (this.activeProvider === this.orchestratorAdapter) {
+        try {
+          return await this.orchestratorAdapter.generateCoachingReport(stats);
+        } catch (orchErr: any) {
+          console.warn(`[AIProviderManager] Orchestrator failed: ${orchErr.message}. Trying direct Ollama adapter.`);
+          return await this.ollamaAdapter.generateCoachingReport(stats);
+        }
+      }
       return await this.activeProvider.generateCoachingReport(stats);
     } catch (err: any) {
       console.warn(`[AIProviderManager] Provider ${this.activeProvider.name} failed: ${err.message}. Engaging deterministic fallback engine.`);
@@ -45,6 +66,14 @@ export class AIProviderManager {
 
   public async askQuestion(question: string, stats: MatchStats, history?: MatchStats[]): Promise<string> {
     try {
+      if (this.activeProvider === this.orchestratorAdapter) {
+        try {
+          return await this.orchestratorAdapter.askAnalyticsQuestion(question, stats, history);
+        } catch (orchErr: any) {
+          console.warn(`[AIProviderManager] Orchestrator QA failed: ${orchErr.message}. Trying direct Ollama adapter.`);
+          return await this.ollamaAdapter.askAnalyticsQuestion(question, stats, history);
+        }
+      }
       return await this.activeProvider.askAnalyticsQuestion(question, stats, history);
     } catch (err: any) {
       return `Telemetry Analysis: During match ${stats.matchId}, your return success rate was ${formatMetricPercentage(stats.returnSuccessRate)} with ${stats.successfulReturns} successful returns out of ${stats.eligibleReturnAttempts} attempts. Longest rally reached ${stats.longestRally} returns. (Note: Live AI assistant unavailable: ${err.message})`;

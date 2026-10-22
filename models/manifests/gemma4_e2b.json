@@ -1,0 +1,30 @@
+{
+  "model_family": "gemma4",
+  "model_tag": "gemma4:e2b",
+  "source": "https://ollama.com/library/gemma4",
+  "license": "Gemma Terms of Use / Open Weights",
+  "parameter_tier": "E2B (Effective 2B parameters)",
+  "quantization": "nvfp4",
+  "format": "safetensors",
+  "runner": "mlx",
+  "size_bytes": 7476595162,
+  "size_human": "7.5 GB",
+  "context_window": 131072,
+  "digest": "45d11505b91d888e353859f5deeeeff3ffc9b3aa42263c00904120c53851ef96",
+  "download_date": "2026-10-18T14:23:27Z",
+  "runtime_requirements": {
+    "recommended_ram_gb": 8,
+    "minimum_ram_gb": 6,
+    "hardware_acceleration": "Apple Silicon MLX / Metal / CUDA supported"
+  },
+  "intended_use": [
+    "Fast intent classification",
+    "Lightweight match summaries",
+    "Short tactical tips",
+    "Natural language routing"
+  ],
+  "routing_tier": "FAST_SUMMARY, INTENT_ROUTING, RULE_EXPLANATION",
+  "evaluation_status": "VERIFIED_LOCAL_INFERENCE",
+  "is_custom_checkpoint": false,
+  "training_lineage": "Official Google Gemma 4 Pretrained Foundation Model"
+}
