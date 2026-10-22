@@ -1,8 +1,12 @@
 {
-  "name": "gesture-pong-ai",
+  "name": "playpong",
   "version": "1.0.0",
   "private": true,
-  "description": "3D Webcam-Controlled Table Tennis Game with Gemma 4, Ollama, MediaPipe, and Graphify",
+  "description": "PONG AI — 3D Gesture-Controlled Racket Arcade · Gemma 4 Intelligence · ITTF 2026 Rules · Graphify Architecture",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sukrut07/playpong.git"
+  },
   "scripts": {
     "dev": "concurrently -n \"server,client\" -c \"cyan,magenta\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "dev:server": "npm run dev --prefix server",

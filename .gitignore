@@ -11,6 +11,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 .agent/
+.agents/
 .system_generated/
 *.log
 shared/*.js
