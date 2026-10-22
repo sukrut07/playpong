@@ -194,19 +194,19 @@ export class TableTennisEngine {
     this.lastBounceSide = 'none';
 
     if (server === 'player') {
-      this.ball.x = this.playerPaddle.x * 0.5;
-      this.ball.y = 0.25;
-      this.ball.z = 1.35;
+      this.ball.x = this.playerPaddle.x;
+      this.ball.y = this.playerPaddle.y + 0.05;
+      this.ball.z = this.playerPaddle.z - 0.12;
       this.ball.vx = 0;
       this.ball.vy = 0;
       this.ball.vz = 0;
     } else {
       this.ball.x = 0;
-      this.ball.y = 0.35;
+      this.ball.y = 0.28;
       this.ball.z = -1.35;
-      this.ball.vx = (this.pseudoRandom() - 0.5) * 0.8;
-      this.ball.vy = 2.2;
-      this.ball.vz = 4.2;
+      this.ball.vx = (this.pseudoRandom() - 0.5) * 0.5;
+      this.ball.vy = 2.1;
+      this.ball.vz = 4.0;
       this.lastHitter = 'opponent';
       this.opponentHitTime = Date.now();
       this.rallyState = 'RALLY';
@@ -218,8 +218,9 @@ export class TableTennisEngine {
   public triggerPlayerServe() {
     if (this.rallyState !== 'SERVE') return;
     this.ball.vx = (this.playerPaddle.x + (this.pseudoRandom() - 0.5) * 0.2) * 1.5;
-    this.ball.vy = 2.5;
+    this.ball.vy = 2.3;
     this.ball.vz = -4.5;
+    this.ball.z = this.playerPaddle.z - 0.16;
     this.lastHitter = 'player';
     this.rallyState = 'RALLY';
     this.lastHitTime = Date.now();
@@ -232,8 +233,11 @@ export class TableTennisEngine {
     const step = Math.min(0.033, dt);
 
     // Update Player Paddle position from hand or keyboard input
-    const targetX = playerInputX * (this.TABLE_HALF_WIDTH * 1.2);
-    const targetY = 0.08 + Math.max(0, playerInputY + 1.0) * 0.3;
+    const targetX = playerInputX * (this.TABLE_HALF_WIDTH * 1.15);
+    // Neutral hand (0.0) positions paddle at 0.22m (standard table tennis ball bounce height).
+    // Full down (-1.0) lowers paddle to 0.04m (table surface for low chops).
+    // Full up (+1.0) raises paddle to 0.46m (for high blocks and smashes).
+    const targetY = Math.max(0.04, Math.min(0.55, 0.22 + playerInputY * 0.22));
     const targetZ = 1.55;
 
     this.playerPaddle.vx = (targetX - this.playerPaddle.x) / step;
@@ -248,7 +252,7 @@ export class TableTennisEngine {
     if (this.rallyState === 'SERVE' && this.currentServer === 'player') {
       this.ball.x = this.playerPaddle.x;
       this.ball.y = this.playerPaddle.y + 0.05;
-      this.ball.z = this.playerPaddle.z - 0.15;
+      this.ball.z = this.playerPaddle.z - 0.12;
       return;
     }
 
@@ -373,19 +377,20 @@ export class TableTennisEngine {
 
     // Check Player Paddle Collision
     const now = Date.now();
-    if (
+    const inPlayerZRange =
       this.ball.vz > 0 &&
-      nextZ >= this.playerPaddle.z - 0.08 &&
-      this.ball.z <= this.playerPaddle.z + 0.08 &&
-      now - this.lastHitTime > 180
-    ) {
+      nextZ >= this.playerPaddle.z - 0.16 &&
+      this.ball.z <= this.playerPaddle.z + 0.16;
+
+    if (inPlayerZRange && now - this.lastHitTime > 120) {
       const dx = nextX - this.playerPaddle.x;
       const dy = nextY - this.playerPaddle.y;
 
-      if (
-        Math.abs(dx) <= this.playerPaddle.width * 0.8 &&
-        Math.abs(dy) <= this.playerPaddle.height * 0.8
-      ) {
+      // Generous hit box for hand tracking & responsive arcade feel
+      const hitRadiusX = 0.26;
+      const hitRadiusY = 0.24;
+
+      if (Math.abs(dx) <= hitRadiusX && Math.abs(dy) <= hitRadiusY) {
         this.lastHitTime = now;
         this.lastHitter = 'player';
         this.bounceCountSinceHit = 0;
@@ -402,13 +407,16 @@ export class TableTennisEngine {
           this.opponentHitTime = 0;
         }
 
-        const horizontalDeflection = dx / (this.playerPaddle.width * 0.5);
-        this.ball.vx = horizontalDeflection * 2.2 + this.playerPaddle.vx * 0.3;
+        const horizontalDeflection = Math.max(-1.5, Math.min(1.5, dx / 0.14));
+        this.ball.vx = horizontalDeflection * 2.2 + this.playerPaddle.vx * 0.25;
         this.ball.vy = Math.max(1.8, 2.2 + (this.playerPaddle.vy > 0 ? this.playerPaddle.vy * 0.2 : 0));
 
         const speedBonus = this.ruleProfile === 'ARCADE_PONG' ? Math.min(1.6, 1 + this.rallyCount * 0.03) : 1.0;
         const baseSpeed = (this.difficulty === 'hard' ? -5.8 : this.difficulty === 'medium' ? -5.0 : -4.3) * speedBonus;
         this.ball.vz = baseSpeed;
+
+        // Push ball cleanly in front of paddle to prevent sticking/tunneling
+        this.ball.z = this.playerPaddle.z - 0.06;
 
         this.soundDelegate?.playHit?.(1.0);
         this.emit('ball_hit_player', {
@@ -421,29 +429,29 @@ export class TableTennisEngine {
     }
 
     // Check Opponent Paddle Collision
-    if (
+    const inOpponentZRange =
       this.ball.vz < 0 &&
-      nextZ <= this.opponentPaddle.z + 0.08 &&
-      this.ball.z >= this.opponentPaddle.z - 0.08 &&
-      now - this.lastHitTime > 180
-    ) {
+      nextZ <= this.opponentPaddle.z + 0.16 &&
+      this.ball.z >= this.opponentPaddle.z - 0.16;
+
+    if (inOpponentZRange && now - this.lastHitTime > 120) {
       const dx = nextX - this.opponentPaddle.x;
       const dy = nextY - this.opponentPaddle.y;
 
-      if (
-        Math.abs(dx) <= this.opponentPaddle.width * 0.85 &&
-        Math.abs(dy) <= this.opponentPaddle.height * 0.85
-      ) {
+      if (Math.abs(dx) <= 0.26 && Math.abs(dy) <= 0.24) {
         this.lastHitTime = now;
         this.lastHitter = 'opponent';
         this.bounceCountSinceHit = 0;
         this.opponentHitTime = now;
 
-        const deflection = dx / (this.opponentPaddle.width * 0.5);
-        this.ball.vx = -deflection * 1.8;
-        this.ball.vy = 2.0 + this.pseudoRandom() * 0.4;
-        const returnZSpeed = this.difficulty === 'hard' ? 5.5 : this.difficulty === 'medium' ? 4.7 : 4.0;
+        const deflection = Math.max(-1.5, Math.min(1.5, dx / 0.14));
+        this.ball.vx = -deflection * 1.6;
+        this.ball.vy = 2.0 + this.pseudoRandom() * 0.35;
+        const returnZSpeed = this.difficulty === 'hard' ? 5.4 : this.difficulty === 'medium' ? 4.6 : 3.9;
         this.ball.vz = returnZSpeed;
+
+        // Push ball cleanly in front of opponent paddle
+        this.ball.z = this.opponentPaddle.z + 0.06;
 
         this.soundDelegate?.playHit?.(0.85);
         this.emit('ball_hit_opponent', { x: nextX, y: nextY });

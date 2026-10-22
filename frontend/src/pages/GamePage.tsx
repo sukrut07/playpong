@@ -26,7 +26,7 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
   const [gameState, setGameState] = useState<'setup' | 'playing' | 'ended'>(initialMode);
   const [difficulty, setDifficulty] = useState<GameDifficulty>('medium');
   const [ruleProfile, setRuleProfile] = useState<RuleProfile>('TABLE_TENNIS_TRAINING');
-  const [controllerMode, setControllerMode] = useState<'gesture' | 'keyboard'>('keyboard');
+  const [controllerMode, setControllerMode] = useState<'gesture' | 'keyboard'>('gesture');
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   // Engine instance
@@ -201,13 +201,11 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
           }
 
           if (videoRef.current) {
+            let lastUiUpdate = 0;
             await visionAdapterRef.current.startCamera(videoRef.current, ({ landmarks, timestampMs, latencyMs }) => {
               const state = gestureControllerRef.current!.processFrame(landmarks, timestampMs, latencyMs);
-              setTrackingActive(state.tracking);
-              if (landmarks) setCurrentLandmarks(landmarks);
-              setCurrentCoords(state.smoothedCoordinates);
-              if (latencyMs) setCameraLatency(latencyMs);
 
+              // 1. Direct unthrottled ref update for 60fps Three.js render loop (0ms latency, no React re-render lag)
               if (state.tracking) {
                 playerInputRef.current = {
                   x: state.smoothedCoordinates.x,
@@ -217,6 +215,16 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
                 if (state.gesture === 'swing' && engine.rallyState === 'SERVE' && engine.currentServer === 'player') {
                   engine.triggerPlayerServe();
                 }
+              }
+
+              // 2. Throttle React state updates to ~10 Hz so the DOM is not re-rendered 60 times/sec
+              const now = performance.now();
+              if (now - lastUiUpdate > 95) {
+                lastUiUpdate = now;
+                setTrackingActive(state.tracking);
+                if (landmarks) setCurrentLandmarks(landmarks);
+                setCurrentCoords(state.smoothedCoordinates);
+                if (latencyMs) setCameraLatency(latencyMs);
               }
             });
           }
@@ -438,7 +446,14 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
   // Match Arena View (/game/:matchId)
   // -------------------------------------------------------------------
   return (
-    <div className="relative w-full h-[calc(100vh-4.5rem)] overflow-hidden bg-[#161616]">
+    <div
+      onClick={() => {
+        if (engine.rallyState === 'SERVE' && currentServer === 'player') {
+          engine.triggerPlayerServe();
+        }
+      }}
+      className="relative w-full h-[calc(100vh-4.5rem)] overflow-hidden bg-[#161616]"
+    >
       {/* 3D WebGL Arena Canvas */}
       <Scene engine={engine} playerInputRef={playerInputRef} />
 
@@ -478,12 +493,19 @@ export const GamePage: React.FC<GamePageProps> = ({ onNavigate, initialMode = 's
         onSwitchController={(mode) => setControllerMode(mode)}
       />
 
-      {/* Serve Banner Overlay */}
+      {/* Interactive Serve Button / Banner */}
       {engine.rallyState === 'SERVE' && currentServer === 'player' && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none animate-bounce">
-          <div className="px-6 py-2.5 bg-[#D9FF55] border-[3px] border-[#111111] rounded-2xl shadow-neo font-display font-black text-sm uppercase text-[#111111]">
-            {controllerMode === 'gesture' ? 'Swing hand to serve ball!' : 'Press Space or Enter to serve!'}
-          </div>
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              engine.triggerPlayerServe();
+            }}
+            className="px-6 py-3 bg-[#62F5AD] hover:bg-[#D9FF55] text-[#111111] border-[3px] border-[#111111] rounded-2xl shadow-neo font-display font-black text-sm uppercase tracking-wider cursor-pointer active:translate-x-[2px] active:translate-y-[2px] transition-all flex items-center gap-2"
+          >
+            <Play className="w-4 h-4 fill-current" />
+            {controllerMode === 'gesture' ? 'CLICK OR SWING HAND TO SERVE ↗' : 'CLICK OR PRESS SPACE TO SERVE ↗'}
+          </button>
         </div>
       )}
 

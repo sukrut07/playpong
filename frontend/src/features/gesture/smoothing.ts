@@ -86,7 +86,7 @@ export class Point2DSmoother {
   private xFilter: OneEuroFilter;
   private yFilter: OneEuroFilter;
 
-  constructor(minCutoff: number = 1.2, beta: number = 0.05) {
+  constructor(minCutoff: number = 1.4, beta: number = 0.7) {
     this.xFilter = new OneEuroFilter(minCutoff, beta);
     this.yFilter = new OneEuroFilter(minCutoff, beta);
   }

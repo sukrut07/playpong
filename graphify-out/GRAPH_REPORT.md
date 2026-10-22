@@ -1,7 +1,7 @@
 # Graph Report - playpong  (2026-10-22)
 
 ## Corpus Check
-- 216 files · ~102,800 words
+- 216 files · ~103,061 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 11 file(s) not represented in the graph (top: .jsonl 4, .example 3, .css 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1fa68683`
+- Built from commit: `7641d866`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -529,7 +529,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `types.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.06327683615819209 - nodes in this community are weakly interconnected._
 - **Why does `RuleProfile` connect `RuleProfile` to `TableTennisEngine`, `src/game/Scene.tsx`, `shared/metrics.ts`, `src/App.tsx`, `Graph Report - playpong  (2026-10-22)`, `TableTennisEngine`, `multiplayer.ts`, `shared/types.ts`, `ref_react`, `socketClient`, `CoachPage.tsx`?**
-  _High betweenness centrality (0.161) - this node is a cross-community bridge._
+  _High betweenness centrality (0.163) - this node is a cross-community bridge._
 - **Should `coach.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.10114942528735632 - nodes in this community are weakly interconnected._
 - **Why does `God Nodes (most connected - your core abstractions)` connect `CoachPage.tsx` to `RuleProfile`, `Graph Report - playpong  (2026-10-22)`, `nodes.py`?**

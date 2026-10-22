@@ -96,9 +96,9 @@
     "semantic_hash": "a57af517417ca7d18219db30eb787899"
   },
   "client/src/game/physics/tableTennisEngine.ts": {
-    "mtime": 1792658977.7309258,
-    "seen": 1792662638.710903,
-    "ast_hash": "c1a06fdc11de6a1ec9178906fa5628f9",
+    "mtime": 1792673058.365961,
+    "seen": 1792673120.01697,
+    "ast_hash": "35d691ae0c6c46b6675cff9bbf53a534",
     "semantic_hash": ""
   },
   "client/src/main.tsx": {
@@ -1026,9 +1026,9 @@
     "semantic_hash": ""
   },
   "frontend/src/features/gesture/gesture-controller.ts": {
-    "mtime": 1792666518.3612084,
-    "seen": 1792667902.3636549,
-    "ast_hash": "a284af917760f2ddfaf1883293afd0f0",
+    "mtime": 1792672959.9729624,
+    "seen": 1792673120.017656,
+    "ast_hash": "e113ae24a27f33ec09acfc47d155970f",
     "semantic_hash": ""
   },
   "frontend/src/features/gesture/landmark-types.ts": {
@@ -1050,9 +1050,9 @@
     "semantic_hash": ""
   },
   "frontend/src/features/gesture/smoothing.ts": {
-    "mtime": 1792666447.8849945,
-    "seen": 1792667902.363656,
-    "ast_hash": "f78ea3020cf61f3ccac83365209060d6",
+    "mtime": 1792672939.1994302,
+    "seen": 1792673120.017704,
+    "ast_hash": "7daaadda6e053e3a003413d9004f7164",
     "semantic_hash": ""
   },
   "frontend/src/main.tsx": {
@@ -1080,9 +1080,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/GamePage.tsx": {
-    "mtime": 1792669359.219859,
-    "seen": 1792670122.0399392,
-    "ast_hash": "663e5e6a2d6823aaf9147383b95392c6",
+    "mtime": 1792672999.0633957,
+    "seen": 1792673120.01776,
+    "ast_hash": "46b015b5a81c75ad68d8955b16ce4fc1",
     "semantic_hash": ""
   },
   "frontend/src/pages/GestureLabPage.tsx": {
@@ -1212,9 +1212,9 @@
     "semantic_hash": ""
   },
   "game-engine/src/tableTennisEngine.ts": {
-    "mtime": 1792666138.2755713,
-    "seen": 1792667902.363669,
-    "ast_hash": "c00f5994837ef7504b2015828327c3a8",
+    "mtime": 1792672916.8431005,
+    "seen": 1792673120.018027,
+    "ast_hash": "9140711f7692dd4d61713550873514fa",
     "semantic_hash": ""
   },
   "game-engine/src/types.ts": {

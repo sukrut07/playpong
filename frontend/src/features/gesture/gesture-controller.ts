@@ -44,8 +44,8 @@ export class GestureController {
 
   constructor(
     initialCalibration: CalibrationBounds = DEFAULT_CALIBRATION,
-    minCutoff: number = 1.2,
-    beta: number = 0.05
+    minCutoff: number = 1.4,
+    beta: number = 0.7
   ) {
     this.calibration = initialCalibration;
     this.smoother = new Point2DSmoother(minCutoff, beta);
@@ -144,9 +144,9 @@ export class GestureController {
     this.lastSmoothedPos = { x: smoothed.x, y: smoothed.y };
 
     let detectedGesture: DetectedGesture = 'none';
-    if (speed > 4.5) {
+    if (speed > 1.4) {
       detectedGesture = 'swing';
-    } else if (speed < 0.3) {
+    } else if (speed < 0.35) {
       detectedGesture = 'ready';
     }
 
