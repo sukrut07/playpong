@@ -14,9 +14,9 @@ export function buildGemma4CoachingPrompt(stats: MatchStats, applicableRules?: G
   const avgRallyStr = formatMetricNumber(stats.averageRallyLength, ' returns');
   const medianRallyStr = formatMetricNumber(stats.medianRallyLength, ' returns');
   const avgReactionStr = stats.averageReactionTimeMs ? `${Math.round(stats.averageReactionTimeMs)}ms` : 'Not recorded';
-  const trackingAvailStr = stats.trackingAvailabilityPercentage !== undefined
-    ? `${stats.trackingAvailabilityPercentage.toFixed(1)}%`
-    : `${stats.trackingStabilityPercentage.toFixed(1)}%`;
+  const trackingAvail = stats.trackingAvailabilityPercentage ?? stats.trackingStabilityPercentage;
+  const trackingAvailStr = trackingAvail !== undefined ? `${trackingAvail.toFixed(1)}%` : 'Not recorded';
+  const zones = stats.tableZoneDistribution || stats.tableZoneHits || { left: 0, center: 0, right: 0, deep: 0, short: 0 };
 
   const rulesContext = applicableRules && applicableRules.length > 0
     ? applicableRules.map(r => `- Rule ${r.ruleId} (${r.title}): ${r.sourceSection} ${r.sourceDocument}`).join('\n')

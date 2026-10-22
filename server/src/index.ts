@@ -93,3 +93,4 @@ if (process.env.NODE_ENV !== 'test') {
 const server = httpServer;
 
 export { app, server, io };
+export default app;
