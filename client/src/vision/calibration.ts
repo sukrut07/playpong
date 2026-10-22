@@ -1,4 +1,5 @@
 import { CalibrationData } from '../../../shared/types';
+export type { CalibrationData };
 
 const STORAGE_KEY = 'gesture_pong_calibration_v1';
 
