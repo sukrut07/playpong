@@ -1,17 +1,17 @@
 # Graph Report - playpong  (2026-10-22)
 
 ## Corpus Check
-- 216 files · ~102,094 words
+- 216 files · ~102,800 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 11 file(s) not represented in the graph (top: .jsonl 4, .example 3, .css 2)
 
 ## Summary
-- 1557 nodes · 2902 edges · 108 communities (85 shown, 23 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 130 edges (avg confidence: 0.9)
+- 1561 nodes · 2909 edges · 112 communities (92 shown, 20 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 131 edges (avg confidence: 0.9)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a2c53584`
+- Built from commit: `1fa68683`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -47,7 +47,6 @@
 - scripts
 - src/index.ts
 - ollamaService
-- train_gesture_classifier.py
 - PONG AI — Local AI Orchestration System
 - run.sh
 - PONG AI — Model Lifecycle & Artifact Management
@@ -69,7 +68,7 @@
 - compute_classification_metrics
 - PONG AI — Machine Learning & Gesture Training Workspace (`ml/`)
 - CoachPage.tsx
-- SettingsModal.tsx
+- components/game/Scene.tsx
 - PONG AI — Web Client & 3D Game Frontend
 - PONG AI — Node.js Multiplayer Server & Authority Backend
 - ITTF Statutes 2026 Raw Ingestion Source
@@ -79,7 +78,7 @@
 - GestureLabPage.tsx
 - Communities (70 total, 16 thin omitted)
 - src/game/Scene.tsx
-- physics/tableTennisEngine.ts
+- shared/metrics.ts
 - frontend/package.json
 - TableTennisEngine
 - compilerOptions
@@ -88,11 +87,11 @@
 - shared/types.ts
 - aiProviderManager
 - test_validation.py
-- GamePage.tsx
+- ref_react
 - PONG AI — Frontend & Repository Architecture Audit
 - socketClient
 - services
-- ref_react
+- app/App.tsx
 - 3. Application Routes
 - Graphify Codebase Knowledge Graph Integration
 - RuleProfile
@@ -104,76 +103,80 @@
 - game-engine/package.json
 - evaluate_models.py
 - providerManager.ts
-- AnalyticsStudioView.tsx
+- model-service.ts
 - SoundEngine
 - test_graph.py
-- modelService
+- CoachApiClient
 - ArchitectureExplorerView.tsx
 - scripts
 - frontend/src/vite-env.d.ts
-- OrchestratorAdapter
-- ai/schemas.ts
+- frontend/src/main.tsx
+- Graph Report - playpong  (2026-10-22)
+- get_health
+- Roadmap & Milestones
+- PONG AI — Initial Repository Audit & Architectural Baseline
+- AnalyticsDashboard.tsx
 
 ## God Nodes (most connected - your core abstractions)
-1. `Communities (104 total, 22 thin omitted)` - 83 edges
-2. `MatchStats` - 47 edges
+1. `Communities (108 total, 23 thin omitted)` - 86 edges
+2. `MatchStats` - 48 edges
 3. `TableTennisEngine` - 37 edges
 4. `TableTennisEngine` - 35 edges
-5. `App()` - 25 edges
-6. `Button()` - 24 edges
+5. `Button()` - 26 edges
+6. `App()` - 25 edges
 7. `RuleProfile` - 24 edges
 8. `Card()` - 23 edges
 9. `GraphState` - 22 edges
 10. `CoachingReport` - 22 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `3. Existing Features Reused & Preserved` --references--> `aiProviderManager`  [INFERRED]
+  docs/INITIAL_AUDIT.md → server/src/ai/providerManager.ts
 - `Surprising Connections (you probably didn't know these)` --references--> `HandControlCallback`  [INFERRED]
   frontend/public/graphify/GRAPH_REPORT.md → client/src/vision/handLandmarker.ts
 - `Query 2: Shortest Path from Vision to Physics Engine` --references--> `VisionPipeline`  [INFERRED]
   docs/GRAPHIFY.md → client/src/vision/handLandmarker.ts
 - `Surprising Connections (you probably didn't know these)` --references--> `VisionPipeline`  [INFERRED]
   frontend/public/graphify/GRAPH_REPORT.md → client/src/vision/handLandmarker.ts
-- `Roadmap & Milestones` --references--> `Button()`  [INFERRED]
-  docs/IMPLEMENTATION_PLAN.md → frontend/src/components/ui/Button.tsx
-- `Roadmap & Milestones` --references--> `Card()`  [INFERRED]
-  docs/IMPLEMENTATION_PLAN.md → frontend/src/components/ui/Card.tsx
+- `Roadmap & Milestones` --references--> `Badge()`  [INFERRED]
+  docs/IMPLEMENTATION_PLAN.md → frontend/src/components/ui/Badge.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (108 total, 23 thin omitted)
+## Communities (112 total, 20 thin omitted)
 
 ### Community 0 - "types.ts"
 Cohesion: 0.06
-Nodes (29): CONNECTIONS, WebcamOverlayProps, CalibrationModal(), CalibrationModalProps, CalibStep, GestureLabViewProps, DEFAULT_CALIBRATION, isValidCalibration() (+21 more)
+Nodes (30): CONNECTIONS, WebcamOverlayProps, CalibrationModal(), CalibrationModalProps, CalibStep, GestureLabViewProps, DEFAULT_CALIBRATION, isValidCalibration() (+22 more)
 
 ### Community 1 - "coach.ts"
-Cohesion: 0.16
-Nodes (14): FALLBACK_MISSIONS, getFallbackMission(), buildMissionPrompt(), buildSummaryPrompt(), AdaptiveDifficultySchema, CoachSummaryDto, CoachSummarySchema, GameDifficultySchema (+6 more)
+Cohesion: 0.10
+Nodes (21): zod, CoachingEvidenceSchema, CoachingObservationSchema, CoachingWeaknessSchema, RuleReferenceLinkSchema, TrainingPlanDrillSchema, ValidatedCoachingReport, FALLBACK_MISSIONS (+13 more)
 
 ### Community 2 - "client/package.json"
 Cohesion: 0.07
 Nodes (26): autoprefixer, canvas-confetti, clsx, lucide-react, @mediapipe/tasks-vision, postcss, react, react-dom (+18 more)
 
 ### Community 3 - "MatchStats"
-Cohesion: 0.12
-Nodes (8): AnalyticsDashboard(), AnalyticsDashboardProps, MatchSummaryModalProps, CoachApiClient, calculateSessionAggregates(), CoachChatPanelProps, CoachingReport, MatchStats
+Cohesion: 0.20
+Nodes (6): MatchSummaryModalProps, CoachChatPanelProps, modelService, CoachingReport, CoachSummaryResponse, MatchStats
 
 ### Community 4 - "scripts"
 Cohesion: 0.08
 Nodes (25): description, devDependencies, concurrently, name, private, repository, type, url (+17 more)
 
 ### Community 5 - "main.py"
-Cohesion: 0.10
-Nodes (18): check_readiness(), get_health(), get_run(), lifespan(), list_models(), AnalyticsQueryRequest, CoachingEvidence, CoachingObservation (+10 more)
+Cohesion: 0.11
+Nodes (18): evaluate_controller(), generate_match_coaching(), lifespan(), query_match_analytics(), smoke_test(), AnalyticsQueryRequest, CoachingEvidence, CoachingObservation (+10 more)
 
 ### Community 6 - "compilerOptions"
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowImportingTsExtensions, isolatedModules, jsx, lib, module, moduleDetection, moduleResolution (+10 more)
 
 ### Community 7 - "TableTennisEngine"
-Cohesion: 0.17
-Nodes (3): PlayerAssistCueProps, TableTennisEngine, SceneProps
+Cohesion: 0.13
+Nodes (5): PlayerAssistCueProps, TableTennisEngine, SceneProps, ZoneDistributionChartProps, TableZoneDistribution
 
 ### Community 8 - "compilerOptions"
 Cohesion: 0.14
@@ -188,8 +191,8 @@ Cohesion: 0.17
 Nodes (6): SoundEngine, 1. Asset Strategy, 2. Audio Subsystem (Web Audio API Synthesizer), 3. 3D Meshes & Materials, 4. UI Sprites & Icons, Asset Discovery, Licenses & Procedural Design — Gesture Pong AI
 
 ### Community 11 - "src/App.tsx"
-Cohesion: 0.13
-Nodes (23): App(), WebcamOverlay(), MissionCard(), MissionCardProps, Scoreboard(), LandingMenu(), MatchSummaryModal(), MultiplayerModal() (+15 more)
+Cohesion: 0.11
+Nodes (27): App(), WebcamOverlay(), MissionCard(), Scoreboard(), LandingMenu(), MatchSummaryModal(), MultiplayerModal(), SettingsModal() (+19 more)
 
 ### Community 12 - "dependencies"
 Cohesion: 0.15
@@ -252,8 +255,8 @@ Cohesion: 0.18
 Nodes (11): devDependencies, autoprefixer, postcss, tailwindcss, @types/canvas-confetti, @types/react, @types/react-dom, @types/three (+3 more)
 
 ### Community 30 - "numpy"
-Cohesion: 0.13
-Nodes (6): build_dataset_arrays(), generate_synthetic_gesture_data(), normalize_landmarks_3d(), extract_window_features(), test_extract_window_features_dimensions(), test_normalize_landmarks_origin_and_scale()
+Cohesion: 0.14
+Nodes (4): normalize_landmarks_3d(), extract_window_features(), test_extract_window_features_dimensions(), test_normalize_landmarks_origin_and_scale()
 
 ### Community 31 - "scripts"
 Cohesion: 0.33
@@ -308,7 +311,7 @@ Cohesion: 0.50
 Nodes (3): Core Governance Principles, Directory Layout, PONG AI — Model Artifact Registry & Lifecycle
 
 ### Community 53 - "predict_gesture.py"
-Cohesion: 0.15
+Cohesion: 0.18
 Nodes (3): load_inference_engine(), predict_single_sequence(), TemporalGestureInferenceEngine
 
 ### Community 54 - "GestureClassifierModel"
@@ -323,6 +326,10 @@ Nodes (10): 1. Re-extract Code Graph (AST-only, no API cost), 2. Query the Knowl
 Cohesion: 0.25
 Nodes (5): validate_dataset(), validate_frame(), test_validate_dataset_aggregate(), test_validate_frame_invalid_class_and_missing_landmarks(), test_validate_frame_valid()
 
+### Community 58 - "split_by_session"
+Cohesion: 0.14
+Nodes (4): build_dataset_arrays(), generate_synthetic_gesture_data(), split_by_session(), test_session_separated_splits_zero_leakage()
+
 ### Community 59 - "compute_classification_metrics"
 Cohesion: 0.15
 Nodes (3): compute_classification_metrics(), test_compute_classification_metrics(), test_measure_inference_latencies()
@@ -332,12 +339,12 @@ Cohesion: 0.22
 Nodes (8): 1. Run Unit Tests, 2. Train Gesture Classifier, 3. Run Latency Benchmark, PONG AI — Machine Learning & Gesture Training Workspace (`ml/`), Quickstart Commands, Temporal Gesture Classification Design, Video Action Recognition Research (VideoMAE & RacketVision), Workspace Architecture
 
 ### Community 61 - "CoachPage.tsx"
-Cohesion: 0.22
-Nodes (13): God Nodes (most connected - your core abstractions), ChatMessage, CoachChatPanel(), SUGGESTED_PROMPTS, ModelUsagePanel(), ModelUsagePanelProps, BadgeProps, Card() (+5 more)
+Cohesion: 0.26
+Nodes (13): God Nodes (most connected - your core abstractions), Surprising Connections (you probably didn't know these), ChatMessage, CoachChatPanel(), SUGGESTED_PROMPTS, ModelUsagePanel(), ModelUsagePanelProps, Button() (+5 more)
 
-### Community 62 - "SettingsModal.tsx"
-Cohesion: 0.29
-Nodes (7): SettingsModal(), SettingsModalProps, sound, clearMatchHistory(), BallPhysicsState, GameSettings, PaddlePhysicsState
+### Community 62 - "components/game/Scene.tsx"
+Cohesion: 0.23
+Nodes (11): Arena(), Ball(), BallProps, Paddle(), PaddleProps, GameLoop(), Scene(), SceneProps (+3 more)
 
 ### Community 63 - "PONG AI — Web Client & 3D Game Frontend"
 Cohesion: 0.40
@@ -361,23 +368,23 @@ Nodes (40): 1. Test Summary, 2. Coordinate Remapping & Edge Case Verification, 3
 
 ### Community 71 - "Communities (70 total, 16 thin omitted)"
 Cohesion: 0.02
-Nodes (83): Communities (104 total, 22 thin omitted), Community 0 - "types.ts", Community 101 - "get", Community 102 - "ref_react", Community 103 - "scripts", Community 10 - "SoundEngine", Community 11 - "src/App.tsx", Community 12 - "dependencies" (+75 more)
+Nodes (86): Communities (108 total, 23 thin omitted), Community 0 - "types.ts", Community 100 - "test_graph.py", Community 102 - "ArchitectureExplorerView.tsx", Community 103 - "scripts", Community 107 - "ai/schemas.ts", Community 10 - "SoundEngine", Community 11 - "src/App.tsx" (+78 more)
 
 ### Community 72 - "src/game/Scene.tsx"
-Cohesion: 0.24
-Nodes (11): Arena(), Ball(), BallProps, Paddle(), PaddleProps, PlayerAssistCue(), Table(), BallState (+3 more)
+Cohesion: 0.21
+Nodes (13): Arena(), Ball(), BallProps, Paddle(), PaddleProps, PlayerAssistCue(), Table(), BallState (+5 more)
 
-### Community 73 - "physics/tableTennisEngine.ts"
-Cohesion: 0.23
-Nodes (12): GameEventListener, GameEventPayload, 2.1 Directory Structure, calculateAverageRallyLength(), calculateAverageReactionTime(), calculateMedianRallyLength(), calculateMissRate(), calculateReturnSuccessRate() (+4 more)
+### Community 73 - "shared/metrics.ts"
+Cohesion: 0.15
+Nodes (14): 2.1 Directory Structure, 2.2 Package Manifest Analysis, 2. Repository Inventory & Package Manifests, GameEventListener, GameEventPayload, calculateAverageRallyLength(), calculateAverageReactionTime(), calculateMedianRallyLength() (+6 more)
 
 ### Community 74 - "frontend/package.json"
 Cohesion: 0.07
 Nodes (27): description, autoprefixer, canvas-confetti, clsx, lucide-react, @mediapipe/tasks-vision, postcss, react (+19 more)
 
 ### Community 75 - "TableTennisEngine"
-Cohesion: 0.06
-Nodes (19): ZoneDistributionChartProps, Arena(), Ball(), BallProps, Paddle(), PaddleProps, GameLoop(), Scene() (+11 more)
+Cohesion: 0.13
+Nodes (4): Features, PONG AI Game Engine (`game-engine/`), SoundDelegate, TableTennisEngine
 
 ### Community 76 - "compilerOptions"
 Cohesion: 0.09
@@ -388,28 +395,28 @@ Cohesion: 0.22
 Nodes (8): 1. Architecture Overview, 2. Automated Synthetic Dry-Run (No Camera Required), 3. Gesture Lab Interactive Dry-Run (Browser UI), 4. Physical Webcam Verification Checklist, 5. Failure Modes & Fallbacks, PONG AI — Gesture Control Testing & Dry Run Guide, Running Automated Unit Tests, Test Suite Coverage
 
 ### Community 78 - "DashboardPage.tsx"
-Cohesion: 0.11
-Nodes (22): RallyBucketChart(), RallyBucketChartProps, RallyBucketData, RallyChartProps, ReturnSuccessPoint, ReturnSuccessRollingChart(), ReturnSuccessRollingChartProps, ITTF_RULE_CHECKS (+14 more)
+Cohesion: 0.12
+Nodes (20): RallyBucketChart(), RallyBucketChartProps, RallyBucketData, RallyChartProps, ReturnSuccessPoint, ReturnSuccessRollingChart(), ReturnSuccessRollingChartProps, RuleComplianceTable() (+12 more)
 
 ### Community 79 - "shared/types.ts"
-Cohesion: 0.13
-Nodes (16): RulesExplorerViewProps, telemetry, getRuleById(), getRulesByProfile(), RULE_REGISTRY, BenchmarkScenario, CoachingEvidence, CoachingObservation (+8 more)
+Cohesion: 0.14
+Nodes (13): AnalyticsStudioViewProps, RulesExplorerViewProps, BenchmarkResult, BenchmarkScenario, CoachingEvidence, CoachingObservation, CoachingWeakness, MatchEvent (+5 more)
 
 ### Community 80 - "aiProviderManager"
-Cohesion: 0.13
-Nodes (7): 1. Executive Summary, 2. Current Architecture & Technology Stack, 3. Existing Features Reused & Preserved, 4. Risks & Mitigations, PONG AI — Initial Repository Audit & Architectural Baseline, OllamaGemmaAdapter, aiProviderManager
+Cohesion: 0.11
+Nodes (6): GeminiGemmaAdapter, OllamaGemmaAdapter, OrchestratorAdapter, AICoachProvider, ProviderHealth, aiProviderManager
 
 ### Community 81 - "test_validation.py"
 Cohesion: 0.24
 Nodes (7): MatchStats, compare_match_to_history(), compute_verified_metrics(), test_compute_metrics_normal(), test_constraint_violation_detection(), test_history_comparison(), test_zero_denominator_handling()
 
-### Community 82 - "GamePage.tsx"
-Cohesion: 0.15
-Nodes (14): PONG AI — Frontend Rebuild & Clean Architecture Plan, Roadmap & Milestones, Surprising Connections (you probably didn't know these), CameraMiniPreview(), Scoreboard(), ScoreboardProps, Badge(), Modal() (+6 more)
+### Community 82 - "ref_react"
+Cohesion: 0.16
+Nodes (11): ITTF_RULE_CHECKS, RuleCheckItem, Scoreboard(), ScoreboardProps, BadgeProps, ButtonProps, Modal(), ModalProps (+3 more)
 
 ### Community 83 - "PONG AI — Frontend & Repository Architecture Audit"
-Cohesion: 0.13
-Nodes (14): ScreenType, 1. Executive Summary, 2.2 Package Manifest Analysis, 2. Repository Inventory & Package Manifests, 3.1 Game Engine & Physics, 3.2 Vision & Hand Tracking Pipeline, 3.3 Backend & Multiplayer, 3.4 AI Orchestrator & Rule Engine (+6 more)
+Cohesion: 0.15
+Nodes (12): ScreenType, 1. Executive Summary, 3.1 Game Engine & Physics, 3.2 Vision & Hand Tracking Pipeline, 3.3 Backend & Multiplayer, 3.4 AI Orchestrator & Rule Engine, 3.5 Graphify Knowledge Graph, 3. Component & Subsystem Capability Matrix (+4 more)
 
 ### Community 84 - "socketClient"
 Cohesion: 0.18
@@ -419,9 +426,9 @@ Nodes (3): MultiplayerModalProps, socketClient, PlayerRole
 Cohesion: 0.12
 Nodes (16): framework, root, framework, root, framework, root, rewrites, $schema (+8 more)
 
-### Community 86 - "ref_react"
-Cohesion: 0.14
-Nodes (16): 3. Application Routes, App(), AppProviders(), RouterContext, RouterContextType, RouterProvider(), RouterProviderProps, useRouter() (+8 more)
+### Community 86 - "app/App.tsx"
+Cohesion: 0.23
+Nodes (11): 3. Application Routes, App(), useRouter(), CameraMiniPreview(), Footer(), Navbar(), NavbarProps, StatusIndicator() (+3 more)
 
 ### Community 87 - "3. Application Routes"
 Cohesion: 0.29
@@ -432,8 +439,8 @@ Cohesion: 0.40
 Nodes (4): 1. Generated Artifacts, 2. CLI Workflow & Scripts, 3. Frontend Architecture Explorer Integration, Graphify Codebase Knowledge Graph Integration
 
 ### Community 89 - "RuleProfile"
-Cohesion: 0.13
-Nodes (13): ScoreboardProps, LandingMenuProps, Community Hubs (Navigation), Corpus Check, Graph Freshness, Graph Report - playpong  (2026-10-22), Import Cycles, Knowledge Gaps (+5 more)
+Cohesion: 0.26
+Nodes (5): ScoreboardProps, LandingMenuProps, GameDifficulty, RallyState, RuleProfile
 
 ### Community 90 - "dependencies"
 Cohesion: 0.15
@@ -441,7 +448,7 @@ Nodes (13): dependencies, canvas-confetti, clsx, lucide-react, @mediapipe/tasks-
 
 ### Community 91 - "Button"
 Cohesion: 0.14
-Nodes (18): GraphifyViewer(), GraphifyViewerProps, computeDefaultPositions(), LAYER_COLORS, ModularSystemGraph(), SYSTEM_EDGES, SYSTEM_NODES, SystemEdge (+10 more)
+Nodes (17): GraphifyViewer(), GraphifyViewerProps, computeDefaultPositions(), LAYER_COLORS, ModularSystemGraph(), SYSTEM_EDGES, SYSTEM_NODES, SystemEdge (+9 more)
 
 ### Community 92 - "rules_tool.py"
 Cohesion: 0.30
@@ -459,17 +466,21 @@ Nodes (3): apiClient, ApiError, ApiRequestOptions
 Cohesion: 0.20
 Nodes (9): description, main, name, private, scripts, test, type, types (+1 more)
 
+### Community 96 - "evaluate_models.py"
+Cohesion: 0.21
+Nodes (3): measure_inference_latencies(), evaluate_model_on_suite(), main()
+
 ### Community 97 - "providerManager.ts"
-Cohesion: 0.30
-Nodes (5): GeminiGemmaAdapter, AICoachProvider, ProviderHealth, CoachingReportSchema, GameRule
+Cohesion: 0.47
+Nodes (6): buildAnalyticsQAPrompt(), buildGemma4CoachingPrompt(), CoachingReportSchema, formatMetricNumber(), formatMetricPercentage(), GameRule
 
-### Community 98 - "AnalyticsStudioView.tsx"
-Cohesion: 0.39
-Nodes (6): AnalyticsStudioViewProps, buildAnalyticsQAPrompt(), buildGemma4CoachingPrompt(), formatMetricNumber(), formatMetricPercentage(), BenchmarkResult
+### Community 98 - "model-service.ts"
+Cohesion: 0.24
+Nodes (5): ModelHealthStatus, telemetry, getRuleById(), getRulesByProfile(), RULE_REGISTRY
 
-### Community 100 - "test_graph.py"
+### Community 101 - "CoachApiClient"
 Cohesion: 0.15
-Nodes (6): evaluate_controller(), generate_match_coaching(), query_match_analytics(), smoke_test(), test_graph_fallback_on_missing_model(), test_graph_invalid_match_id()
+Nodes (3): MissionCardProps, CoachApiClient, Mission
 
 ### Community 102 - "ArchitectureExplorerView.tsx"
 Cohesion: 0.40
@@ -479,29 +490,49 @@ Nodes (4): ArchitectureExplorerViewProps, GraphData, GraphLink, GraphNode
 Cohesion: 0.33
 Nodes (6): scripts, build, dev, lint, preview, test
 
-### Community 107 - "ai/schemas.ts"
-Cohesion: 0.25
-Nodes (7): zod, CoachingEvidenceSchema, CoachingObservationSchema, CoachingWeaknessSchema, RuleReferenceLinkSchema, TrainingPlanDrillSchema, ValidatedCoachingReport
+### Community 106 - "frontend/src/main.tsx"
+Cohesion: 0.24
+Nodes (6): AppProviders(), RouterContext, RouterContextType, RouterProvider(), RouterProviderProps, rootElement
+
+### Community 107 - "Graph Report - playpong  (2026-10-22)"
+Cohesion: 0.22
+Nodes (8): Community Hubs (Navigation), Corpus Check, Graph Freshness, Graph Report - playpong  (2026-10-22), Import Cycles, Knowledge Gaps, Suggested Questions, Summary
+
+### Community 108 - "get_health"
+Cohesion: 0.22
+Nodes (4): check_readiness(), get_health(), get_run(), list_models()
+
+### Community 109 - "Roadmap & Milestones"
+Cohesion: 0.33
+Nodes (4): PONG AI — Frontend Rebuild & Clean Architecture Plan, Roadmap & Milestones, PageHeader(), PageHeaderProps
+
+### Community 110 - "PONG AI — Initial Repository Audit & Architectural Baseline"
+Cohesion: 0.33
+Nodes (5): 1. Executive Summary, 2. Current Architecture & Technology Stack, 3. Existing Features Reused & Preserved, 4. Risks & Mitigations, PONG AI — Initial Repository Audit & Architectural Baseline
+
+### Community 111 - "AnalyticsDashboard.tsx"
+Cohesion: 0.67
+Nodes (3): AnalyticsDashboard(), AnalyticsDashboardProps, calculateSessionAggregates()
 
 ## Knowledge Gaps
 - **52 isolated node(s):** `@mediapipe/tasks-vision`, `@react-three/drei`, `@react-three/fiber`, `canvas-confetti`, `clsx` (+47 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 786 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **23 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 789 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `GraphState` connect `nodes.py` to `RuleProfile`, `rules_tool.py`, `CoachPage.tsx`?**
-  _High betweenness centrality (0.203) - this node is a cross-community bridge._
+- **Why does `GraphState` connect `nodes.py` to `Graph Report - playpong  (2026-10-22)`, `rules_tool.py`, `CoachPage.tsx`?**
+  _High betweenness centrality (0.199) - this node is a cross-community bridge._
 - **What connects `@mediapipe/tasks-vision`, `@react-three/drei`, `@react-three/fiber` to the rest of the system?**
   _52 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `types.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.06327683615819209 - nodes in this community are weakly interconnected._
-- **Why does `RuleProfile` connect `RuleProfile` to `TableTennisEngine`, `physics/tableTennisEngine.ts`, `src/App.tsx`, `TableTennisEngine`, `multiplayer.ts`, `shared/types.ts`, `GamePage.tsx`, `socketClient`, `CoachPage.tsx`, `SettingsModal.tsx`?**
-  _High betweenness centrality (0.167) - this node is a cross-community bridge._
+- **Why does `RuleProfile` connect `RuleProfile` to `TableTennisEngine`, `src/game/Scene.tsx`, `shared/metrics.ts`, `src/App.tsx`, `Graph Report - playpong  (2026-10-22)`, `TableTennisEngine`, `multiplayer.ts`, `shared/types.ts`, `ref_react`, `socketClient`, `CoachPage.tsx`?**
+  _High betweenness centrality (0.161) - this node is a cross-community bridge._
+- **Should `coach.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.10114942528735632 - nodes in this community are weakly interconnected._
+- **Why does `God Nodes (most connected - your core abstractions)` connect `CoachPage.tsx` to `RuleProfile`, `Graph Report - playpong  (2026-10-22)`, `nodes.py`?**
+  _High betweenness centrality (0.141) - this node is a cross-community bridge._
 - **Should `client/package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
-- **Why does `God Nodes (most connected - your core abstractions)` connect `CoachPage.tsx` to `RuleProfile`, `Button`, `nodes.py`?**
-  _High betweenness centrality (0.163) - this node is a cross-community bridge._
-- **Should `MatchStats` be split into smaller, more focused modules?**
-  _Cohesion score 0.11965811965811966 - nodes in this community are weakly interconnected._

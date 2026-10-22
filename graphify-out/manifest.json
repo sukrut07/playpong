@@ -222,9 +222,9 @@
     "semantic_hash": ""
   },
   "server/src/routes/coach.ts": {
-    "mtime": 1792669795.69936,
-    "seen": 1792670122.040834,
-    "ast_hash": "8abe17de1e3452aa24248051f17dc583",
+    "mtime": 1792672041.4059796,
+    "seen": 1792672184.124331,
+    "ast_hash": "627447ff3574a184d2c7e81e0e241a79",
     "semantic_hash": ""
   },
   "server/src/services/ollama.ts": {
@@ -300,9 +300,9 @@
     "semantic_hash": ""
   },
   "server/src/ai/geminiAdapter.ts": {
-    "mtime": 1792658977.7374585,
-    "seen": 1792662638.710936,
-    "ast_hash": "f26aba8bd4dc7264544d68f0f55f8334",
+    "mtime": 1792672005.700691,
+    "seen": 1792672184.124147,
+    "ast_hash": "caf9a03e12832362b28a72fa9f827362",
     "semantic_hash": ""
   },
   "server/src/ai/ollamaAdapter.ts": {
@@ -330,9 +330,9 @@
     "semantic_hash": ""
   },
   "server/src/ai/providerManager.ts": {
-    "mtime": 1792670613.9507015,
-    "seen": 1792671664.24638,
-    "ast_hash": "fd5661491acd4d88ba9d1aae41adb15d",
+    "mtime": 1792672025.090745,
+    "seen": 1792672184.1242151,
+    "ast_hash": "3feb6c8d5a9e7fc84ca6086cd725e16d",
     "semantic_hash": ""
   },
   "server/src/ai/schemas.ts": {
@@ -1116,9 +1116,9 @@
     "semantic_hash": ""
   },
   "frontend/src/services/model-service.ts": {
-    "mtime": 1792669843.198329,
-    "seen": 1792670122.040014,
-    "ast_hash": "0d319ecbbb5136df1aa9c29668b773e3",
+    "mtime": 1792672064.445629,
+    "seen": 1792672184.123523,
+    "ast_hash": "19b145423a834858f8f32aa5e18143a5",
     "semantic_hash": ""
   },
   "frontend/src/services/socket-client.ts": {
@@ -1236,9 +1236,9 @@
     "semantic_hash": ""
   },
   "frontend/public/graphify/GRAPH_REPORT.md": {
-    "mtime": 1792670126.3414729,
-    "seen": 1792671664.247316,
-    "ast_hash": "c3cf7ab1dc85df3df9e343017aa230dd",
+    "mtime": 1792671664.3216608,
+    "seen": 1792672184.125083,
+    "ast_hash": "52c21110be61f0303a2320c689889b29",
     "semantic_hash": ""
   },
   "game-engine/README.md": {
@@ -1278,9 +1278,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/coach/CoachChatPanel.tsx": {
-    "mtime": 1792669866.0862954,
-    "seen": 1792670122.039554,
-    "ast_hash": "78eae621ace9ce3639517958523f215c",
+    "mtime": 1792672102.7014565,
+    "seen": 1792672184.122992,
+    "ast_hash": "30f58438e072e3efcb0492d251ea4fa0",
     "semantic_hash": ""
   },
   "frontend/src/components/coach/ModelUsagePanel.tsx": {
